@@ -17,55 +17,222 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# 2. Fresh Cyberpunk Neon Emerald Dynamic CSS Theme
+# 2. Ultra Dynamic Cyberpunk Neon Emerald & Extra Glowing Animations CSS
 st.markdown("""
 <style>
+    /* Animated Gradient Background */
     .stApp {
         background: linear-gradient(-45deg, #022c22, #064e3b, #0f172a, #065f46, #022c22);
         background-size: 400% 400%;
-        animation: gradientBG 12s ease infinite;
+        animation: gradientBG 10s ease infinite;
         color: #ecfdf5;
         font-family: 'Segoe UI', Roboto, sans-serif;
     }
+
     @keyframes gradientBG {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
     }
-    .header-container { display: flex; flex-direction: column; gap: 6px; }
+
+    .header-container {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
     .floating-header {
-        background: linear-gradient(90deg, #34d399, #10b981, #06b6d4, #a7f3d0);
+        background: linear-gradient(90deg, #34d399, #10b981, #06b6d4, #a7f3d0, #34d399);
         background-size: 300% 300%;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        font-size: 40px; font-weight: 900; letter-spacing: -1px;
-        animation: gradientShift 6s ease infinite, floatTitle 3s ease-in-out infinite;
-        margin: 0; display: inline-block;
+        font-size: 42px;
+        font-weight: 900;
+        letter-spacing: -1px;
+        animation: gradientShift 5s ease infinite, floatTitle 3s ease-in-out infinite;
+        margin: 0;
+        display: inline-block;
+        filter: drop-shadow(0 0 15px rgba(52, 211, 153, 0.4));
     }
+
     .designer-badge {
-        display: inline-flex; align-items: center; gap: 8px;
-        background: linear-gradient(135deg, rgba(52, 211, 153, 0.15), rgba(6, 182, 212, 0.25));
-        border: 1px solid rgba(52, 211, 153, 0.4); padding: 6px 16px; border-radius: 30px;
-        font-size: 14px; font-weight: 700; letter-spacing: 1.2px; color: #34d399;
-        box-shadow: 0 0 20px rgba(52, 211, 153, 0.2); width: fit-content; margin-top: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, rgba(52, 211, 153, 0.2), rgba(6, 182, 212, 0.3));
+        border: 1px solid rgba(52, 211, 153, 0.6);
+        padding: 6px 16px;
+        border-radius: 30px;
+        font-size: 14px;
+        font-weight: 700;
+        letter-spacing: 1.2px;
+        color: #34d399;
+        box-shadow: 0 0 20px rgba(52, 211, 153, 0.4), inset 0 0 10px rgba(52, 211, 153, 0.2);
+        width: fit-content;
+        margin-top: 4px;
+        animation: pulseBadge 2.5s infinite alternate;
     }
+
+    @keyframes pulseBadge {
+        0% { border-color: rgba(52, 211, 153, 0.4); box-shadow: 0 0 10px rgba(52, 211, 153, 0.2); }
+        100% { border-color: rgba(6, 182, 212, 0.9); box-shadow: 0 0 30px rgba(6, 182, 212, 0.6); }
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    @keyframes floatTitle {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-5px); }
+        100% { transform: translateY(0px); }
+    }
+
     .logo-frame {
-        display: inline-block; padding: 8px; border-radius: 24px;
+        display: inline-block;
+        padding: 8px;
+        border-radius: 24px;
         background: linear-gradient(135deg, #34d399, #06b6d4, #10b981);
-        box-shadow: 0 0 25px rgba(52, 211, 153, 0.6);
+        animation: pulse4K 2s infinite alternate;
+        box-shadow: 0 0 30px rgba(52, 211, 153, 0.8);
     }
+
+    @keyframes pulse4K {
+        0% { transform: scale(0.96); box-shadow: 0 0 15px rgba(52, 211, 153, 0.4); }
+        100% { transform: scale(1.04); box-shadow: 0 0 40px rgba(6, 182, 212, 1); }
+    }
+
     .metric-card {
-        background: rgba(6, 78, 59, 0.45); border: 1px solid rgba(52, 211, 153, 0.25);
-        border-radius: 20px; padding: 22px; text-align: center; backdrop-filter: blur(16px);
+        background: rgba(6, 78, 59, 0.45);
+        border: 1px solid rgba(52, 211, 153, 0.3);
+        border-radius: 20px;
+        padding: 22px;
+        text-align: center;
+        backdrop-filter: blur(16px);
         box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-    .metric-title { font-size: 14px; color: #a7f3d0; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; }
-    .metric-value { font-size: 36px; font-weight: 900; margin-top: 8px; background: linear-gradient(90deg, #34d399, #06b6d4); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    div.stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #10b981 0%, #059669 50%, #06b6d4 100%) !important;
-        color: #ffffff !important; font-size: 18px !important; font-weight: 800 !important;
-        border-radius: 14px !important; padding: 16px 28px !important;
-        box-shadow: 0 0 25px rgba(16, 185, 129, 0.5) !important;
+    .metric-card:hover {
+        transform: translateY(-8px) scale(1.03);
+        border-color: #34d399;
+        box-shadow: 0 15px 45px rgba(52, 211, 153, 0.5), inset 0 0 15px rgba(52, 211, 153, 0.2);
+    }
+
+    .metric-title {
+        font-size: 14px;
+        color: #a7f3d0;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+    }
+    .metric-value {
+        font-size: 36px;
+        font-weight: 900;
+        margin-top: 8px;
+        background: linear-gradient(90deg, #34d399, #06b6d4);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    /* 🟢 EXTRA GLOWING NEON BUTTONS ANIMATION */
+    div.stButton > button[kind="primary"], div.stButton > button:first-child:not([kind="secondary"]) {
+        background: linear-gradient(135deg, #10b981 0%, #059669 40%, #06b6d4 100%) !important;
+        background-size: 200% 200% !important;
+        color: #ffffff !important;
+        font-size: 19px !important;
+        font-weight: 900 !important;
+        border: 1px solid #34d399 !important;
+        border-radius: 14px !important;
+        padding: 16px 28px !important;
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.7), 0 0 15px rgba(6, 182, 212, 0.6) !important;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+        cursor: pointer !important;
+        text-transform: uppercase !important;
+        letter-spacing: 1.2px !important;
+        animation: extremeGlow 3s ease infinite !important;
+    }
+
+    @keyframes extremeGlow {
+        0% { 
+            background-position: 0% 50%; 
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 10px rgba(6, 182, 212, 0.4); 
+        }
+        50% { 
+            background-position: 100% 50%; 
+            box-shadow: 0 0 45px rgba(6, 182, 212, 0.9), 0 0 25px rgba(52, 211, 153, 0.8); 
+        }
+        100% { 
+            background-position: 0% 50%; 
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 10px rgba(6, 182, 212, 0.4); 
+        }
+    }
+
+    div.stButton > button[kind="primary"]:hover {
+        transform: translateY(-4px) scale(1.04) !important;
+        box-shadow: 0 0 55px rgba(6, 182, 212, 1), 0 0 30px rgba(52, 211, 153, 1) !important;
+        color: #ffffff !important;
+        border-color: #ffffff !important;
+    }
+
+    div.stButton > button[kind="primary"]:active {
+        transform: translateY(2px) scale(0.97) !important;
+    }
+
+    /* 🔴 GLOWING RED EMERGENCY BUTTON */
+    div.stButton > button[kind="secondary"] {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%) !important;
+        color: #ffffff !important;
+        font-size: 16px !important;
+        font-weight: 800 !important;
+        border: 1px solid rgba(239, 68, 68, 0.8) !important;
+        border-radius: 14px !important;
+        padding: 16px 24px !important;
+        box-shadow: 0 0 20px rgba(239, 68, 68, 0.6) !important;
+        transition: all 0.3s ease !important;
+        animation: pulseRedGlow 2.5s infinite alternate !important;
+    }
+
+    @keyframes pulseRedGlow {
+        0% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
+        100% { box-shadow: 0 0 35px rgba(239, 68, 68, 0.9); }
+    }
+
+    div.stButton > button[kind="secondary"]:hover {
+        transform: translateY(-3px) scale(1.03) !important;
+        box-shadow: 0 0 45px rgba(239, 68, 68, 1) !important;
+        background: linear-gradient(135deg, #f87171 0%, #b91c1c 100%) !important;
+    }
+
+    /* Upload Area Styling */
+    [data-testid="stFileUploader"] section {
+        background: rgba(6, 78, 59, 0.4) !important;
+        border: 2px dashed #34d399 !important;
+        border-radius: 18px !important;
+        padding: 20px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    [data-testid="stFileUploader"] section:hover {
+        border-color: #06b6d4 !important;
+        background: rgba(15, 23, 42, 0.8) !important;
+        box-shadow: 0 0 30px rgba(52, 211, 153, 0.4) !important;
+    }
+
+    [data-testid="stFileUploader"] button {
+        background: linear-gradient(135deg, #34d399, #059669) !important;
+        color: #022c22 !important;
+        font-weight: 800 !important;
+        border-radius: 10px !important;
+        border: none !important;
+        box-shadow: 0 0 15px rgba(52, 211, 153, 0.5) !important;
+        transition: all 0.3s ease !important;
+    }
+
+    [data-testid="stFileUploader"] button:hover {
+        transform: scale(1.05) !important;
+        box-shadow: 0 0 25px rgba(6, 182, 212, 0.8) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -106,7 +273,7 @@ def load_default_100_records():
         records.append({
             "Date": entry_dt.strftime("%Y-%m-%d"),
             "Party Name": party_name,
-            "Account Number": account_no,  # <-- Added Account Number Column
+            "Account Number": account_no,
             "Email": f"{email_prefix}@clientdomain.com",
             "Place": random.choice(places),
             "Bank Name": random.choice(banks),
@@ -196,7 +363,7 @@ if 'stop_dispatch' not in st.session_state:
 
 col_start, col_stop = st.columns([2, 1])
 with col_start: start_btn = st.button("🚀 Launch Cheque Details Dispatch", type="primary", use_container_width=True)
-with col_stop: stop_btn = st.button("🛑 Emergency Stop", use_container_width=True)
+with col_stop: stop_btn = st.button("🛑 Emergency Stop", kind="secondary", use_container_width=True)
 
 if stop_btn: st.session_state['stop_dispatch'] = True
 
@@ -226,7 +393,7 @@ if start_btn:
                 row = df.iloc[idx]
                 rec_date = get_field_strict(row, ["Date", "Entry Date", "Cheque Date"], "N/A")
                 party_name = get_field_strict(row, ["Party Name", "Party", "Customer Name", "Name"], "Valued Party")
-                account_val = get_field_strict(row, ["Account Number", "Account No", "Account", "A/C No"], "N/A") # <-- Extracting Account Number
+                account_val = get_field_strict(row, ["Account Number", "Account No", "Account", "A/C No"], "N/A")
                 target_email = get_field_strict(row, ["Email", "Email ID", "Mail", "Email Address"], "").strip()
                 place_val = get_field_strict(row, ["Place", "City", "Location"], "N/A")
                 bank_val = get_field_strict(row, ["Bank Name", "Bank"], "N/A")
