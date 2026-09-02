@@ -136,7 +136,7 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
     }
 
-    /* 🟢 EXTRA GLOWING NEON PRIMARY LAUNCH BUTTON */
+    /* Primary Button Styling */
     div.stButton > button[kind="primary"] {
         background: linear-gradient(135deg, #10b981 0%, #059669 40%, #06b6d4 100%) !important;
         background-size: 200% 200% !important;
@@ -155,28 +155,18 @@ st.markdown("""
     }
 
     @keyframes extremeGlow {
-        0% { 
-            background-position: 0% 50%; 
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 10px rgba(6, 182, 212, 0.4); 
-        }
-        50% { 
-            background-position: 100% 50%; 
-            box-shadow: 0 0 45px rgba(6, 182, 212, 0.9), 0 0 25px rgba(52, 211, 153, 0.8); 
-        }
-        100% { 
-            background-position: 0% 50%; 
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6), 0 0 10px rgba(6, 182, 212, 0.4); 
-        }
+        0% { background-position: 0% 50%; box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
+        50% { background-position: 100% 50%; box-shadow: 0 0 45px rgba(6, 182, 212, 0.9); }
+        100% { background-position: 0% 50%; box-shadow: 0 0 20px rgba(16, 185, 129, 0.6); }
     }
 
     div.stButton > button[kind="primary"]:hover {
         transform: translateY(-4px) scale(1.04) !important;
-        box-shadow: 0 0 55px rgba(6, 182, 212, 1), 0 0 30px rgba(52, 211, 153, 1) !important;
+        box-shadow: 0 0 55px rgba(6, 182, 212, 1) !important;
         color: #ffffff !important;
-        border-color: #ffffff !important;
     }
 
-    /* 🔴 GLOWING RED EMERGENCY STOP BUTTON */
+    /* Secondary Emergency Stop Button Styling */
     div.stButton > button[kind="secondary"] {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%) !important;
         color: #ffffff !important;
@@ -199,8 +189,6 @@ st.markdown("""
     div.stButton > button[kind="secondary"]:hover {
         transform: translateY(-3px) scale(1.03) !important;
         box-shadow: 0 0 45px rgba(239, 68, 68, 1) !important;
-        background: linear-gradient(135deg, #f87171 0%, #b91c1c 100%) !important;
-        border-color: #ffffff !important;
     }
 
     /* Upload Area Styling */
@@ -209,28 +197,6 @@ st.markdown("""
         border: 2px dashed #34d399 !important;
         border-radius: 18px !important;
         padding: 20px !important;
-        transition: all 0.3s ease !important;
-    }
-
-    [data-testid="stFileUploader"] section:hover {
-        border-color: #06b6d4 !important;
-        background: rgba(15, 23, 42, 0.8) !important;
-        box-shadow: 0 0 30px rgba(52, 211, 153, 0.4) !important;
-    }
-
-    [data-testid="stFileUploader"] button {
-        background: linear-gradient(135deg, #34d399, #059669) !important;
-        color: #022c22 !important;
-        font-weight: 800 !important;
-        border-radius: 10px !important;
-        border: none !important;
-        box-shadow: 0 0 15px rgba(52, 211, 153, 0.5) !important;
-        transition: all 0.3s ease !important;
-    }
-
-    [data-testid="stFileUploader"] button:hover {
-        transform: scale(1.05) !important;
-        box-shadow: 0 0 25px rgba(6, 182, 212, 0.8) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -253,7 +219,7 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
                     return val
     return default_val
 
-# 4. Default Records Generator
+# 4. Updated Default Records Generator
 @st.cache_data
 def load_default_100_records():
     parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta"]
@@ -265,8 +231,10 @@ def load_default_100_records():
         party_name = parties[(i - 1) % len(parties)]
         email_prefix = party_name.split()[0].lower() + str(i)
         entry_dt = base_date + timedelta(days=(i % 25))
-        used = random.randint(1, 15)
-        unused = random.randint(2, 25)
+        used_ail = random.randint(1, 10)
+        used_ahpl = random.randint(1, 10)
+        hand_ail = random.randint(5, 20)
+        hand_ahpl = random.randint(5, 20)
         account_no = f"35{random.randint(1000000000, 9999999999)}"
         records.append({
             "Date": entry_dt.strftime("%Y-%m-%d"),
@@ -275,9 +243,10 @@ def load_default_100_records():
             "Email": f"{email_prefix}@clientdomain.com",
             "Place": random.choice(places),
             "Bank Name": random.choice(banks),
-            "Number of Cheque Used": used,
-            "Unused Cheque": unused,
-            "Total Cheque In Hand": used + unused
+            "Number of cheque used in AIL": used_ail,
+            "Number of cheque used In AHPL": used_ahpl,
+            "Total cheque in hand AIL": hand_ail,
+            "Total cheque in hand AHPL": hand_ahpl
         })
     return pd.DataFrame(records)
 
@@ -400,9 +369,12 @@ if start_btn:
                 target_email = get_field_strict(row, ["Email", "Email ID", "Mail", "Email Address"], "").strip()
                 place_val = get_field_strict(row, ["Place", "City", "Location"], "N/A")
                 bank_val = get_field_strict(row, ["Bank Name", "Bank"], "N/A")
-                used_cheques = get_field_strict(row, ["Number of Cheque Used", "Used"], "0")
-                unused_cheques = get_field_strict(row, ["Unused Cheque", "Unused"], "0")
-                total_cheques = get_field_strict(row, ["Total Cheque In Hand", "Total Cheque", "Total"], "0")
+                
+                # Fetch Updated Columns
+                used_ail = get_field_strict(row, ["Number of cheque used in AIL", "Used AIL", "AIL Used"], "0")
+                used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL", "Used AHPL", "AHPL Used"], "0")
+                hand_ail = get_field_strict(row, ["Total cheque in hand AIL", "Hand AIL", "AIL Hand"], "0")
+                hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL", "Hand AHPL", "AHPL Hand"], "0")
 
                 if "@" in target_email:
                     msg = MIMEMultipart('alternative')
@@ -413,7 +385,7 @@ if start_btn:
                     msg['To'] = target_email
                     msg['Subject'] = f"💳 Buffer Cheque Details - {party_name} ({rec_date})"
 
-                    # 🎨 EXACT MATCH EMAIL HEADER UI AS IN SCREENSHOT
+                    # 🎨 HTML EMAIL TEMPLATE WITH UPDATED FIELDS
                     body_html = f"""
                     <!DOCTYPE html>
                     <html>
@@ -446,8 +418,8 @@ if start_btn:
                             <!-- DETAILS TABLE -->
                             <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #022c22; border-radius: 10px; overflow: hidden;">
                               <tr style="border-bottom: 1px solid #065f46;">
-                                <td width="45%" style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📅 Date</td>
-                                <td width="55%" style="color: #34d399; font-weight: bold; font-size: 14px;">{rec_date}</td>
+                                <td width="50%" style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📅 Date</td>
+                                <td width="50%" style="color: #34d399; font-weight: bold; font-size: 14px;">{rec_date}</td>
                               </tr>
                               <tr style="border-bottom: 1px solid #065f46;">
                                 <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">👤 Party Name</td>
@@ -466,50 +438,4 @@ if start_btn:
                                 <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank_val}</td>
                               </tr>
                               <tr style="border-bottom: 1px solid #065f46;">
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Number of Cheque Used</td>
-                                <td style="color: #f87171; font-weight: bold; font-size: 14px;">{used_cheques}</td>
-                              </tr>
-                              <tr style="border-bottom: 1px solid #065f46;">
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📦 Unused Cheque</td>
-                                <td style="color: #34d399; font-weight: bold; font-size: 14px;">{unused_cheques}</td>
-                              </tr>
-                              <tr>
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📊 Total Cheque In Hand</td>
-                                <td style="color: #fbbf24; font-weight: 900; font-size: 15px;">{total_cheques}</td>
-                              </tr>
-                            </table>
-                          </td>
-                        </tr>
-
-                        <!-- FOOTER -->
-                        <tr>
-                          <td style="background-color: #021a14; padding: 14px; text-align: center; color: #34d399; font-size: 12px; font-weight: bold; border-top: 1px solid #065f46;">
-                            ⚡ DISPATCH ENGINE BY DHARMENDRA KUMAR (MISHRA) AND HIS SON
-                          </td>
-                        </tr>
-                      </table>
-                    </body>
-                    </html>
-                    """
-                    msg.attach(MIMEText(body_html, 'html'))
-
-                    try:
-                        server.sendmail(sender_email.strip(), target_email, msg.as_string())
-                        st.session_state['sent_count'] += 1
-                        status_box.info(f"⚡ [{idx+1}/{len(df)}] Dispatched as '{custom_sender_name}' to: {target_email}")
-                    except Exception as err:
-                        st.session_state['failed_count'] += 1
-                        status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Failed for {target_email}: {err}")
-                else:
-                    st.session_state['failed_count'] += 1
-                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Invalid/Missing Email for {party_name}")
-
-                progress_bar.progress((idx + 1) / len(df))
-                time.sleep(dispatch_delay)
-
-            server.quit()
-            st.success("🎉 Bulk Dispatch Completed!")
-        except Exception as conn_err:
-            st.error(f"❌ SMTP Connection Error: {conn_err}")
-
-st.markdown("<br><hr><div style='text-align: center; color: #34d399; font-weight: 700;'>⚡ Designed & Developed by Dharmendra Kumar (Mishra) and His Son</div>", unsafe_allow_html=True)
+                                <td style="color: #a7f3d0; font-weight: bold; font-si
