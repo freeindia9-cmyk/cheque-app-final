@@ -438,4 +438,55 @@ if start_btn:
                                 <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank_val}</td>
                               </tr>
                               <tr style="border-bottom: 1px solid #065f46;">
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Number 
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Number of cheque used in AIL</td>
+                                <td style="color: #f87171; font-weight: bold; font-size: 14px;">{used_ail}</td>
+                              </tr>
+                              <tr style="border-bottom: 1px solid #065f46;">
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📦 Number of cheque used In AHPL</td>
+                                <td style="color: #f87171; font-weight: bold; font-size: 14px;">{used_ahpl}</td>
+                              </tr>
+                              <tr style="border-bottom: 1px solid #065f46;">
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📊 Total cheque in hand AIL</td>
+                                <td style="color: #fbbf24; font-weight: 900; font-size: 15px;">{hand_ail}</td>
+                              </tr>
+                              <tr>
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📈 Total cheque in hand AHPL</td>
+                                <td style="color: #34d399; font-weight: 900; font-size: 15px;">{hand_ahpl}</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+
+                        <!-- EMAIL FOOTER (UPDATED) -->
+                        <tr>
+                          <td style="background-color: #021a14; padding: 14px; text-align: center; color: #34d399; font-size: 12px; font-weight: bold; border-top: 1px solid #065f46;">
+                            ⚡ DISPATCH ENGINE BY DHARMENDRA KUMAR (MISHRA)
+                          </td>
+                        </tr>
+                      </table>
+                    </body>
+                    </html>
+                    """
+                    msg.attach(MIMEText(body_html, 'html'))
+
+                    try:
+                        server.sendmail(sender_email.strip(), target_email, msg.as_string())
+                        st.session_state['sent_count'] += 1
+                        status_box.info(f"⚡ [{idx+1}/{len(df)}] Dispatched as '{custom_sender_name}' to: {target_email}")
+                    except Exception as err:
+                        st.session_state['failed_count'] += 1
+                        status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Failed for {target_email}: {err}")
+                else:
+                    st.session_state['failed_count'] += 1
+                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Invalid/Missing Email for {party_name}")
+
+                progress_bar.progress((idx + 1) / len(df))
+                time.sleep(dispatch_delay)
+
+            server.quit()
+            st.success("🎉 Bulk Dispatch Completed!")
+        except Exception as conn_err:
+            st.error(f"❌ SMTP Connection Error: {conn_err}")
+
+# APP FOOTER (UPDATED)
+st.markdown("<br><hr><div style='text-align: center; color: #34d399; font-weight: 700;'>⚡ Designed & Developed by Dharmendra Kumar (Mishra)</div>", unsafe_allow_html=True)
