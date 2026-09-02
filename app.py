@@ -314,7 +314,7 @@ with col_title:
     st.markdown("""
     <div class="header-container">
         <h1 class="floating-header">DHARMENDRA KUMAR (MISHRA)</h1>
-        <div><span class="designer-badge">✨ ARCHITECT & DESIGNER: DHARMENDRA KUMAR (MISHRA)</span></div>
+        <div><span class="designer-badge">✨ ARCHITECT & DESIGNER: DHARMENDRA KUMAR (MISHRA) AND HIS SON</span></div>
     </div>
     """, unsafe_allow_html=True)
     st.caption("🚀 Automated Cheque Record Dispatcher & Email Management Engine")
@@ -413,7 +413,7 @@ if start_btn:
                     msg['To'] = target_email
                     msg['Subject'] = f"💳 Buffer Cheque Details - {party_name} ({rec_date})"
 
-                    # 🎨 EXACT MATCH EMAIL HEADER UI AS IN SCREENSHOT (WITH RAMA ENTERPRISES SUBHEADER)
+                    # 🎨 EXACT MATCH EMAIL HEADER UI AS IN SCREENSHOT
                     body_html = f"""
                     <!DOCTYPE html>
                     <html>
@@ -423,7 +423,7 @@ if start_btn:
                     <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
                       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #064e3b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
                         
-                        <!-- HEADER BOX (EXACT MATCHING SCREENSHOT) -->
+                        <!-- HEADER BOX -->
                         <tr>
                           <td style="padding: 24px; text-align: center;">
                             <div style="background-color: #34d399; border-radius: 12px; padding: 18px 10px; text-align: center;">
@@ -484,7 +484,7 @@ if start_btn:
                         <!-- FOOTER -->
                         <tr>
                           <td style="background-color: #021a14; padding: 14px; text-align: center; color: #34d399; font-size: 12px; font-weight: bold; border-top: 1px solid #065f46;">
-                            ⚡ DISPATCH ENGINE BY DHARMENDRA KUMAR (MISHRA)
+                            ⚡ DISPATCH ENGINE BY DHARMENDRA KUMAR (MISHRA) AND HIS SON
                           </td>
                         </tr>
                       </table>
@@ -512,4 +512,4 @@ if start_btn:
         except Exception as conn_err:
             st.error(f"❌ SMTP Connection Error: {conn_err}")
 
-st.markdown("<br><hr><div style='text-align: center; color: #34d399; font-weight: 700;'>⚡ Designed & Developed by Dharmendra Kumar (Mishra)</div>", unsafe_allow_html=True)
+st.markdown("<br><hr><div style='text-align: center; color: #34d399; font-weight: 700;'>⚡ Designed & Developed by Dharmendra Kumar (Mishra) and His Son</div>", unsafe_allow_html=True)
