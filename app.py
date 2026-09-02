@@ -136,8 +136,8 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
     }
 
-    /* 🟢 EXTRA GLOWING NEON BUTTONS ANIMATION */
-    div.stButton > button[kind="primary"], div.stButton > button:first-child:not([kind="secondary"]) {
+    /* 🟢 EXTRA GLOWING NEON PRIMARY LAUNCH BUTTON */
+    div.stButton > button[kind="primary"] {
         background: linear-gradient(135deg, #10b981 0%, #059669 40%, #06b6d4 100%) !important;
         background-size: 200% 200% !important;
         color: #ffffff !important;
@@ -176,33 +176,31 @@ st.markdown("""
         border-color: #ffffff !important;
     }
 
-    div.stButton > button[kind="primary"]:active {
-        transform: translateY(2px) scale(0.97) !important;
-    }
-
-    /* 🔴 GLOWING RED EMERGENCY BUTTON */
+    /* 🔴 GLOWING RED EMERGENCY STOP BUTTON */
     div.stButton > button[kind="secondary"] {
         background: linear-gradient(135deg, #ef4444 0%, #dc2626 50%, #991b1b 100%) !important;
         color: #ffffff !important;
-        font-size: 16px !important;
+        font-size: 18px !important;
         font-weight: 800 !important;
         border: 1px solid rgba(239, 68, 68, 0.8) !important;
         border-radius: 14px !important;
         padding: 16px 24px !important;
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.6) !important;
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.7) !important;
         transition: all 0.3s ease !important;
         animation: pulseRedGlow 2.5s infinite alternate !important;
+        cursor: pointer !important;
     }
 
     @keyframes pulseRedGlow {
-        0% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.4); }
-        100% { box-shadow: 0 0 35px rgba(239, 68, 68, 0.9); }
+        0% { box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        100% { box-shadow: 0 0 35px rgba(239, 68, 68, 1); }
     }
 
     div.stButton > button[kind="secondary"]:hover {
         transform: translateY(-3px) scale(1.03) !important;
         box-shadow: 0 0 45px rgba(239, 68, 68, 1) !important;
         background: linear-gradient(135deg, #f87171 0%, #b91c1c 100%) !important;
+        border-color: #ffffff !important;
     }
 
     /* Upload Area Styling */
@@ -255,7 +253,7 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
                     return val
     return default_val
 
-# 4. Default Records Generator (With Account Number Added)
+# 4. Default Records Generator
 @st.cache_data
 def load_default_100_records():
     parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta"]
@@ -361,11 +359,16 @@ df = st.session_state['crm_data']
 if 'stop_dispatch' not in st.session_state:
     st.session_state['stop_dispatch'] = False
 
+# 8. Dispatch & Stop Control Buttons
 col_start, col_stop = st.columns([2, 1])
-with col_start: start_btn = st.button("🚀 Launch Cheque Details Dispatch", type="primary", use_container_width=True)
-with col_stop: stop_btn = st.button("🛑 Emergency Stop", kind="secondary", use_container_width=True)
+with col_start: 
+    start_btn = st.button("🚀 Launch Cheque Details Dispatch", type="primary", use_container_width=True)
+with col_stop: 
+    stop_btn = st.button("🛑 Emergency Stop", type="secondary", use_container_width=True)
 
-if stop_btn: st.session_state['stop_dispatch'] = True
+if stop_btn: 
+    st.session_state['stop_dispatch'] = True
+    st.warning("🛑 Stop request received. Halting current process...")
 
 if start_btn:
     st.session_state['stop_dispatch'] = False
