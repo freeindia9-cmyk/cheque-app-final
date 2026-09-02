@@ -480,4 +480,47 @@ if start_btn:
                           <p style="font-size: 16px; color: #ecfdf5; letter-spacing: 0.5px;">Dear <b style="color: #6ee7b7;">{party_name}</b>,</p>
                           <p style="color: #a7f3d0; font-size: 14px; line-height: 1.6; letter-spacing: 0.3px;">Please find below the updated summary of your cheque records:</p>
                           <table class="data-table">
-                            <tr><td class="label-col">📅 Date</td><td class="value-col">{
+                            <tr><td class="label-col">📅 Date</td><td class="value-col">{rec_date}</td></tr>
+                            <tr><td class="label-col">👤 Party Name</td><td class="value-col" style="color: #6ee7b7;">{party_name}</td></tr>
+                            <tr><td class="label-col">📍 Place</td><td class="value-col">{place_val}</td></tr>
+                            <tr><td class="label-col">🏦 Bank Name</td><td class="value-col" style="color: #38bdf8;">{bank_val}</td></tr>
+                            <tr><td class="label-col">🏷️ Number of Cheque Used</td><td class="value-col">{used_cheques}</td></tr>
+                            <tr><td class="label-col">📦 Unused Cheque</td><td class="value-col">{unused_cheques}</td></tr>
+                            <tr><td class="label-col">📊 Total Cheque</td><td class="value-col highlight-val">{total_cheques}</td></tr>
+                          </table>
+                          <p style="margin-top: 25px; color: #a7f3d0; font-size: 13px; letter-spacing: 0.5px;">Thank you for your business!</p>
+                        </div>
+                        <div class="footer-note">⚡ Designed & Developed by Dharmendra Kumar (Mishra)</div>
+                      </div>
+                    </body>
+                    </html>
+                    """
+
+                    msg.attach(MIMEText(body_html, 'html'))
+
+                    try:
+                        server.sendmail(sender_email.strip(), target_email, msg.as_string())
+                        st.session_state['sent_count'] += 1
+                        status_box.info(f"⚡ [{idx+1}/{len(df)}] Dispatched to: {party_name} ({target_email})")
+                    except Exception as err:
+                        st.session_state['failed_count'] += 1
+                        status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Bounce/Failed for {target_email}: {err}")
+                else:
+                    st.session_state['failed_count'] += 1
+                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Invalid/Missing Email ID for {party_name}")
+
+                progress_bar.progress((idx + 1) / len(df))
+                time.sleep(dispatch_delay)
+
+            server.quit()
+            st.success("🎉 Bulk Dispatch Completed!")
+        except Exception as conn_err:
+            st.error(f"❌ SMTP Connection Error: {conn_err}")
+
+# 11. Custom Footer Signature
+st.markdown("""
+<br><hr style="border-top: 1px solid rgba(52, 211, 153, 0.2);"><br>
+<div style="text-align: center; color: #34d399; font-size: 14px; font-weight: 700; letter-spacing: 1px;">
+    ⚡ Designed & Developed by <span style="color: #a7f3d0;">Dharmendra Kumar (Mishra)</span>
+</div>
+""", unsafe_allow_html=True)
