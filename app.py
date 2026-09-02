@@ -219,7 +219,7 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
                     return val
     return default_val
 
-# 4. Updated Default Records Generator
+# 4. Default Records Generator
 @st.cache_data
 def load_default_100_records():
     parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta"]
@@ -269,7 +269,7 @@ with st.sidebar:
     app_password = st.text_input("16-Digit App Password", type="password")
     dispatch_delay = st.slider("Dispatch Rate Delay (Seconds)", 0.5, 5.0, 1.0)
 
-# 6. Dynamic Header Section
+# 6. Dynamic Header Section (Updated Designer Name)
 col_logo, col_title = st.columns([1, 5])
 with col_logo:
     if logo_file is not None:
@@ -283,7 +283,7 @@ with col_title:
     st.markdown("""
     <div class="header-container">
         <h1 class="floating-header">DHARMENDRA KUMAR (MISHRA)</h1>
-        <div><span class="designer-badge">✨ ARCHITECT & DESIGNER: DHARMENDRA KUMAR (MISHRA) AND HIS SON</span></div>
+        <div><span class="designer-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span></div>
     </div>
     """, unsafe_allow_html=True)
     st.caption("🚀 Automated Cheque Record Dispatcher & Email Management Engine")
@@ -370,7 +370,7 @@ if start_btn:
                 place_val = get_field_strict(row, ["Place", "City", "Location"], "N/A")
                 bank_val = get_field_strict(row, ["Bank Name", "Bank"], "N/A")
                 
-                # Fetch Updated Columns
+                # Fetch Columns
                 used_ail = get_field_strict(row, ["Number of cheque used in AIL", "Used AIL", "AIL Used"], "0")
                 used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL", "Used AHPL", "AHPL Used"], "0")
                 hand_ail = get_field_strict(row, ["Total cheque in hand AIL", "Hand AIL", "AIL Hand"], "0")
@@ -385,7 +385,7 @@ if start_btn:
                     msg['To'] = target_email
                     msg['Subject'] = f"💳 Buffer Cheque Details - {party_name} ({rec_date})"
 
-                    # 🎨 HTML EMAIL TEMPLATE WITH UPDATED FIELDS
+                    # 🎨 HTML EMAIL TEMPLATE WITH UPDATED FOOTER
                     body_html = f"""
                     <!DOCTYPE html>
                     <html>
@@ -438,54 +438,4 @@ if start_btn:
                                 <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank_val}</td>
                               </tr>
                               <tr style="border-bottom: 1px solid #065f46;">
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Number of cheque used in AIL</td>
-                                <td style="color: #f87171; font-weight: bold; font-size: 14px;">{used_ail}</td>
-                              </tr>
-                              <tr style="border-bottom: 1px solid #065f46;">
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📦 Number of cheque used In AHPL</td>
-                                <td style="color: #f87171; font-weight: bold; font-size: 14px;">{used_ahpl}</td>
-                              </tr>
-                              <tr style="border-bottom: 1px solid #065f46;">
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📊 Total cheque in hand AIL</td>
-                                <td style="color: #fbbf24; font-weight: 900; font-size: 15px;">{hand_ail}</td>
-                              </tr>
-                              <tr>
-                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📈 Total cheque in hand AHPL</td>
-                                <td style="color: #34d399; font-weight: 900; font-size: 15px;">{hand_ahpl}</td>
-                              </tr>
-                            </table>
-                          </td>
-                        </tr>
-
-                        <!-- FOOTER -->
-                        <tr>
-                          <td style="background-color: #021a14; padding: 14px; text-align: center; color: #34d399; font-size: 12px; font-weight: bold; border-top: 1px solid #065f46;">
-                            ⚡ DISPATCH ENGINE BY DHARMENDRA KUMAR (MISHRA) AND HIS SON
-                          </td>
-                        </tr>
-                      </table>
-                    </body>
-                    </html>
-                    """
-                    msg.attach(MIMEText(body_html, 'html'))
-
-                    try:
-                        server.sendmail(sender_email.strip(), target_email, msg.as_string())
-                        st.session_state['sent_count'] += 1
-                        status_box.info(f"⚡ [{idx+1}/{len(df)}] Dispatched as '{custom_sender_name}' to: {target_email}")
-                    except Exception as err:
-                        st.session_state['failed_count'] += 1
-                        status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Failed for {target_email}: {err}")
-                else:
-                    st.session_state['failed_count'] += 1
-                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Invalid/Missing Email for {party_name}")
-
-                progress_bar.progress((idx + 1) / len(df))
-                time.sleep(dispatch_delay)
-
-            server.quit()
-            st.success("🎉 Bulk Dispatch Completed!")
-        except Exception as conn_err:
-            st.error(f"❌ SMTP Connection Error: {conn_err}")
-
-st.markdown("<br><hr><div style='text-align: center; color: #34d399; font-weight: 700;'>⚡ Designed & Developed by Dharmendra Kumar (Mishra) and His Son</div>", unsafe_allow_html=True)
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Number 
