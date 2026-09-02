@@ -413,31 +413,83 @@ if start_btn:
                     msg['To'] = target_email
                     msg['Subject'] = f"💳 Buffer Cheque Details - {party_name} ({rec_date})"
 
+                    # 🎨 EMAIL CLIENT COMPATIBLE HIGH-TECH NEON GLOW TEMPLATE
                     body_html = f"""
                     <!DOCTYPE html>
                     <html>
-                    <body style="margin: 0; padding: 0; background-color: #022c22; font-family: 'Segoe UI', sans-serif; color: #ecfdf5;">
-                      <div style="max-width: 650px; margin: 30px auto; background: #064e3b; border: 1px solid #34d399; border-radius: 20px; overflow: hidden;">
-                        <div style="background: linear-gradient(135deg, #022c22, #065f46); padding: 28px; text-align: center; border-bottom: 2px solid #34d399;">
-                          <h1 style="color: #34d399; font-size: 26px; font-weight: 900; margin: 0;">BUFFER CHEQUE DETAILS</h1>
-                          <div style="color: #6ee7b7; font-size: 14px; margin-top: 8px;">CFA, Abbott India Ltd, Patna</div>
-                        </div>
-                        <div style="padding: 25px;">
-                          <p>Dear <b>{party_name}</b>,</p>
-                          <p>Please find below the updated summary of your cheque records:</p>
-                          <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
-                            <tr><td style="background: #065f46; padding: 10px;">📅 Date</td><td style="background: #064e3b; padding: 10px;">{rec_date}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">👤 Party Name</td><td style="background: #064e3b; padding: 10px;">{party_name}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">🔢 Account Number</td><td style="background: #064e3b; padding: 10px; color: #38bdf8; font-weight: bold;">{account_val}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">📍 Place</td><td style="background: #064e3b; padding: 10px;">{place_val}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">🏦 Bank Name</td><td style="background: #064e3b; padding: 10px;">{bank_val}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">🏷️ Used Cheques</td><td style="background: #064e3b; padding: 10px;">{used_cheques}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">📦 Unused Cheques</td><td style="background: #064e3b; padding: 10px;">{unused_cheques}</td></tr>
-                            <tr><td style="background: #065f46; padding: 10px;">📊 Total Cheques</td><td style="background: #064e3b; padding: 10px;">{total_cheques}</td></tr>
-                          </table>
-                        </div>
-                        <div style="text-align: center; padding: 15px; background: #022c22; font-size: 12px; color: #6ee7b7;">⚡ Dispatch Engine by Dharmendra Kumar (Mishra)</div>
-                      </div>
+                    <head>
+                        <meta charset="utf-8">
+                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    </head>
+                    <body style="margin: 0; padding: 20px 0; background-color: #021a14; font-family: Arial, Helvetica, sans-serif; color: #ecfdf5;">
+                      <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 650px; background-color: #064e3b; border: 2px solid #34d399; border-radius: 18px; box-shadow: 0 0 20px #10b981; overflow: hidden;">
+                        
+                        <!-- HIGH GLOW HEADER SECTION -->
+                        <tr>
+                          <td style="background-color: #022c22; padding: 25px 20px; text-align: center; border-bottom: 3px solid #34d399;">
+                            <div style="font-size: 26px; font-weight: 900; color: #34d399; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px #10b981;">
+                               💳 BUFFER CHEQUE DETAILS
+                            </div>
+                            <div style="font-size: 14px; font-weight: bold; color: #a7f3d0; margin-top: 6px;">
+                              CFA, ABBOTT INDIA LTD, PATNA
+                            </div>
+                            <div style="display: inline-block; margin-top: 12px; padding: 6px 16px; background-color: #065f46; border: 1px solid #34d399; border-radius: 20px; font-size: 12px; font-weight: bold; color: #38bdf8;">
+                              ✨ ARCHITECT & DESIGNER: DHARMENDRA KUMAR (MISHRA)
+                            </div>
+                          </td>
+                        </tr>
+
+                        <!-- BODY CONTENT -->
+                        <tr>
+                          <td style="padding: 25px 20px;">
+                            <p style="font-size: 16px; color: #ecfdf5; margin-bottom: 15px;">Dear <b>{party_name}</b>,</p>
+                            <p style="font-size: 14px; color: #a7f3d0; margin-bottom: 20px; line-height: 1.5;">Please find below the updated summary of your buffer cheque records:</p>
+                            
+                            <!-- DATA TABLE -->
+                            <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: separate; border-spacing: 0; border-radius: 12px; overflow: hidden; border: 1px solid rgba(52, 211, 153, 0.4);">
+                              <tr style="background-color: #022c22;">
+                                <td width="40%" style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">📅 Date</td>
+                                <td width="60%" style="color: #ffffff; font-weight: bold; border-bottom: 1px solid #065f46;">{rec_date}</td>
+                              </tr>
+                              <tr style="background-color: #064e3b;">
+                                <td style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">👤 Party Name</td>
+                                <td style="color: #ffffff; font-weight: bold; border-bottom: 1px solid #065f46;">{party_name}</td>
+                              </tr>
+                              <tr style="background-color: #022c22;">
+                                <td style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">🔢 Account Number</td>
+                                <td style="color: #38bdf8; font-weight: 900; font-size: 16px; border-bottom: 1px solid #065f46;">{account_val}</td>
+                              </tr>
+                              <tr style="background-color: #064e3b;">
+                                <td style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">📍 Place</td>
+                                <td style="color: #ffffff; font-weight: bold; border-bottom: 1px solid #065f46;">{place_val}</td>
+                              </tr>
+                              <tr style="background-color: #022c22;">
+                                <td style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">🏦 Bank Name</td>
+                                <td style="color: #ffffff; font-weight: bold; border-bottom: 1px solid #065f46;">{bank_val}</td>
+                              </tr>
+                              <tr style="background-color: #064e3b;">
+                                <td style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">🏷️ Used Cheques</td>
+                                <td style="color: #f87171; font-weight: bold; border-bottom: 1px solid #065f46;">{used_cheques}</td>
+                              </tr>
+                              <tr style="background-color: #022c22;">
+                                <td style="color: #a7f3d0; font-weight: bold; border-bottom: 1px solid #065f46;">📦 Unused Cheques</td>
+                                <td style="color: #34d399; font-weight: bold; border-bottom: 1px solid #065f46;">{unused_cheques}</td>
+                              </tr>
+                              <tr style="background-color: #064e3b;">
+                                <td style="color: #a7f3d0; font-weight: bold;">📊 Total Cheques</td>
+                                <td style="color: #fbbf24; font-weight: 900; font-size: 16px;">{total_cheques}</td>
+                              </tr>
+                            </table>
+                          </td>
+                        </tr>
+
+                        <!-- FOOTER SECTION -->
+                        <tr>
+                          <td style="background-color: #022c22; padding: 16px; text-align: center; border-top: 1px solid #065f46; font-size: 12px; color: #34d399; font-weight: bold;">
+                            ⚡ DISPATCH ENGINE BY DHARMENDRA KUMAR (MISHRA)
+                          </td>
+                        </tr>
+                      </table>
                     </body>
                     </html>
                     """
