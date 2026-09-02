@@ -1,4 +1,4 @@
-  import streamlit as st
+import streamlit as st
 import pandas as pd
 import smtplib
 from email.mime.text import MIMEText
@@ -232,4 +232,4 @@ st.markdown("""
 <div class="footer">
     ⚡ Designed & Developed by <b>Dharmendra Kumar (Mishra)</b>
 </div>
-""", unsafe_allow_html=True)                                                          .
+""", unsafe_allow_html=True)
