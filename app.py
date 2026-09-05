@@ -735,168 +735,89 @@ st.markdown("---")
 
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
-    Generates dynamic HTML email markup formatted for modern email clients,
-    featuring a 4-second full-screen pop-up overlay animation that seamlessly
-    fades out and transitions into the email top header ("RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA").
+    Generates HTML email payload formatted for Gmail compatibility with standard inline CSS styling.
     """
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <style>
-        /* Fade-out Overlay Animation CSS */
-        @keyframes fadeOutTransform {{
-            0% {{
-                opacity: 1;
-                transform: scale(1);
-                visibility: visible;
-            }}
-            75% {{
-                opacity: 1;
-                transform: scale(1);
-            }}
-            95% {{
-                opacity: 0;
-                transform: scale(0.92);
-            }}
-            100% {{
-                opacity: 0;
-                transform: scale(0.85);
-                visibility: hidden;
-                pointer-events: none;
-            }}
-        }}
-
-        .fullscreen-overlay {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at center, #0d1b2a, #03071e);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: fadeOutTransform 4s ease-in-out forwards;
-            box-shadow: inset 0 0 100px rgba(0, 245, 212, 0.4);
-        }}
-
-        .overlay-popup-box {{
-            background: #0b132b;
-            border: 3px solid #00f5d4;
-            border-radius: 20px;
-            padding: 35px 50px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0, 245, 212, 0.8);
-        }}
-
-        .overlay-title {{
-            color: #00f5d4;
-            font-size: 26px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            text-shadow: 0 0 20px rgba(0, 245, 212, 0.8);
-        }}
-
-        .overlay-subtitle {{
-            color: #ffb703;
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-        }}
-
-        /* Header Animation Seamless Transition */
-        @keyframes headerFadeIn {{
-            0% {{ opacity: 0; transform: translateY(-10px); }}
-            75% {{ opacity: 0; transform: translateY(-10px); }}
-            100% {{ opacity: 1; transform: translateY(0); }}
-        }}
-
-        .email-top-header {{
-            animation: headerFadeIn 4.2s ease-in-out forwards;
-        }}
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
+<body style="margin: 0; padding: 20px; background-color: #03071e; font-family: Arial, sans-serif;">
 
-  <!-- Exact 4-Second Full-Screen Fade-Out Overlay Pop-up -->
-  <div class="fullscreen-overlay">
-    <div class="overlay-popup-box">
-      <div class="overlay-title">⚡ {str(email_title).upper()} ⚡</div>
-      <div class="overlay-subtitle">RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA</div>
-    </div>
-  </div>
-
-  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 600px; background-color: #0d1b2a; border-radius: 12px; overflow: hidden; margin: 0 auto;">
+    
+    <!-- Header Block Matching Image 2 -->
     <tr>
-      <td style="padding: 24px; text-align: center;">
-        <div class="email-top-header" style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
-          <h1 style="margin: 0; color: #ffffff; font-size: 22px; font-weight: 900; letter-spacing: 1px;">
-            RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA
-          </h1>
-          <div style="margin-top: 6px; color: #caf0f8; font-size: 14px; font-weight: 700;">
-            {str(email_title).upper()}
-          </div>
-        </div>
-        <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
-          ✨ {str(cfa_title)}
+      <td style="padding: 20px; text-align: center;">
+        <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="background-color: #00a8e8; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+          <tr>
+            <td style="padding: 22px 15px; text-align: center;">
+              <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.3;">
+                RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA
+              </h1>
+              <div style="margin-top: 8px; color: #ffffff; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;">
+                {str(email_title).upper()}
+              </div>
+            </td>
+          </tr>
+        </table>
+        
+        <div style="margin-top: 15px; color: #00f5d4; font-weight: 800; font-size: 13px; letter-spacing: 0.5px;">
+          ✨ {str(cfa_title).upper()}
         </div>
       </td>
     </tr>
+
+    <!-- Body Records Container -->
     <tr>
-      <td style="padding: 0 28px 28px 28px;">
-        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">{str(party)}</b>,</p>
-        <p style="color: #caf0f8; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
+      <td style="padding: 0 25px 25px 25px;">
+        <p style="color: #ffffff; font-size: 15px; margin-bottom: 6px;">Dear <b style="color: #00f5d4;">{str(party)}</b>,</p>
+        <p style="color: #8b949e; font-size: 13px; margin-top: 0; margin-bottom: 20px;">Please find below the updated summary of your cheque records:</p>
         
-        <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #1c2541; border-radius: 10px; overflow: hidden;">
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td width="50%" style="color: #90e0ef; font-weight: bold; font-size: 14px;">📅 Date</td>
-            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(date_val)}</td>
+        <table border="0" cellpadding="10" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #162436; border-radius: 10px; overflow: hidden; font-size: 13px;">
+          <tr style="background-color: #1b2a4a; border-bottom: 1px solid #273b66;">
+            <td width="50%" style="color: #8b949e; font-weight: bold;">📅 Date</td>
+            <td width="50%" style="color: #00f5d4; font-weight: bold;">{str(date_val)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">👤 Party Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(party)}</td>
+          <tr style="border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">👤 Party Name</td>
+            <td style="color: #ffffff; font-weight: bold;">{str(party)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
-            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">{str(acc)}</td>
+          <tr style="background-color: #1b2a4a; border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">🔢 Account Number</td>
+            <td style="color: #00f5d4; font-weight: bold;">{str(acc)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📍 Place</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(place)}</td>
+          <tr style="border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">📍 Place</td>
+            <td style="color: #ffffff; font-weight: bold;">{str(place)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(bank)}</td>
+          <tr style="background-color: #1b2a4a; border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">🏦 Bank Name</td>
+            <td style="color: #ffffff; font-weight: bold;">{str(bank)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(u_ail)}</td>
+          <tr style="border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">🏷️ Cheques Used in AIL</td>
+            <td style="color: #ffffff; font-weight: bold;">{str(u_ail)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(u_ahpl)}</td>
+          <tr style="background-color: #1b2a4a; border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">🏷️ Cheques Used in AHPL</td>
+            <td style="color: #ffffff; font-weight: bold;">{str(u_ahpl)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #3a5a40;">
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(h_ail)}</td>
+          <tr style="border-bottom: 1px solid #273b66;">
+            <td style="color: #8b949e; font-weight: bold;">📥 Total Cheque in Hand AIL</td>
+            <td style="color: #70e000; font-weight: bold;">{str(h_ail)}</td>
           </tr>
-          <tr>
-            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(h_ahpl)}</td>
+          <tr style="background-color: #1b2a4a;">
+            <td style="color: #8b949e; font-weight: bold;">📥 Total Cheque in Hand AHPL</td>
+            <td style="color: #70e000; font-weight: bold;">{str(h_ahpl)}</td>
           </tr>
         </table>
       </td>
     </tr>
-    <tr>
-      <td style="background-color: #1c2541; padding: 20px; text-align: center; border-top: 1px solid #3a5a40;">
-        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">{str(cfa_title)}</div>
-      </td>
-    </tr>
+
   </table>
+
 </body>
 </html>"""
     return html_content
