@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import time
 import smtplib
 from email.mime.text import MIMEText
@@ -9,9 +10,10 @@ from datetime import datetime, timedelta
 import random
 import re
 import io
+import json
 
 # ==========================================
-# 1. Page Configuration
+# 1. PAGE CONFIGURATION & STATE INITIALIZATION
 # ==========================================
 st.set_page_config(
     page_title="8K Cyberpunk Cheque Dispatcher Engine",
@@ -20,234 +22,269 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ==========================================
-# 2. Dynamic Cyberpunk & Smooth Neon CSS Setup
-# ==========================================
-st.markdown("""
-<style>
-    /* Global App Background */
-    .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-        background: radial-gradient(circle at 50% 20%, #0d1b2a, #0b132b, #040814) !important;
-        color: #e0e1dd !important;
-        font-family: 'Segoe UI', Roboto, sans-serif !important;
-    }
-
-    /* Sidebar Dark Modern Theme */
-    section[data-testid="stSidebar"] {
-        background-color: #0d1322 !important;
-        border-right: 2px solid #00b4d8 !important;
-        box-shadow: 5px 0 25px rgba(0, 180, 216, 0.25);
-    }
-
-    section[data-testid="stSidebar"] label, 
-    section[data-testid="stSidebar"] p, 
-    section[data-testid="stSidebar"] span,
-    section[data-testid="stSidebar"] h3 {
-        color: #90e0ef !important;
-        font-weight: 700 !important;
-        text-shadow: 0 0 8px rgba(144, 224, 239, 0.5) !important;
-    }
-
-    /* Replacing Pure Green Text with Cyan/Blue/Gold Neon Glow */
-    h1, h2, h3, h4, h5, h6 {
-        color: #48cae4 !important;
-        text-shadow: 0 0 12px rgba(72, 202, 228, 0.6) !important;
-        font-weight: 800 !important;
-    }
-
-    p, span, label {
-        color: #e0e1dd !important;
-    }
-
-    /* Input Fields & Dropdowns Glow */
-    input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-        background-color: #1b263b !important;
-        color: #00f5d4 !important;
-        border: 2px solid #00b4d8 !important;
-        border-radius: 12px !important;
-        box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
-        font-weight: 700 !important;
-        transition: all 0.4s ease-in-out !important;
-    }
-
-    input:focus, div[data-baseweb="input"]:focus-within {
-        border-color: #00f5d4 !important;
-        box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
-    }
-
-    /* Data Grid Container Styling */
-    div[data-testid="stDataFrame"] {
-        background-color: #0d1b2a !important;
-        border: 2px solid #00b4d8 !important;
-        border-radius: 16px !important;
-        padding: 10px !important;
-        box-shadow: 0 0 30px rgba(0, 180, 216, 0.3) !important;
-    }
-
-    div[data-testid="stDataFrame"] * {
-        background-color: #0d1b2a !important;
-        color: #ffffff !important;
-    }
-
-    /* Import File Box & Inner Button Neon Effect */
-    [data-testid="stFileUploadDropzone"] {
-        background: linear-gradient(135deg, #101d30, #0c1827) !important;
-        border: 2px dashed #00b4d8 !important;
-        border-radius: 16px !important;
-        box-shadow: 0 0 20px rgba(0, 180, 216, 0.3) !important;
-        transition: all 0.5s ease-in-out !important;
-    }
-
-    [data-testid="stFileUploadDropzone"]:hover {
-        border-color: #00f5d4 !important;
-        box-shadow: 0 0 35px rgba(0, 245, 212, 0.6) !important;
-    }
-
-    [data-testid="stFileUploadDropzone"] button {
-        background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
-        color: #ffffff !important;
-        border: 2px solid #90e0ef !important;
-        border-radius: 10px !important;
-        font-weight: 800 !important;
-        box-shadow: 0 0 15px rgba(0, 180, 216, 0.6) !important;
-        transition: all 0.5s ease-in-out !important;
-    }
-
-    [data-testid="stFileUploadDropzone"] button:hover {
-        transform: translateY(-3px) scale(1.03);
-        box-shadow: 0 0 30px rgba(144, 224, 239, 0.9) !important;
-    }
-
-    /* Top Floating Header Box */
-    .header-wrapper {
-        margin-top: 10px !important;
-        margin-bottom: 30px !important;
-        background: rgba(13, 27, 42, 0.85);
-        border: 2px solid #00b4d8;
-        box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
-        backdrop-filter: blur(15px);
-        border-radius: 20px;
-        padding: 24px;
-        text-align: center;
-    }
-
-    .main-title {
-        color: #00f5d4 !important;
-        font-size: 40px;
-        font-weight: 900;
-        letter-spacing: 2px;
-        margin: 0;
-        text-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
-    }
-
-    .subtitle-badge {
-        display: inline-block;
-        background: #0b132b;
-        border: 1.5px solid #ffb703;
-        padding: 6px 24px;
-        border-radius: 25px;
-        font-size: 14px;
-        font-weight: 800;
-        color: #ffb703 !important;
-        margin-top: 12px;
-        box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
-    }
-
-    /* Metric Cards System */
-    .metric-card-box {
-        background: #111d33 !important;
-        border: 2px solid #00b4d8;
-        border-radius: 16px;
-        padding: 20px;
-        text-align: center;
-        box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
-        transition: all 0.4s ease-in-out;
-    }
-
-    .metric-card-box:hover {
-        transform: translateY(-5px);
-        border-color: #00f5d4;
-        box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
-    }
-
-    .metric-label {
-        font-size: 13px;
-        color: #90e0ef !important;
-        font-weight: 800;
-        text-transform: uppercase;
-        letter-spacing: 1.2px;
-    }
-
-    .metric-value-num {
-        font-size: 38px;
-        font-weight: 900;
-        margin-top: 8px;
-        color: #ffffff !important;
-        text-shadow: 0 0 18px rgba(255, 255, 255, 0.8) !important;
-    }
-
-    /* Slow & Attractive Glowing Action Buttons */
-    div.stButton > button, div.stDownloadButton > button {
-        font-weight: 900 !important;
-        border-radius: 14px !important;
-        padding: 16px 24px !important;
-        font-size: 16px !important;
-        letter-spacing: 1px !important;
-        transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important; /* Slow and silky animation */
-        text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
-    }
-
-    /* Launch Dispatch Button (Emerald Cyan Glowing) */
-    div.stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #00b4d8, #0077b6) !important;
-        color: #ffffff !important;
-        border: 2px solid #00f5d4 !important;
-        box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
-        width: 100% !important;
-    }
-
-    div.stButton > button[kind="primary"]:hover {
-        transform: translateY(-3px) scale(1.02);
-        background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
-        box-shadow: 0 0 45px rgba(0, 245, 212, 0.95) !important;
-    }
-
-    /* Emergency Stop Button (Neon Red/Pink Glowing) */
-    div.stButton > button[kind="secondary"] {
-        background: linear-gradient(135deg, #d90429, #ef233c) !important;
-        color: #ffffff !important;
-        border: 2px solid #ff4d6d !important;
-        box-shadow: 0 0 25px rgba(239, 35, 60, 0.6) !important;
-        width: 100% !important;
-    }
-
-    div.stButton > button[kind="secondary"]:hover {
-        transform: translateY(-3px) scale(1.02);
-        background: linear-gradient(135deg, #ff4d6d, #b7094c) !important;
-        box-shadow: 0 0 45px rgba(255, 77, 109, 0.95) !important;
-    }
-
-    /* Export CSV Button (Neon Royal Blue Glowing) */
-    div.stDownloadButton > button {
-        background: linear-gradient(135deg, #3a0ca3, #4361ee) !important;
-        color: #ffffff !important;
-        border: 2px solid #4cc9f0 !important;
-        box-shadow: 0 0 25px rgba(76, 201, 240, 0.6) !important;
-        width: 100% !important;
-    }
-
-    div.stDownloadButton > button:hover {
-        transform: translateY(-3px) scale(1.02);
-        background: linear-gradient(135deg, #4cc9f0, #7209b7) !important;
-        box-shadow: 0 0 45px rgba(76, 201, 240, 0.95) !important;
-    }
-</style>
-""", unsafe_allow_html=True)
+# Initialize Session State Variables
+if 'crm_data' not in st.session_state:
+    st.session_state['crm_data'] = None
+if 'sent_count' not in st.session_state:
+    st.session_state['sent_count'] = 0
+if 'failed_count' not in st.session_state:
+    st.session_state['failed_count'] = 0
+if 'stop_dispatch' not in st.session_state:
+    st.session_state['stop_dispatch'] = False
+if 'dispatch_logs' not in st.session_state:
+    st.session_state['dispatch_logs'] = []
+if 'validation_alerts' not in st.session_state:
+    st.session_state['validation_alerts'] = []
+if 'theme_color' not in st.session_state:
+    st.session_state['theme_color'] = "Electric Cyan"
 
 # ==========================================
-# 3. Helper Column Alias Extractor
+# 2. ADVANCED DYNAMIC CSS & UI STYLING ENGINE
+# ==========================================
+def inject_custom_styles():
+    st.markdown("""
+    <style>
+        /* Global Background and Fonts */
+        .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
+            background: radial-gradient(circle at 50% 20%, #0d1b2a, #0b132b, #040814) !important;
+            color: #e0e1dd !important;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
+        }
+
+        /* Sidebar Styling */
+        section[data-testid="stSidebar"] {
+            background-color: #0d1322 !important;
+            border-right: 2px solid #00b4d8 !important;
+            box-shadow: 5px 0 25px rgba(0, 180, 216, 0.25);
+        }
+
+        section[data-testid="stSidebar"] label, 
+        section[data-testid="stSidebar"] p, 
+        section[data-testid="stSidebar"] span,
+        section[data-testid="stSidebar"] h3 {
+            color: #90e0ef !important;
+            font-weight: 700 !important;
+            text-shadow: 0 0 8px rgba(144, 224, 239, 0.5) !important;
+        }
+
+        /* Replaced Pure Green Text with Modern Cyan/Blue/Gold Accent Text */
+        h1, h2, h3, h4, h5, h6 {
+            color: #48cae4 !important;
+            text-shadow: 0 0 12px rgba(72, 202, 228, 0.6) !important;
+            font-weight: 800 !important;
+        }
+
+        p, span, label {
+            color: #e0e1dd !important;
+        }
+
+        /* Input Controls, Textboxes & Selects */
+        input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
+            background-color: #1b263b !important;
+            color: #00f5d4 !important;
+            border: 2px solid #00b4d8 !important;
+            border-radius: 12px !important;
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
+            font-weight: 700 !important;
+            transition: all 0.4s ease-in-out !important;
+        }
+
+        input:focus, div[data-baseweb="input"]:focus-within {
+            border-color: #00f5d4 !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
+        }
+
+        /* Interactive Data Grid Container */
+        div[data-testid="stDataFrame"] {
+            background-color: #0d1b2a !important;
+            border: 2px solid #00b4d8 !important;
+            border-radius: 16px !important;
+            padding: 10px !important;
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.3) !important;
+        }
+
+        div[data-testid="stDataFrame"] * {
+            background-color: #0d1b2a !important;
+            color: #ffffff !important;
+        }
+
+        /* Modern File Uploader Dropzone */
+        [data-testid="stFileUploadDropzone"] {
+            background: linear-gradient(135deg, #101d30, #0c1827) !important;
+            border: 2px dashed #00b4d8 !important;
+            border-radius: 16px !important;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3) !important;
+            transition: all 0.5s ease-in-out !important;
+        }
+
+        [data-testid="stFileUploadDropzone"]:hover {
+            border-color: #00f5d4 !important;
+            box-shadow: 0 0 35px rgba(0, 245, 212, 0.6) !important;
+        }
+
+        [data-testid="stFileUploadDropzone"] button {
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            color: #ffffff !important;
+            border: 2px solid #90e0ef !important;
+            border-radius: 10px !important;
+            font-weight: 800 !important;
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6) !important;
+            transition: all 0.5s ease-in-out !important;
+        }
+
+        [data-testid="stFileUploadDropzone"] button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 30px rgba(144, 224, 239, 0.9) !important;
+        }
+
+        /* Top Cyber Header Banner */
+        .header-wrapper {
+            margin-top: 10px !important;
+            margin-bottom: 30px !important;
+            background: rgba(13, 27, 42, 0.85);
+            border: 2px solid #00b4d8;
+            box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .main-title {
+            color: #00f5d4 !important;
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            margin: 0;
+            text-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
+        }
+
+        .subtitle-badge {
+            display: inline-block;
+            background: #0b132b;
+            border: 1.5px solid #ffb703;
+            padding: 6px 24px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 800;
+            color: #ffb703 !important;
+            margin-top: 12px;
+            box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
+        }
+
+        /* Analytics Metric Cards */
+        .metric-card-box {
+            background: #111d33 !important;
+            border: 2px solid #00b4d8;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+            transition: all 0.4s ease-in-out;
+        }
+
+        .metric-card-box:hover {
+            transform: translateY(-5px);
+            border-color: #00f5d4;
+            box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #90e0ef !important;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+        }
+
+        .metric-value-num {
+            font-size: 36px;
+            font-weight: 900;
+            margin-top: 8px;
+            color: #ffffff !important;
+            text-shadow: 0 0 18px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        /* Slow, Elegant Glowing Action Buttons */
+        div.stButton > button, div.stDownloadButton > button {
+            font-weight: 900 !important;
+            border-radius: 14px !important;
+            padding: 16px 24px !important;
+            font-size: 15px !important;
+            letter-spacing: 1px !important;
+            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
+        }
+
+        /* Launch Dispatch Primary Button */
+        div.stButton > button[kind="primary"] {
+            background: linear-gradient(135deg, #00b4d8, #0077b6) !important;
+            color: #ffffff !important;
+            border: 2px solid #00f5d4 !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
+            width: 100% !important;
+        }
+
+        div.stButton > button[kind="primary"]:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
+            box-shadow: 0 0 45px rgba(0, 245, 212, 0.95) !important;
+        }
+
+        /* Emergency Stop Secondary Button */
+        div.stButton > button[kind="secondary"] {
+            background: linear-gradient(135deg, #d90429, #ef233c) !important;
+            color: #ffffff !important;
+            border: 2px solid #ff4d6d !important;
+            box-shadow: 0 0 25px rgba(239, 35, 60, 0.6) !important;
+            width: 100% !important;
+        }
+
+        div.stButton > button[kind="secondary"]:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: linear-gradient(135deg, #ff4d6d, #b7094c) !important;
+            box-shadow: 0 0 45px rgba(255, 77, 109, 0.95) !important;
+        }
+
+        /* Download Button */
+        div.stDownloadButton > button {
+            background: linear-gradient(135deg, #3a0ca3, #4361ee) !important;
+            color: #ffffff !important;
+            border: 2px solid #4cc9f0 !important;
+            box-shadow: 0 0 25px rgba(76, 201, 240, 0.6) !important;
+            width: 100% !important;
+        }
+
+        div.stDownloadButton > button:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: linear-gradient(135deg, #4cc9f0, #7209b7) !important;
+            box-shadow: 0 0 45px rgba(76, 201, 240, 0.95) !important;
+        }
+
+        /* Log Output Panel */
+        .log-box {
+            background-color: #060a12;
+            border: 1px solid #00b4d8;
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 280px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 13px;
+            color: #48cae4;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+inject_custom_styles()
+
+# ==========================================
+# 3. HELPER UTILITIES & DATA VALIDATORS
 # ==========================================
 def get_field_strict(row, column_aliases, default_val="N/A"):
+    """
+    Extracts values dynamically across various possible column headers.
+    """
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
     for col in row.index:
         col_clean = re.sub(r'[^a-zA-Z0-9]', '', str(col)).lower()
@@ -257,22 +294,70 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
                 return val
     return default_val
 
+def validate_email_address(email_str):
+    """
+    Validates email format using regex pattern matching.
+    """
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return bool(re.match(pattern, str(email_str).strip()))
+
+def perform_batch_data_audit(dataframe):
+    """
+    Audits incoming dataframe for invalid emails, missing records, or empty fields.
+    """
+    alerts = []
+    if dataframe is None or dataframe.empty:
+        return ["Dataset is empty. Please upload data or load default sample records."]
+
+    total_rows = len(dataframe)
+    invalid_email_count = 0
+    missing_account_count = 0
+
+    for idx, row in dataframe.iterrows():
+        email_val = get_field_strict(row, ["Email", "Email ID", "Mail"], "")
+        if not validate_email_address(email_val):
+            invalid_email_count += 1
+
+        acc_val = get_field_strict(row, ["Account Number", "Account No", "Acc"], "")
+        if acc_val == "N/A" or not acc_val:
+            missing_account_count += 1
+
+    if invalid_email_count > 0:
+        alerts.append(f"⚠️ {invalid_email_count} out of {total_rows} records contain invalid/missing Email IDs.")
+    if missing_account_count > 0:
+        alerts.append(f"⚠️ {missing_account_count} records are missing Account Numbers.")
+    if not alerts:
+        alerts.append("✅ Data Audit Passed: All records are well-formatted and ready for dispatch.")
+    
+    return alerts
+
 # ==========================================
-# 4. Default Records Generator
+# 4. DEFAULT DATASET GENERATION ENGINE
 # ==========================================
 @st.cache_data
-def load_default_100_records():
-    parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta", "Vikram Singh"]
-    places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi"]
-    banks = ["State Bank of India", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank"]
+def generate_default_100_records():
+    """
+    Generates a full 100-record dataset for initial demonstration.
+    """
+    parties = [
+        "Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", 
+        "Amit Gupta", "Vikram Singh", "Neha Kapoor", "Sanjay Dutt",
+        "Pooja Joshi", "Rajesh Kumar", "Meera Nair", "Deepak Chopra"
+    ]
+    places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi", "Varanasi", "Ahmedabad", "Jaipur"]
+    banks = ["State Bank of India", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank", "Canara Bank"]
+    
     records = []
     base_date = datetime(2026, 8, 1)
+    
     for i in range(1, 101):
         party_name = parties[(i - 1) % len(parties)]
         email_prefix = party_name.split()[0].lower() + str(i)
         entry_dt = base_date + timedelta(days=(i % 25))
         account_no = f"35{random.randint(1000000000, 9999999999)}"
+        
         records.append({
+            "Record ID": f"REC-{1000+i}",
             "Date": entry_dt.strftime("%Y-%m-%d"),
             "Party Name": party_name,
             "Account Number": account_no,
@@ -281,44 +366,47 @@ def load_default_100_records():
             "Bank Name": random.choice(banks),
             "Number of cheque used in AIL": random.randint(1, 10),
             "Number of cheque used In AHPL": random.randint(1, 10),
-            "Total cheque in hand AIL": random.randint(5, 20),
-            "Total cheque in hand AHPL": random.randint(5, 20)
+            "Total cheque in hand AIL": random.randint(5, 25),
+            "Total cheque in hand AHPL": random.randint(5, 25)
         })
     return pd.DataFrame(records)
 
-if 'crm_data' not in st.session_state:
-    st.session_state['crm_data'] = load_default_100_records()
-if 'sent_count' not in st.session_state:
-    st.session_state['sent_count'] = 0
-if 'failed_count' not in st.session_state:
-    st.session_state['failed_count'] = 0
-if 'stop_dispatch' not in st.session_state:
-    st.session_state['stop_dispatch'] = False
+if st.session_state['crm_data'] is None:
+    st.session_state['crm_data'] = generate_default_100_records()
 
 # ==========================================
-# 5. Sidebar Controls
+# 5. SIDEBAR CONFIGURATION STUDIO
 # ==========================================
 with st.sidebar:
-    st.markdown("### 🖼️ Branding Studio")
-    logo_file = st.file_uploader("Upload Company Logo", type=["png", "jpg", "jpeg"])
+    st.markdown("### 🖼️ Branding & Identity Studio")
+    logo_file = st.file_uploader("Upload Company Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
     if logo_file:
         st.image(logo_file, use_container_width=True)
     
     st.divider()
-    st.markdown("### 🔑 Secure SMTP Credentials")
-    smtp_server = st.text_input("SMTP Server", value="smtp.gmail.com")
-    smtp_port = st.number_input("SMTP Port", value=587)
+    st.markdown("### 🔑 Secure SMTP Engine Setup")
+    smtp_server = st.text_input("SMTP Server Host", value="smtp.gmail.com")
+    smtp_port = st.number_input("SMTP Port", value=587, min_value=1, max_value=65535)
     sender_email = st.text_input("Sender Email ID", placeholder="your_email@gmail.com")
     app_password = st.text_input("16-Digit App Password", type="password")
-    dispatch_delay = st.slider("Dispatch Rate Delay (Sec)", 0.5, 5.0, 1.0)
+    dispatch_delay = st.slider("Dispatch Rate Delay (Sec)", 0.2, 5.0, 0.8, step=0.1)
     
     st.divider()
-    st.markdown("### 📝 Email Template Customizer")
+    st.markdown("### 📝 Email Content Settings")
     email_subject_prefix = st.text_input("Custom Email Subject Prefix", value="💳 Buffer Cheque Details")
     custom_cfa_title = st.text_input("CFA Header Title", value="RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA")
+    
+    st.divider()
+    st.markdown("### 🛠️ Data Management Tools")
+    if st.button("🔄 Reset to Default 100 Sample Records", use_container_width=True):
+        st.session_state['crm_data'] = generate_default_100_records()
+        st.session_state['sent_count'] = 0
+        st.session_state['failed_count'] = 0
+        st.session_state['dispatch_logs'] = []
+        st.rerun()
 
 # ==========================================
-# 6. Main Top Header
+# 6. MAIN APP HEADER BANNER
 # ==========================================
 st.markdown("""
 <div class="header-wrapper">
@@ -330,78 +418,133 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# File Import Section with Smooth Cyber Effects
-st.markdown("### 📁 Import Batch Data File")
-uploaded_file = st.file_uploader("Upload Fresh Excel/CSV File", type=["xlsx", "csv"])
+# ==========================================
+# 7. BATCH FILE IMPORT & VALIDATION SECTION
+# ==========================================
+st.markdown("### 📁 Import Custom Excel/CSV Batch File")
+uploaded_file = st.file_uploader("Upload Batch File (XLSX / CSV)", type=["xlsx", "csv"], key="batch_uploader")
+
 if uploaded_file is not None:
     try:
-        new_df = pd.read_csv(uploaded_file) if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file, engine='openpyxl')
-        new_df.columns = [str(c).strip() for c in new_df.columns]
-        st.session_state['crm_data'] = new_df
+        if uploaded_file.name.endswith('.csv'):
+            imported_df = pd.read_csv(uploaded_file)
+        else:
+            imported_df = pd.read_excel(uploaded_file, engine='openpyxl')
+        
+        imported_df.columns = [str(col).strip() for col in imported_df.columns]
+        st.session_state['crm_data'] = imported_df
         st.session_state['sent_count'] = 0
         st.session_state['failed_count'] = 0
-        st.success(f"✅ Loaded {len(new_df)} records successfully!")
-    except Exception as e:
-        st.error(f"❌ File loading failed: {e}")
+        st.session_state['dispatch_logs'] = []
+        st.success(f"✅ Successfully loaded {len(imported_df)} records from file!")
+    except Exception as err:
+        st.error(f"❌ Failed to parse uploaded file: {err}")
 
 df = st.session_state['crm_data']
-total_records = len(df)
-pending_records = total_records - (st.session_state['sent_count'] + st.session_state['failed_count'])
+st.session_state['validation_alerts'] = perform_batch_data_audit(df)
 
 # ==========================================
-# 7. Live Metrics Panel
+# 8. ANALYTICS & METRICS PANEL
 # ==========================================
-st.markdown("### 📊 Live Dispatch Progress Analytics")
-c1, c2, c3, c4 = st.columns(4)
-with c1: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Total Records</div><div class="metric-value-num" style="color:#48cae4 !important;">{total_records}</div></div>', unsafe_allow_html=True)
-with c2: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Sent Success</div><div class="metric-value-num" style="color:#00f5d4 !important;">{st.session_state["sent_count"]}</div></div>', unsafe_allow_html=True)
-with c3: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Failed</div><div class="metric-value-num" style="color:#ff4d6d !important;">{st.session_state["failed_count"]}</div></div>', unsafe_allow_html=True)
-with c4: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Pending</div><div class="metric-value-num" style="color:#ffb703 !important;">{max(0, pending_records)}</div></div>', unsafe_allow_html=True)
+total_records = len(df) if df is not None else 0
+sent_count = st.session_state['sent_count']
+failed_count = st.session_state['failed_count']
+pending_count = max(0, total_records - (sent_count + failed_count))
+
+st.markdown("### 📊 Real-time Batch Metrics & Validation")
+col_m1, col_m2, col_m3, col_m4 = st.columns(4)
+
+with col_m1:
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Total Records</div><div class="metric-value-num" style="color:#48cae4 !important;">{total_records}</div></div>', unsafe_allow_html=True)
+with col_m2:
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Sent Success</div><div class="metric-value-num" style="color:#00f5d4 !important;">{sent_count}</div></div>', unsafe_allow_html=True)
+with col_m3:
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Failed / Invalid</div><div class="metric-value-num" style="color:#ff4d6d !important;">{failed_count}</div></div>', unsafe_allow_html=True)
+with col_m4:
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Pending Dispatch</div><div class="metric-value-num" style="color:#ffb703 !important;">{pending_count}</div></div>', unsafe_allow_html=True)
+
+# Show Data Audit Alerts
+with st.expander("🔍 System Data Audit & Health Report", expanded=False):
+    for alert in st.session_state['validation_alerts']:
+        st.write(alert)
 
 st.markdown("---")
 
 # ==========================================
-# 8. Interactive Data Grid with Multi-Column Layout
+# 9. INTERACTIVE DATA GRID & FILTERING
 # ==========================================
-st.markdown(f"### ✏️ Interactive Cheque Details Grid ({len(df)} Records)")
-edited_df = st.data_editor(st.session_state['crm_data'], num_rows="dynamic", use_container_width=True, height=360)
-st.session_state['crm_data'] = edited_df
-df = st.session_state['crm_data']
+st.markdown("### ✏️ Interactive Data Grid")
+
+search_query = st.text_input("🔍 Quick Search Filter (Party Name, Email, or Bank)", placeholder="Type to filter records...")
+
+if df is not None and not df.empty:
+    if search_query:
+        mask = df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)
+        filtered_df = df[mask]
+    else:
+        filtered_df = df
+
+    edited_df = st.data_editor(
+        filtered_df,
+        num_rows="dynamic",
+        use_container_width=True,
+        height=380,
+        key="data_editor_grid"
+    )
+    
+    if not search_query:
+        st.session_state['crm_data'] = edited_df
+        df = st.session_state['crm_data']
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Dispatch Control Action Buttons
+# ==========================================
+# 10. DISPATCH CONTROL ACTION BUTTONS
+# ==========================================
 st.markdown("### 🚀 Dispatch Control Actions")
-c_start, c_stop, c_export = st.columns([1.8, 1.1, 1.1])
-with c_start: start_btn = st.button("🚀 LAUNCH CHEQUE DETAILS DISPATCH", type="primary", use_container_width=True)
-with c_stop: stop_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
-with c_export:
-    csv_buffer = io.StringIO()
-    df.to_csv(csv_buffer, index=False)
-    st.download_button("📥 EXPORT CLEAN CSV", data=csv_buffer.getvalue(), file_name="Cheque_Details_Report.csv", mime="text/csv", use_container_width=True)
+col_b1, col_b2, col_b3 = st.columns([1.8, 1.1, 1.1])
 
-if stop_btn:
+with col_b1:
+    start_dispatch_btn = st.button("🚀 LAUNCH CHEQUE DETAILS DISPATCH", type="primary", use_container_width=True)
+with col_b2:
+    stop_dispatch_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
+with col_b3:
+    csv_buffer = io.StringIO()
+    if df is not None:
+        df.to_csv(csv_buffer, index=False)
+    st.download_button(
+        label="📥 EXPORT CLEAN CSV",
+        data=csv_buffer.getvalue(),
+        file_name=f"Cheque_Dispatch_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+
+if stop_dispatch_btn:
     st.session_state['stop_dispatch'] = True
-    st.warning("🛑 Emergency Stop Triggered!")
+    st.warning("🛑 Emergency Stop Triggered by User!")
 
 st.markdown("---")
 
 # ==========================================
-# 9. HTML Email Template with Splash Screen
+# 11. HTML EMAIL TEMPLATE GENERATOR
 # ==========================================
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title):
-    return f"""<!DOCTYPE html>
+    """
+    Generates HTML email content without f-string syntax issues.
+    """
+    html_content = """<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <style>
-        @keyframes fullSplashAnimation {{
-            0% {{ opacity: 1; visibility: visible; }}
-            80% {{ opacity: 1; visibility: visible; }}
-            100% {{ opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }}
-        }}
+        @keyframes fullSplashAnimation {
+            0% { opacity: 1; visibility: visible; }
+            80% { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }
+        }
 
-        .splash-overlay {{
+        .splash-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -417,9 +560,9 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
             animation: fullSplashAnimation 4s forwards ease-in-out;
             box-sizing: border-box;
             padding: 20px;
-        }}
+        }
 
-        .splash-title {{
+        .splash-title {
             color: #00f5d4;
             font-size: 26px;
             font-weight: 900;
@@ -428,16 +571,16 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
             text-transform: uppercase;
             text-shadow: 0 0 20px rgba(0, 245, 212, 0.9);
             margin: 0;
-        }}
+        }
 
-        .splash-sub {{
+        .splash-sub {
             color: #caf0f8;
             font-size: 14px;
             font-weight: bold;
             margin-top: 12px;
             letter-spacing: 1px;
             font-family: Arial, sans-serif;
-        }}
+        }
     </style>
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
@@ -456,111 +599,124 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
           </h1>
         </div>
         <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
-          ✨ {cfa_title}
+          ✨ """ + str(cfa_title) + """
         </div>
       </td>
     </tr>
     <tr>
       <td style="padding: 0 28px 28px 28px;">
-        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">{party}</b>,</p>
+        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">""" + str(party) + """</b>,</p>
         <p style="color: #caf0f8; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
         <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #1c2541; border-radius: 10px; overflow: hidden;">
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td width="50%" style="color: #90e0ef; font-weight: bold; font-size: 14px;">📅 Date</td>
-            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">{date_val}</td>
+            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(date_val) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">👤 Party Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{party}</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(party) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
-            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">{acc}</td>
+            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">""" + str(acc) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📍 Place</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{place}</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(place) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank}</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(bank) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{u_ail}</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(u_ail) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{u_ahpl}</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(u_ahpl) + """</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{h_ail}</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(h_ail) + """</td>
           </tr>
           <tr>
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{h_ahpl}</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(h_ahpl) + """</td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
       <td style="background-color: #1c2541; padding: 20px; text-align: center; border-top: 1px solid #3a5a40;">
-        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">{cfa_title}</div>
+        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">""" + str(cfa_title) + """</div>
       </td>
     </tr>
   </table>
 </body>
 </html>"""
+    return html_content
 
 # ==========================================
-# 10. Live Interactive Inbox Simulator
+# 12. INTERACTIVE EMAIL INBOX SIMULATOR
 # ==========================================
 st.markdown("### 👁️ Interactive Email Inbox Simulator")
-col_test_input, col_test_render = st.columns([1, 1], gap="large")
+sim_col1, sim_col2 = st.columns([1, 1], gap="large")
 
-with col_test_input:
+with sim_col1:
     st.markdown("#### 🧪 Test Data Controls")
-    sim_party = st.text_input("Simulated Party Name", value="RAJVEER")
-    sim_acc = st.text_input("Simulated Account Number", value="351800949903")
-    sim_place = st.text_input("Simulated Place", value="Patna")
-    sim_bank = st.text_input("Simulated Bank Name", value="State Bank of India")
+    sim_party = st.text_input("Simulated Party Name", value="RAJVEER", key="sim_party")
+    sim_acc = st.text_input("Simulated Account Number", value="351800949903", key="sim_acc")
+    sim_place = st.text_input("Simulated Place", value="Patna", key="sim_place")
+    sim_bank = st.text_input("Simulated Bank Name", value="State Bank of India", key="sim_bank")
+    sim_u_ail = st.text_input("Used AIL Cheques", value="4", key="sim_u_ail")
+    sim_u_ahpl = st.text_input("Used AHPL Cheques", value="2", key="sim_u_ahpl")
+    sim_h_ail = st.text_input("Hand AIL Cheques", value="15", key="sim_h_ail")
+    sim_h_ahpl = st.text_input("Hand AHPL Cheques", value="18", key="sim_h_ahpl")
 
-with col_test_render:
-    st.markdown("#### 📱 Live Rendered Inbox View")
-    rendered_html = build_email_template(
-        sim_party, "2026-08-05", sim_acc, sim_place, sim_bank,
-        "4", "2", "15", "18", custom_cfa_title
+with sim_col2:
+    st.markdown("#### 📱 Live Rendered Email Preview")
+    preview_html = build_email_template(
+        sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
+        sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title
     )
-    st.components.v1.html(rendered_html, height=480, scrolling=True)
+    st.components.v1.html(preview_html, height=500, scrolling=True)
 
 # ==========================================
-# 11. Automated Dispatch Engine
+# 13. AUTOMATED DISPATCH EXECUTION ENGINE
 # ==========================================
-if start_btn:
+if start_dispatch_btn:
     st.session_state['stop_dispatch'] = False
     st.session_state['sent_count'] = 0
     st.session_state['failed_count'] = 0
+    st.session_state['dispatch_logs'] = []
 
     if not sender_email or not app_password:
-        st.warning("⚠️ Please provide Sender Email ID and App Password in Sidebar!")
+        st.error("⚠️ Sender Email ID or App Password is missing in the sidebar!")
+    elif df is None or df.empty:
+        st.error("⚠️ No data available to dispatch!")
     else:
         st.markdown("---")
+        st.markdown("### 📡 Live Dispatch Stream")
+        
         progress_bar = st.progress(0)
         status_box = st.empty()
+        log_container = st.empty()
 
         try:
+            # Establish SMTP Connection
             server = smtplib.SMTP(smtp_server, int(smtp_port))
             server.starttls()
             server.login(sender_email.strip(), app_password.replace(" ", ""))
 
             for idx in range(len(df)):
                 if st.session_state['stop_dispatch']:
-                    st.error("🛑 Process stopped manually!")
+                    st.warning("🛑 Dispatch process halted manually!")
+                    st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] STOP: Dispatch manually interrupted.")
                     break
 
                 row = df.iloc[idx]
-                rec_date = get_field_strict(row, ["Date", "Entry Date"], "N/A")
+                rec_date = get_field_strict(row, ["Date", "Entry Date"], datetime.now().strftime("%Y-%m-%d"))
                 party_name = get_field_strict(row, ["Party Name", "Party"], "Valued Customer")
                 account_val = get_field_strict(row, ["Account Number", "Account No"], "N/A")
                 target_email = get_field_strict(row, ["Email", "Email ID"], "").strip()
@@ -572,7 +728,9 @@ if start_btn:
                 hand_ail = get_field_strict(row, ["Total cheque in hand AIL"], "0")
                 hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL"], "0")
 
-                if "@" in target_email:
+                timestamp_str = datetime.now().strftime('%H:%M:%S')
+
+                if validate_email_address(target_email):
                     msg = MIMEMultipart('alternative')
                     msg['From'] = formataddr((custom_cfa_title, sender_email.strip()))
                     msg['To'] = target_email
@@ -587,16 +745,28 @@ if start_btn:
                     try:
                         server.sendmail(sender_email.strip(), target_email, msg.as_string())
                         st.session_state['sent_count'] += 1
-                        status_box.info(f"🔵 [{idx+1}/{len(df)}] Sent to **{party_name}** ({target_email})")
+                        status_msg = f"🔵 [{idx+1}/{len(df)}] Sent to {party_name} ({target_email})"
+                        st.session_state['dispatch_logs'].append(f"[{timestamp_str}] SUCCESS: {status_msg}")
+                        status_box.info(status_msg)
                     except Exception as send_err:
                         st.session_state['failed_count'] += 1
-                        status_box.error(f"🔴 [{idx+1}/{len(df)}] Failed: {target_email}")
+                        status_msg = f"🔴 [{idx+1}/{len(df)}] Failed sending to {target_email}: {send_err}"
+                        st.session_state['dispatch_logs'].append(f"[{timestamp_str}] ERROR: {status_msg}")
+                        status_box.error(status_msg)
                 else:
                     st.session_state['failed_count'] += 1
-                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Skipped invalid email for: **{party_name}**")
+                    status_msg = f"⚠️ [{idx+1}/{len(df)}] Skipped invalid email for: {party_name}"
+                    st.session_state['dispatch_logs'].append(f"[{timestamp_str}] WARNING: {status_msg}")
+                    status_box.warning(status_msg)
 
+                # Progress & Logs Update
                 progress = (idx + 1) / len(df)
                 progress_bar.progress(progress)
+                
+                # Render Console Logs
+                log_html = "<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>"
+                log_container.markdown(log_html, unsafe_allow_html=True)
+                
                 time.sleep(dispatch_delay)
 
             server.quit()
@@ -605,3 +775,9 @@ if start_btn:
 
         except Exception as conn_err:
             st.error(f"❌ Connection Failure: {conn_err}")
+            st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] FATAL: {conn_err}")
+
+# Display Historical Activity Logs if Available
+if st.session_state['dispatch_logs']:
+    st.markdown("### 📜 Dispatch Logs Console")
+    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
