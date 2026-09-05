@@ -35,8 +35,6 @@ if 'dispatch_logs' not in st.session_state:
     st.session_state['dispatch_logs'] = []
 if 'validation_alerts' not in st.session_state:
     st.session_state['validation_alerts'] = []
-if 'theme_color' not in st.session_state:
-    st.session_state['theme_color'] = "Electric Cyan"
 
 # ==========================================
 # 2. ADVANCED DYNAMIC CSS & UI STYLING ENGINE
@@ -86,65 +84,6 @@ def inject_custom_styles():
             border-radius: 12px !important;
             box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
             font-weight: 700 !important;
-            transition: all 0.4s ease-in-out !important;
-        }
-
-        input:focus, div[data-baseweb="input"]:focus-within {
-            border-color: #00f5d4 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
-        }
-
-        /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
-        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
-            background-color: #16243b !important;
-            border: 2px solid #00b4d8 !important;
-            border-radius: 16px !important;
-            padding: 8px !important;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
-        }
-
-        /* Grid Cells & Header Contrast Enhancement */
-        [data-testid="stDataFrame"] * {
-            background-color: #16243b !important;
-            color: #ffffff !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-        }
-
-        /* Glide Data Grid Specific Cell Rules */
-        .gdg-header-cell, .gdg-cell {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border-color: #00b4d8 !important;
-        }
-
-        /* Modern File Uploader Dropzone */
-        [data-testid="stFileUploadDropzone"] {
-            background: linear-gradient(135deg, #101d30, #0c1827) !important;
-            border: 2px dashed #00b4d8 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3) !important;
-            transition: all 0.5s ease-in-out !important;
-        }
-
-        [data-testid="stFileUploadDropzone"]:hover {
-            border-color: #00f5d4 !important;
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.6) !important;
-        }
-
-        [data-testid="stFileUploadDropzone"] button {
-            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
-            color: #ffffff !important;
-            border: 2px solid #90e0ef !important;
-            border-radius: 10px !important;
-            font-weight: 800 !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6) !important;
-            transition: all 0.5s ease-in-out !important;
-        }
-
-        [data-testid="stFileUploadDropzone"] button:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 0 30px rgba(144, 224, 239, 0.9) !important;
         }
 
         /* Top Cyber Header Banner */
@@ -222,7 +161,7 @@ def inject_custom_styles():
             padding: 16px 24px !important;
             font-size: 15px !important;
             letter-spacing: 1px !important;
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
+            transition: all 0.4s ease-in-out !important;
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
         }
 
@@ -292,9 +231,6 @@ inject_custom_styles()
 # 3. HELPER UTILITIES & DATA VALIDATORS
 # ==========================================
 def get_field_strict(row, column_aliases, default_val="N/A"):
-    """
-    Extracts values dynamically across various possible column headers.
-    """
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
     for col in row.index:
         col_clean = re.sub(r'[^a-zA-Z0-9]', '', str(col)).lower()
@@ -305,16 +241,10 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
     return default_val
 
 def validate_email_address(email_str):
-    """
-    Validates email format using regex pattern matching.
-    """
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, str(email_str).strip()))
 
 def perform_batch_data_audit(dataframe):
-    """
-    Audits incoming dataframe for invalid emails, missing records, or empty fields.
-    """
     alerts = []
     if dataframe is None or dataframe.empty:
         return ["Dataset is empty. Please upload data or load default sample records."]
@@ -346,9 +276,6 @@ def perform_batch_data_audit(dataframe):
 # ==========================================
 @st.cache_data
 def generate_default_100_records():
-    """
-    Generates a full 100-record dataset for initial demonstration.
-    """
     parties = [
         "Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", 
         "Amit Gupta", "Vikram Singh", "Neha Kapoor", "Sanjay Dutt",
@@ -388,18 +315,18 @@ if st.session_state['crm_data'] is None:
 # 5. SIDEBAR CONFIGURATION STUDIO
 # ==========================================
 with st.sidebar:
-    st.markdown("### 🖼️ Branding & Identity Studio")
+    st.markdown("### 🖼️ Branding Studio")
     logo_file = st.file_uploader("Upload Company Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
     if logo_file:
         st.image(logo_file, use_container_width=True)
     
     st.divider()
-    st.markdown("### 🔑 Secure SMTP Engine Setup")
+    st.markdown("### 🔑 Secure SMTP Credentials")
     smtp_server = st.text_input("SMTP Server Host", value="smtp.gmail.com")
     smtp_port = st.number_input("SMTP Port", value=587, min_value=1, max_value=65535)
     sender_email = st.text_input("Sender Email ID", placeholder="your_email@gmail.com")
     app_password = st.text_input("16-Digit App Password", type="password")
-    dispatch_delay = st.slider("Dispatch Rate Delay (Sec)", 0.2, 5.0, 0.8, step=0.1)
+    dispatch_delay = st.slider("Dispatch Delay (Sec)", 0.2, 5.0, 0.8, step=0.1)
     
     st.divider()
     st.markdown("### 📝 Email Content Settings")
@@ -408,7 +335,7 @@ with st.sidebar:
     
     st.divider()
     st.markdown("### 🛠️ Data Management Tools")
-    if st.button("🔄 Reset to Default 100 Sample Records", use_container_width=True):
+    if st.button("🔄 Reset Sample Data (100 Records)", use_container_width=True):
         st.session_state['crm_data'] = generate_default_100_records()
         st.session_state['sent_count'] = 0
         st.session_state['failed_count'] = 0
@@ -423,7 +350,7 @@ st.markdown("""
     <h1 class="main-title">DHARMENDRA KUMAR (MISHRA)</h1>
     <span class="subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
     <p style="color: #90e0ef; margin-top: 12px; font-weight: 700; font-size: 16px;">
-        ⚡ 8K ULTRA-DYNAMIC CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
+        ⚡ 8K CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -431,7 +358,7 @@ st.markdown("""
 # ==========================================
 # 7. BATCH FILE IMPORT & VALIDATION SECTION
 # ==========================================
-st.markdown("### 📁 Import Custom Excel/CSV Batch File")
+st.markdown("### 📁 Upload Fresh Excel/CSV Batch File")
 uploaded_file = st.file_uploader("Upload Batch File (XLSX / CSV)", type=["xlsx", "csv"], key="batch_uploader")
 
 if uploaded_file is not None:
@@ -446,9 +373,9 @@ if uploaded_file is not None:
         st.session_state['sent_count'] = 0
         st.session_state['failed_count'] = 0
         st.session_state['dispatch_logs'] = []
-        st.success(f"✅ Successfully loaded {len(imported_df)} records from file!")
+        st.success(f"✅ Loaded {len(imported_df)} records successfully!")
     except Exception as err:
-        st.error(f"❌ Failed to parse uploaded file: {err}")
+        st.error(f"❌ File import error: {err}")
 
 df = st.session_state['crm_data']
 st.session_state['validation_alerts'] = perform_batch_data_audit(df)
@@ -461,7 +388,7 @@ sent_count = st.session_state['sent_count']
 failed_count = st.session_state['failed_count']
 pending_count = max(0, total_records - (sent_count + failed_count))
 
-st.markdown("### 📊 Real-time Batch Metrics & Validation")
+st.markdown("### 📊 Live Dispatch Progress Analytics")
 col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 
 with col_m1:
@@ -469,11 +396,10 @@ with col_m1:
 with col_m2:
     st.markdown(f'<div class="metric-card-box"><div class="metric-label">Sent Success</div><div class="metric-value-num" style="color:#00f5d4 !important;">{sent_count}</div></div>', unsafe_allow_html=True)
 with col_m3:
-    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Failed / Invalid</div><div class="metric-value-num" style="color:#ff4d6d !important;">{failed_count}</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Failed / Bounces</div><div class="metric-value-num" style="color:#ff4d6d !important;">{failed_count}</div></div>', unsafe_allow_html=True)
 with col_m4:
-    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Pending Dispatch</div><div class="metric-value-num" style="color:#ffb703 !important;">{pending_count}</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Queue Pending</div><div class="metric-value-num" style="color:#ffb703 !important;">{pending_count}</div></div>', unsafe_allow_html=True)
 
-# Show Data Audit Alerts
 with st.expander("🔍 System Data Audit & Health Report", expanded=False):
     for alert in st.session_state['validation_alerts']:
         st.write(alert)
@@ -483,7 +409,7 @@ st.markdown("---")
 # ==========================================
 # 9. INTERACTIVE DATA GRID & FILTERING
 # ==========================================
-st.markdown("### ✏️ Interactive Data Grid")
+st.markdown("### ✏️ Interactive Live Grid (100 Records Ready)")
 
 search_query = st.text_input("🔍 Quick Search Filter (Party Name, Email, or Bank)", placeholder="Type to filter records...")
 
@@ -540,21 +466,18 @@ st.markdown("---")
 # 11. HTML EMAIL TEMPLATE GENERATOR
 # ==========================================
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
-    """
-    Generates HTML email content linking dynamically with Sidebar Email Content inputs.
-    """
-    html_content = """<!DOCTYPE html>
+    html_content = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <style>
-        @keyframes fullSplashAnimation {
-            0% { opacity: 1; visibility: visible; }
-            80% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }
-        }
+        @keyframes fullSplashAnimation {{
+            0% {{ opacity: 1; visibility: visible; }}
+            80% {{ opacity: 1; visibility: visible; }}
+            100% {{ opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }}
+        }}
 
-        .splash-overlay {
+        .splash-overlay {{
             position: fixed;
             top: 0;
             left: 0;
@@ -570,9 +493,9 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
             animation: fullSplashAnimation 4s forwards ease-in-out;
             box-sizing: border-box;
             padding: 20px;
-        }
+        }}
 
-        .splash-title {
+        .splash-title {{
             color: #00f5d4;
             font-size: 26px;
             font-weight: 900;
@@ -581,87 +504,85 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
             text-transform: uppercase;
             text-shadow: 0 0 20px rgba(0, 245, 212, 0.9);
             margin: 0;
-        }
+        }}
 
-        .splash-sub {
+        .splash-sub {{
             color: #caf0f8;
             font-size: 14px;
             font-weight: bold;
             margin-top: 12px;
             letter-spacing: 1px;
             font-family: Arial, sans-serif;
-        }
+        }}
     </style>
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
 
-  <!-- 4 SECONDS FULL-SCREEN SPLASH OVERLAY -->
   <div class="splash-overlay">
       <div class="splash-title">RAMA ENTERPRISES</div>
       <div class="splash-sub">ABBOTT INDIA LTD, PATNA</div>
   </div>
 
-  <!-- MAIN EMAIL BODY -->
   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
     <tr>
       <td style="padding: 24px; text-align: center;">
         <div style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
           <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 900; letter-spacing: 1px;">
-            """ + str(email_title).upper() + """
+            {str(email_title).upper()}
           </h1>
         </div>
         <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
-          ✨ """ + str(cfa_title) + """
+          ✨ {cfa_title}
         </div>
       </td>
     </tr>
     <tr>
       <td style="padding: 0 28px 28px 28px;">
-        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">""" + str(party) + """</b>,</p>
+        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">{party}</b>,</p>
         <p style="color: #caf0f8; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
         <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #1c2541; border-radius: 10px; overflow: hidden;">
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td width="50%" style="color: #90e0ef; font-weight: bold; font-size: 14px;">📅 Date</td>
-            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(date_val) + """</td>
+            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">{date_val}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">👤 Party Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(party) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{party}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
-            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">""" + str(acc) + """</td>
+            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">{acc}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📍 Place</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(place) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{place}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(bank) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(u_ail) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{u_ail}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(u_ahpl) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{u_ahpl}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(h_ail) + """</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{h_ail}</td>
           </tr>
           <tr>
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(h_ahpl) + """</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{h_ahpl}</td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
       <td style="background-color: #1c2541; padding: 20px; text-align: center; border-top: 1px solid #3a5a40;">
-        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">""" + str(cfa_title) + """</div>
+        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">{cfa_title}</div>
       </td>
     </tr>
   </table>
@@ -672,11 +593,11 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
 # ==========================================
 # 12. INTERACTIVE EMAIL INBOX SIMULATOR
 # ==========================================
-st.markdown("### 👁️ Interactive Email Inbox Simulator")
+st.markdown("### 👁️ Live Rendered Inbox View")
 sim_col1, sim_col2 = st.columns([1, 1], gap="large")
 
 with sim_col1:
-    st.markdown("#### 🧪 Test Data Controls")
+    st.markdown("#### Test Data Controls")
     sim_party = st.text_input("Simulated Party Name", value="RAJVEER", key="sim_party")
     sim_acc = st.text_input("Simulated Account Number", value="351800949903", key="sim_acc")
     sim_place = st.text_input("Simulated Place", value="Patna", key="sim_place")
@@ -687,8 +608,7 @@ with sim_col1:
     sim_h_ahpl = st.text_input("Hand AHPL Cheques", value="18", key="sim_h_ahpl")
 
 with sim_col2:
-    st.markdown("#### 📱 Live Rendered Email Preview")
-    # Dynamically pass sidebar inputs to email generator for real-time reactive update
+    st.markdown("#### 📱 Email Preview")
     preview_html = build_email_template(
         sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
         sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title, email_subject_prefix
@@ -717,7 +637,6 @@ if start_dispatch_btn:
         log_container = st.empty()
 
         try:
-            # Establish SMTP Connection
             server = smtplib.SMTP(smtp_server, int(smtp_port))
             server.starttls()
             server.login(sender_email.strip(), app_password.replace(" ", ""))
@@ -772,11 +691,9 @@ if start_dispatch_btn:
                     st.session_state['dispatch_logs'].append(f"[{timestamp_str}] WARNING: {status_msg}")
                     status_box.warning(status_msg)
 
-                # Progress & Logs Update
                 progress = (idx + 1) / len(df)
                 progress_bar.progress(progress)
                 
-                # Render Console Logs
                 log_html = "<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>"
                 log_container.markdown(log_html, unsafe_allow_html=True)
                 
@@ -790,7 +707,6 @@ if start_dispatch_btn:
             st.error(f"❌ Connection Failure: {conn_err}")
             st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] FATAL: {conn_err}")
 
-# Display Historical Activity Logs if Available
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
