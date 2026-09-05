@@ -921,11 +921,10 @@ st.markdown("""
         padding: 4px !important;
     }
 
-    /* 4. AGGRESSIVE FIX FOR EDITING POPUP & INPUT TEXT VISIBILITY */
+    /* 4. EDITING POPUP & INPUT TEXT VISIBILITY */
     div[data-testid="stDataEditor"] input,
     div[data-baseweb="popover"] input,
     div[data-baseweb="base-input"] input,
-    input[aria-label*="data"],
     input {
         color: #ffffff !important;
         background-color: #020617 !important;
@@ -939,4 +938,4 @@ st.markdown("""
         border: 1px solid #00f5d4 !important;
     }
 </style>
-""", unsafe_allow_html=True)0
+""", unsafe_allow_html=True)
