@@ -94,7 +94,7 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-        /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
+      /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
         div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
             background-color: #16243b !important;
             border: 2px solid #00b4d8 !important;
@@ -116,6 +116,12 @@ def inject_custom_styles():
             background-color: #101d30 !important;
             color: #00f5d4 !important;
             border-color: #00b4d8 !important;
+        }
+
+        div[data-testid="stDataFrame"] iframe, 
+        div[data-testid="stDataFrame"] canvas {
+            background-color: #0b132b !important;
+            color: #00f5d4 !important;
         }
 
         div[data-testid="stDataFrame"] iframe, 
