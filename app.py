@@ -806,3 +806,23 @@ if start_dispatch_btn:
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
+st.markdown("""
+<style>
+    div[data-testid="stFileUploader"],
+    div[data-testid="stFileUploader"] > div,
+    div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
+        border: 2px dashed #00f5d4 !important;
+        border-radius: 12px !important;
+        background-color: #0b132b !important;
+        box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
+        padding: 8px !important;
+    }
+
+    div[data-testid="stFileUploader"] button {
+        background-color: #101d30 !important;
+        color: #00f5d4 !important;
+        border: 1px solid #00f5d4 !important;
+        border-radius: 6px !important;
+    }
+</style>
+""", unsafe_allow_html=True)
