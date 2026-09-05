@@ -94,28 +94,30 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-     /* High Visibility Data Grid Fix */
-        div[data-testid="stDataFrame"] {
+   /* HIGH-VISIBILITY NEON DATA GRID FIX */
+        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
+            background-color: #0b132b !important;
             border: 2px solid #00b4d8 !important;
-            border-radius: 12px !important;
-            background-color: #101d30 !important;
+            border-radius: 16px !important;
+            padding: 8px !important;
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.5) !important;
         }
 
-        /* Fix Text Visibility & Row Colors */
-        div[data-testid="stDataFrame"] canvas {
-            filter: invert(0.88) hue-rotate(180deg) !important;
-        }
-        /* Glide Data Grid Specific Cell Rules */
+        /* Neon Text and Font Styling for Grid Cells */
         .gdg-header-cell, .gdg-cell, .dvn-scroller, .glideDataEditor {
             background-color: #101d30 !important;
             color: #00f5d4 !important;
+            font-family: 'Courier New', Courier, monospace, sans-serif !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            text-shadow: 0 0 8px rgba(0, 245, 212, 0.7) !important;
             border-color: #00b4d8 !important;
         }
 
-        div[data-testid="stDataFrame"] iframe, 
+        /* Canvas Element High-Contrast Force View */
         div[data-testid="stDataFrame"] canvas {
             background-color: #0b132b !important;
-            color: #00f5d4 !important;
+            filter: drop-shadow(0px 0px 3px #00f5d4) !important;
         }
 
         div[data-testid="stDataFrame"] iframe, 
