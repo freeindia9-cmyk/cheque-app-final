@@ -72,7 +72,7 @@ if 'custom_cfa_header' not in st.session_state:
 def inject_custom_ultra_graphics_styles():
     """
     Injects high-definition cyberpunk CSS animations, glowing neon borders,
-    popup modal styling, glassmorphism card components, dynamic overlay animation, and data grid overrides.
+    popup modal styling, glassmorphism card components, and data grid overrides.
     """
     st.markdown("""
     <style>
@@ -730,14 +730,14 @@ st.markdown("---")
 
 
 # ==============================================================================
-# SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE (WITH NEON GLOW EFFECTS)
+# SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE (OVERLAY REMOVED)
 # ==============================================================================
 
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
     Generates dynamic HTML email markup formatted for modern email clients,
-    featuring glowing/un-glowing pulsing header animation, neon text shadows,
-    and fully restored footer branding: RAMA ENTERPRISES ABBOTT INDIA LTD CFA, PATNA.
+    featuring glowing pulsating header animation, neon text shadows,
+    and footer branding.
     """
     html_content = f"""<!DOCTYPE html>
 <html>
@@ -761,71 +761,6 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
                 border-color: #00b4d8;
                 text-shadow: 0 0 5px rgba(0, 245, 212, 0.5);
             }}
-        }}
-
-        /* Fade-out Overlay Animation CSS */
-        @keyframes fadeOutTransform {{
-            0% {{
-                opacity: 1;
-                transform: scale(1);
-                visibility: visible;
-            }}
-            75% {{
-                opacity: 1;
-                transform: scale(1);
-            }}
-            95% {{
-                opacity: 0;
-                transform: scale(0.92);
-            }}
-            100% {{
-                opacity: 0;
-                transform: scale(0.85);
-                visibility: hidden;
-                pointer-events: none;
-            }}
-        }}
-
-        .fullscreen-overlay {{
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: radial-gradient(circle at center, #0d1b2a, #03071e);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            animation: fadeOutTransform 4s ease-in-out forwards;
-            box-shadow: inset 0 0 100px rgba(0, 245, 212, 0.4);
-        }}
-
-        .overlay-popup-box {{
-            background: #0b132b;
-            border: 3px solid #00f5d4;
-            border-radius: 20px;
-            padding: 35px 50px;
-            text-align: center;
-            box-shadow: 0 0 50px rgba(0, 245, 212, 0.8);
-        }}
-
-        .overlay-title {{
-            color: #00f5d4;
-            font-size: 26px;
-            font-weight: 900;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            text-shadow: 0 0 20px rgba(0, 245, 212, 0.9);
-        }}
-
-        .overlay-subtitle {{
-            color: #ffb703;
-            font-size: 18px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            text-shadow: 0 0 12px rgba(255, 183, 3, 0.8);
         }}
 
         .email-top-header {{
@@ -856,14 +791,6 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
     </style>
 </head>
 <body style="margin:0; padding:20px; background-color:#03071e; font-family: 'Segoe UI', Arial, sans-serif;">
-
-  <!-- 4-Second Full-Screen Fade-Out Overlay Pop-up -->
-  <div class="fullscreen-overlay">
-    <div class="overlay-popup-box">
-      <div class="overlay-title">⚡ {str(email_title).upper()} ⚡</div>
-      <div class="overlay-subtitle">RAMA ENTERPRISES ABBOTT INDIA LTD CFA, PATNA</div>
-    </div>
-  </div>
 
   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 640px; background-color: #0d1b2a; border-radius: 18px; overflow: hidden; border: 2px solid #00f5d4; box-shadow: 0 0 35px rgba(0, 245, 212, 0.4);">
     <tr>
@@ -926,7 +853,6 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
         </table>
       </td>
     </tr>
-    <!-- RESTORED FOOTER SECTION -->
     <tr>
       <td style="background-color: #03071e; padding: 22px; text-align: center; border-top: 2px solid #00f5d4;">
         <div class="neon-glow-cyan" style="font-weight: 900; font-size: 15px; letter-spacing: 1px;">
