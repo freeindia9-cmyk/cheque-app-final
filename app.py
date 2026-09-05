@@ -508,17 +508,14 @@ if df is not None and not df.empty:
     else:
         filtered_df = df
 
-    edited_df = st.data_editor(
+  # High-Contrast Data Display Fix
+    st.dataframe(
         filtered_df,
-        num_rows="dynamic",
         use_container_width=True,
-        height=380,
-        key="data_editor_grid"
+        height=380
     )
-    
-    if not search_query:
-        st.session_state['crm_data'] = edited_df
-        df = st.session_state['crm_data']
+    st.session_state['crm_data'] = filtered_df
+    df = st.session_state['crm_data']
 
 st.markdown("<br>", unsafe_allow_html=True)
 
