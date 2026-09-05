@@ -257,8 +257,43 @@ def inject_custom_styles():
             border: 2px solid #00f5d4 !important;
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
+        } 
+/* ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
+        div[data-testid="stFileUploader"] {
+            border: 2px dashed #00f5d4 !important;
+            border-radius: 16px !important;
+            background-color: #0b132b !important;
+            padding: 12px !important;
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.4), inset 0 0 10px rgba(0, 245, 212, 0.2) !important;
+            transition: all 0.4s ease-in-out !important;
         }
 
+        /* Hover Effect for Upload Box */
+        div[data-testid="stFileUploader"]:hover {
+            border-color: #00b4d8 !important;
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.8), inset 0 0 15px rgba(0, 245, 212, 0.4) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Upload Button Inside Text & Icon Styling */
+        div[data-testid="stFileUploader"] button {
+            background-color: #101d30 !important;
+            color: #00f5d4 !important;
+            border: 1px solid #00f5d4 !important;
+            border-radius: 10px !important;
+            font-weight: 800 !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+            text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.3) !important;
+        }
+
+        div[data-testid="stFileUploader"] button:hover {
+            background-color: #00f5d4 !important;
+            color: #0b132b !important;
+            box-shadow: 0 0 20px #00f5d4 !important;
+            text-shadow: none !important;
+        }
+        
         div.stButton > button[kind="primary"]:hover {
             transform: translateY(-3px) scale(1.02);
             background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
