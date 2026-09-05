@@ -407,4 +407,201 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(
+            background: radial-gradient(circle at center, #0077b6, #023e8a, #03045e);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            animation: fullSplashAnimation 4s forwards ease-in-out;
+            box-sizing: border-box;
+            padding: 20px;
+        }}
+
+        .splash-title {{
+            color: #00f5d4;
+            font-size: 26px;
+            font-weight: 900;
+            font-family: Arial, sans-serif;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 245, 212, 0.9);
+            margin: 0;
+        }}
+
+        .splash-sub {{
+            color: #caf0f8;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 12px;
+            letter-spacing: 1px;
+            font-family: Arial, sans-serif;
+        }}
+    </style>
+</head>
+<body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
+
+  <div class="splash-overlay">
+      <div class="splash-title">RAMA ENTERPRISES</div>
+      <div class="splash-sub">ABBOTT INDIA LTD, PATNA</div>
+  </div>
+
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
+    <tr>
+      <td style="padding: 24px; text-align: center;">
+        <div style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
+          <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 900; letter-spacing: 1px;">
+            BUFFER CHEQUE DETAILS
+          </h1>
+        </div>
+        <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
+          ✨ {cfa_title}
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td style="padding: 0 28px 28px 28px;">
+        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">{party}</b>,</p>
+        <p style="color: #caf0f8; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
+        <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #1c2541; border-radius: 10px; overflow: hidden;">
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td width="50%" style="color: #90e0ef; font-weight: bold; font-size: 14px;">📅 Date</td>
+            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">{date_val}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">👤 Party Name</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{party}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
+            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">{acc}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📍 Place</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{place}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{u_ail}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{u_ahpl}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{h_ail}</td>
+          </tr>
+          <tr>
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{h_ahpl}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td style="background-color: #1c2541; padding: 20px; text-align: center; border-top: 1px solid #3a5a40;">
+        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">{cfa_title}</div>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>"""
+
+# ==========================================
+# 10. Live Interactive Inbox Simulator
+# ==========================================
+st.markdown("### 👁️ Interactive Email Inbox Simulator")
+col_test_input, col_test_render = st.columns([1, 1], gap="large")
+
+with col_test_input:
+    st.markdown("#### 🧪 Test Data Controls")
+    sim_party = st.text_input("Simulated Party Name", value="RAJVEER")
+    sim_acc = st.text_input("Simulated Account Number", value="351800949903")
+    sim_place = st.text_input("Simulated Place", value="Patna")
+    sim_bank = st.text_input("Simulated Bank Name", value="State Bank of India")
+
+with col_test_render:
+    st.markdown("#### 📱 Live Rendered Inbox View")
+    rendered_html = build_email_template(
+        sim_party, "2026-08-05", sim_acc, sim_place, sim_bank,
+        "4", "2", "15", "18", custom_cfa_title
+    )
+    st.components.v1.html(rendered_html, height=480, scrolling=True)
+
+# ==========================================
+# 11. Automated Dispatch Engine
+# ==========================================
+if start_btn:
+    st.session_state['stop_dispatch'] = False
+    st.session_state['sent_count'] = 0
+    st.session_state['failed_count'] = 0
+
+    if not sender_email or not app_password:
+        st.warning("⚠️ Please provide Sender Email ID and App Password in Sidebar!")
+    else:
+        st.markdown("---")
+        progress_bar = st.progress(0)
+        status_box = st.empty()
+
+        try:
+            server = smtplib.SMTP(smtp_server, int(smtp_port))
+            server.starttls()
+            server.login(sender_email.strip(), app_password.replace(" ", ""))
+
+            for idx in range(len(df)):
+                if st.session_state['stop_dispatch']:
+                    st.error("🛑 Process stopped manually!")
+                    break
+
+                row = df.iloc[idx]
+                rec_date = get_field_strict(row, ["Date", "Entry Date"], "N/A")
+                party_name = get_field_strict(row, ["Party Name", "Party"], "Valued Customer")
+                account_val = get_field_strict(row, ["Account Number", "Account No"], "N/A")
+                target_email = get_field_strict(row, ["Email", "Email ID"], "").strip()
+                place_val = get_field_strict(row, ["Place", "City"], "N/A")
+                bank_val = get_field_strict(row, ["Bank Name", "Bank"], "N/A")
+                
+                used_ail = get_field_strict(row, ["Number of cheque used in AIL"], "0")
+                used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL"], "0")
+                hand_ail = get_field_strict(row, ["Total cheque in hand AIL"], "0")
+                hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL"], "0")
+
+                if "@" in target_email:
+                    msg = MIMEMultipart('alternative')
+                    msg['From'] = formataddr((custom_cfa_title, sender_email.strip()))
+                    msg['To'] = target_email
+                    msg['Subject'] = f"{email_subject_prefix} - {party_name} ({rec_date})"
+
+                    full_body = build_email_template(
+                        party_name, rec_date, account_val, place_val, bank_val,
+                        used_ail, used_ahpl, hand_ail, hand_ahpl, custom_cfa_title
+                    )
+                    msg.attach(MIMEText(full_body, 'html'))
+                    
+                    try:
+                        server.sendmail(sender_email.strip(), target_email, msg.as_string())
+                        st.session_state['sent_count'] += 1
+                        status_box.info(f"🔵 [{idx+1}/{len(df)}] Sent to **{party_name}** ({target_email})")
+                    except Exception as send_err:
+                        st.session_state['failed_count'] += 1
+                        status_box.error(f"🔴 [{idx+1}/{len(df)}] Failed: {target_email}")
+                else:
+                    st.session_state['failed_count'] += 1
+                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Skipped invalid email for: **{party_name}**")
+
+                progress = (idx + 1) / len(df)
+                progress_bar.progress(progress)
+                time.sleep(dispatch_delay)
+
+            server.quit()
+            st.balloons()
+            st.success("🎉 Cheque Record Dispatch Completed Successfully!")
+
+        except Exception as conn_err:
+            st.error(f"❌ Connection Failure: {conn_err}")
