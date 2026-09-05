@@ -921,12 +921,14 @@ st.markdown("""
         padding: 4px !important;
     }
 
-    /* 4. ONLY GRID CELL EDITING TEXT COLOR & CONTRAST (NO OTHER PLACE) */
-    div[data-testid="stDataEditor"] input {
+    /* 4. HIGH CONTRAST EDITING BOX & TEXT */
+    div[data-testid="stDataEditor"] input,
+    div[data-baseweb="popover"] input {
         color: #00f5d4 !important;
-        background-color: #030712 !important;
+        background-color: #020617 !important;
         -webkit-text-fill-color: #00f5d4 !important;
         font-weight: bold !important;
+        font-size: 14px !important;
     }
 </style>
 """, unsafe_allow_html=True)
