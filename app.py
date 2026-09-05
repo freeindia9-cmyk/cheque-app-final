@@ -901,17 +901,24 @@ st.markdown("""
             border-radius: 6px !important;
         }
 
-        /* 2. DATA EDITOR GRID: CLEAN BG & VISIBLE EDITING WITH BORDER */
+        /* 2. DATA EDITOR GRID: ONLY GRID BG CLEANED, BORDER INTACT */
         div[data-testid="stDataEditor"] {
             border: 2px solid #00f5d4 !important;
             border-radius: 10px !important;
-            overflow: hidden !important;
+            background-color: transparent !important;
         }
 
-        /* Input text visibility during cell editing */
+        /* Grid ke andar ke cells aur table background se dark blue hatane ke liye */
+        div[data-testid="stDataEditor"] div, 
+        div[data-testid="stDataEditor"] canvas,
+        div[data-testid="stDataEditor"] [data-baseweb="base-input"] {
+            background-color: transparent !important;
+        }
+
+        /* Edit karte waqt input box ka text aur background clear dikhe */
         div[data-testid="stDataEditor"] input {
             color: #ffffff !important;
-            background-color: #111936 !important;
+            background-color: #162247 !important;
             -webkit-text-fill-color: #ffffff !important;
         }
 
