@@ -100,7 +100,7 @@ def inject_custom_styles():
          /* NEON GLOW DATA GRID CONTAINER */
         div[data-testid="stDataFrame"] {
             background-color: #0b132b !important;
-            border: 2px solid #00f5d4 !important;
+            border: 2px  #00f5d4 !important;
             border-radius: 16px !important;
             padding: 8px !important;
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.7), inset 0 0 15px rgba(0, 245, 212, 0.4) !important;
