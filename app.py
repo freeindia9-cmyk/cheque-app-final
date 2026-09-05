@@ -21,160 +21,207 @@ st.set_page_config(
 )
 
 # ==========================================
-# 2. Cyberpunk Dark Theme CSS (Zero White Elements)
+# 2. Ultra Cyberpunk Glowing UI CSS
 # ==========================================
 st.markdown("""
 <style>
-    /* Global App Canvas Background */
+    /* Global Background & Base Fonts */
     .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-        background: radial-gradient(circle at 50% 20%, #064e3b, #022c22, #081a1e, #030d10) !important;
-        color: #ecfdf5 !important;
+        background: radial-gradient(circle at 50% 20%, #043d2e, #022019, #061417, #02090b) !important;
+        color: #6ee7b7 !important;
         font-family: 'Segoe UI', Roboto, sans-serif !important;
     }
 
-    /* Sidebar Dark Theme */
+    /* Sidebar Dark Theme & Neon Glow Headers */
     section[data-testid="stSidebar"] {
-        background-color: #022c22 !important;
+        background-color: #021a14 !important;
         border-right: 2px solid #059669 !important;
+        box-shadow: 5px 0 20px rgba(5, 150, 105, 0.3);
     }
 
     section[data-testid="stSidebar"] label, 
     section[data-testid="stSidebar"] p, 
-    section[data-testid="stSidebar"] span {
+    section[data-testid="stSidebar"] span,
+    section[data-testid="stSidebar"] h3 {
         color: #34d399 !important;
+        font-weight: 800 !important;
+        text-shadow: 0 0 10px rgba(52, 211, 153, 0.8) !important;
+    }
+
+    /* Global Text Neon Glow Effect */
+    h1, h2, h3, h4, h5, h6, label, p, span {
+        color: #a7f3d0 !important;
+        text-shadow: 0 0 10px rgba(52, 211, 153, 0.5);
+    }
+
+    /* Inputs, Selects & Number Controls Glow */
+    input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
+        background-color: #062228 !important;
+        color: #34d399 !important;
+        border: 2px solid #10b981 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
         font-weight: 700 !important;
     }
 
-    /* All Input Boxes Dark Fix */
-    input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-        background-color: #0b2228 !important;
-        color: #a7f3d0 !important;
-        border: 1px solid #10b981 !important;
-        border-radius: 8px !important;
+    input:focus, div[data-baseweb="input"]:focus-within {
+        border-color: #34d399 !important;
+        box-shadow: 0 0 22px rgba(52, 211, 153, 0.9) !important;
     }
 
-    /* Streamlit DataFrame Grid High Contrast Fix */
+    /* Streamlit DataFrame Container Fix */
     div[data-testid="stDataFrame"] {
-        background-color: #072126 !important;
-        border: 2px solid #059669 !important;
-        border-radius: 12px !important;
+        background-color: #051a1e !important;
+        border: 2px solid #10b981 !important;
+        border-radius: 14px !important;
         padding: 8px !important;
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.3) !important;
     }
 
     div[data-testid="stDataFrame"] * {
-        background-color: #072126 !important;
+        background-color: #051a1e !important;
         color: #ecfdf5 !important;
     }
 
-    /* File Uploader Container Fix (Dark Neon Dropzone) */
+    /* File Uploader Box & Inner Button Neon Fix */
     [data-testid="stFileUploadDropzone"] {
-        background-color: #091a1d !important;
-        border: 2px dashed #10b981 !important;
+        background-color: #04191d !important;
+        border: 2px dashed #34d399 !important;
         border-radius: 14px !important;
+        box-shadow: 0 0 18px rgba(52, 211, 153, 0.4) !important;
     }
 
-    [data-testid="stFileUploadDropzone"] * {
-        background-color: transparent !important;
-        color: #a7f3d0 !important;
+    [data-testid="stFileUploadDropzone"] button {
+        background: linear-gradient(135deg, #059669, #10b981) !important;
+        color: #ffffff !important;
+        border: 2px solid #34d399 !important;
+        border-radius: 8px !important;
+        font-weight: 900 !important;
+        box-shadow: 0 0 15px rgba(52, 211, 153, 0.8) !important;
+        text-shadow: 0 0 8px rgba(255, 255, 255, 0.8) !important;
     }
 
-    /* Header Styling */
+    [data-testid="stFileUploadDropzone"] button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 0 25px rgba(52, 211, 153, 1) !important;
+    }
+
+    /* Top Floating Header Block */
     .header-wrapper {
-        margin-top: 15px !important;
+        margin-top: 10px !important;
         margin-bottom: 25px !important;
-        background: rgba(6, 78, 59, 0.85);
+        background: rgba(4, 61, 46, 0.85);
         border: 2px solid #34d399;
-        box-shadow: 0 0 30px rgba(52, 211, 153, 0.5);
+        box-shadow: 0 0 35px rgba(52, 211, 153, 0.6);
         backdrop-filter: blur(12px);
         border-radius: 18px;
-        padding: 24px;
+        padding: 22px;
         text-align: center;
     }
 
     .main-title {
-        color: #34d399;
-        font-size: 36px;
+        color: #34d399 !important;
+        font-size: 38px;
         font-weight: 900;
-        letter-spacing: 1.2px;
+        letter-spacing: 1.5px;
         margin: 0;
-        text-shadow: 0 0 15px rgba(52, 211, 153, 0.8);
+        text-shadow: 0 0 20px rgba(52, 211, 153, 0.9) !important;
     }
 
     .subtitle-badge {
         display: inline-block;
-        background: #022c22;
-        border: 1px solid #34d399;
-        padding: 5px 20px;
+        background: #022019;
+        border: 1.5px solid #34d399;
+        padding: 6px 22px;
         border-radius: 20px;
         font-size: 13px;
         font-weight: 800;
-        color: #34d399;
+        color: #a7f3d0 !important;
         margin-top: 10px;
+        box-shadow: 0 0 12px rgba(52, 211, 153, 0.5);
     }
 
-    /* Analytics Metric Cards */
+    /* Metric Cards Glow System */
     .metric-card-box {
-        background: #072126 !important;
+        background: #051f24 !important;
         border: 2px solid #059669;
         border-radius: 14px;
-        padding: 20px;
+        padding: 18px;
         text-align: center;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        box-shadow: 0 0 20px rgba(5, 150, 105, 0.4);
         transition: transform 0.2s ease, border-color 0.2s ease;
     }
 
     .metric-card-box:hover {
         transform: translateY(-4px);
         border-color: #34d399;
-        box-shadow: 0 0 25px rgba(52, 211, 153, 0.6);
+        box-shadow: 0 0 30px rgba(52, 211, 153, 0.8);
     }
 
     .metric-label {
         font-size: 12px;
-        color: #a7f3d0;
+        color: #a7f3d0 !important;
         font-weight: 800;
         text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .metric-value-num {
         font-size: 36px;
         font-weight: 900;
         margin-top: 6px;
-        color: #34d399;
-        text-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
+        color: #34d399 !important;
+        text-shadow: 0 0 15px rgba(52, 211, 153, 0.8) !important;
     }
 
-    /* Buttons Customization */
+    /* High Intensity Neon UI Action Buttons */
     div.stButton > button, div.stDownloadButton > button {
         font-weight: 900 !important;
-        border-radius: 10px !important;
-        padding: 14px 20px !important;
+        border-radius: 12px !important;
+        padding: 14px 22px !important;
         font-size: 15px !important;
+        letter-spacing: 0.8px !important;
         transition: all 0.25s ease-in-out !important;
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.9) !important;
     }
 
     div.stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #10b981, #059669) !important;
+        background: linear-gradient(135deg, #10b981, #047857) !important;
         color: #ffffff !important;
         border: 2px solid #34d399 !important;
-        box-shadow: 0 0 20px rgba(16, 185, 129, 0.7) !important;
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.8) !important;
         width: 100% !important;
     }
 
+    div.stButton > button[kind="primary"]:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 0 40px rgba(52, 211, 153, 1) !important;
+    }
+
     div.stButton > button[kind="secondary"] {
-        background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+        background: linear-gradient(135deg, #ef4444, #b91c1c) !important;
         color: #ffffff !important;
         border: 2px solid #f87171 !important;
-        box-shadow: 0 0 20px rgba(239, 68, 68, 0.7) !important;
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
         width: 100% !important;
+    }
+
+    div.stButton > button[kind="secondary"]:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 0 40px rgba(248, 113, 113, 1) !important;
     }
 
     div.stDownloadButton > button {
         background: linear-gradient(135deg, #0284c7, #0369a1) !important;
         color: #ffffff !important;
         border: 2px solid #38bdf8 !important;
-        box-shadow: 0 0 20px rgba(56, 189, 248, 0.7) !important;
+        box-shadow: 0 0 25px rgba(56, 189, 248, 0.8) !important;
         width: 100% !important;
+    }
+
+    div.stDownloadButton > button:hover {
+        transform: translateY(-2px) scale(1.02);
+        box-shadow: 0 0 40px rgba(56, 189, 248, 1) !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -253,7 +300,7 @@ with st.sidebar:
     custom_cfa_title = st.text_input("CFA Header Title", value="RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA")
 
 # ==========================================
-# 6. Main Top Floating Header
+# 6. Main Top Header
 # ==========================================
 st.markdown("""
 <div class="header-wrapper">
@@ -265,7 +312,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# File Import Control
+# File Import Section
 uploaded_file = st.file_uploader("📁 Upload Fresh Excel/CSV Batch File", type=["xlsx", "csv"])
 if uploaded_file is not None:
     try:
@@ -330,21 +377,9 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
     <meta charset="utf-8">
     <style>
         @keyframes fullSplashAnimation {{
-            0% {{
-                opacity: 1;
-                visibility: visible;
-            }}
-            80% {{
-                opacity: 1;
-                visibility: visible;
-            }}
-            100% {{
-                opacity: 0;
-                visibility: hidden;
-                height: 0;
-                padding: 0;
-                margin: 0;
-            }}
+            0% {{ opacity: 1; visibility: visible; }}
+            80% {{ opacity: 1; visibility: visible; }}
+            100% {{ opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }}
         }}
 
         .splash-overlay {{
