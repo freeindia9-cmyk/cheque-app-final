@@ -884,7 +884,7 @@ if st.session_state['dispatch_logs']:
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True) 
 st.markdown("""
 <style>
-    /* 1. MAIN APP BACKGROUND PULSATING GLOW (CYBERPUNK THEME) */
+    /* 1. MAIN APP BACKGROUND (Pulsating Glow) */
     @keyframes appBgGlow {
         0% { background-color: #050a18 !important; }
         50% { background-color: #0b1736 !important; }
@@ -895,7 +895,7 @@ st.markdown("""
         animation: appBgGlow 6s infinite ease-in-out !important;
     }
 
-    /* 2. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
+    /* 2. UPLOAD BUTTON DESIGN & BORDER */
     div[data-testid="stFileUploader"],
     div[data-testid="stFileUploader"] > div,
     div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
@@ -913,7 +913,7 @@ st.markdown("""
         border-radius: 6px !important;
     }
 
-    /* 3. DATA EDITOR GRID NEON BORDER & TEXT EDITING */
+    /* 3. DATA EDITOR GRID NEON BORDER */
     div[data-testid="stDataEditor"] {
         border: 2px solid #00f5d4 !important;
         border-radius: 10px !important;
@@ -921,11 +921,12 @@ st.markdown("""
         padding: 4px !important;
     }
 
-    /* Input text visibility during cell editing */
+    /* 4. ONLY GRID CELL EDITING TEXT COLOR & CONTRAST (NO OTHER PLACE) */
     div[data-testid="stDataEditor"] input {
-        color: #ffffff !important;
-        background-color: #111b38 !important;
-        -webkit-text-fill-color: #ffffff !important;
+        color: #00f5d4 !important;
+        background-color: #030712 !important;
+        -webkit-text-fill-color: #00f5d4 !important;
+        font-weight: bold !important;
     }
 </style>
 """, unsafe_allow_html=True)
