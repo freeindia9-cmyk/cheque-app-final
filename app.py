@@ -884,7 +884,18 @@ if st.session_state['dispatch_logs']:
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True) 
 st.markdown("""
 <style>
-    /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
+    /* 1. MAIN APP BACKGROUND PULSATING GLOW (CYBERPUNK THEME) */
+    @keyframes appBgGlow {
+        0% { background-color: #050a18 !important; }
+        50% { background-color: #0b1736 !important; }
+        100% { background-color: #050a18 !important; }
+    }
+
+    .stApp {
+        animation: appBgGlow 6s infinite ease-in-out !important;
+    }
+
+    /* 2. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
     div[data-testid="stFileUploader"],
     div[data-testid="stFileUploader"] > div,
     div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
@@ -902,33 +913,19 @@ st.markdown("""
         border-radius: 6px !important;
     }
 
-    /* 2. DATA EDITOR GRID BG CLEANUP & NEON BORDER */
+    /* 3. DATA EDITOR GRID NEON BORDER & TEXT EDITING */
     div[data-testid="stDataEditor"] {
         border: 2px solid #00f5d4 !important;
         border-radius: 10px !important;
+        box-shadow: 0 0 15px rgba(0, 245, 212, 0.2) !important;
         padding: 4px !important;
     }
 
-    div[data-testid="stDataEditor"] div[data-baseweb="block"],
-    div[data-testid="stDataEditor"] [role="region"] {
-        background-color: transparent !important;
-    }
-
+    /* Input text visibility during cell editing */
     div[data-testid="stDataEditor"] input {
         color: #ffffff !important;
         background-color: #111b38 !important;
         -webkit-text-fill-color: #ffffff !important;
-    }
-
-    /* 3. MAIN APP BACKGROUND PULSATING GLOW */
-    @keyframes appBgGlow {
-        0% { background-color: #050a18 !important; }
-        50% { background-color: #0b1736 !important; }
-        100% { background-color: #050a18 !important; }
-    }
-
-    .stApp {
-        animation: appBgGlow 6s infinite ease-in-out !important;
     }
 </style>
 """, unsafe_allow_html=True)
