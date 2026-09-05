@@ -94,30 +94,17 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-      /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
-        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
-            background-color: #16243b !important;
-            border: 2px solid #00b4d8 !important;
-            border-radius: 16px !important;
-            padding: 8px !important;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
-        }
-
-     /* HIGH-VISIBILITY DATA GRID FIX */
+     /* High Visibility Data Grid Fix */
         div[data-testid="stDataFrame"] {
-            background-color: #16243b !important;
             border: 2px solid #00b4d8 !important;
-            border-radius: 16px !important;
-            padding: 8px !important;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
+            border-radius: 12px !important;
+            background-color: #101d30 !important;
         }
 
-        /* Canvas & Grid Cells Contrast Override */
-        div[data-testid="stDataFrame"] [data-testid="glideDataEditor"],
+        /* Fix Text Visibility & Row Colors */
         div[data-testid="stDataFrame"] canvas {
-            filter: invert(0.9) hue-rotate(180deg) !important;
+            filter: invert(0.88) hue-rotate(180deg) !important;
         }
-
         /* Glide Data Grid Specific Cell Rules */
         .gdg-header-cell, .gdg-cell, .dvn-scroller, .glideDataEditor {
             background-color: #101d30 !important;
