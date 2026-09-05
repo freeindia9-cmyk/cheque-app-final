@@ -97,7 +97,7 @@ def inject_custom_styles():
 /* NEON GLOW DATA GRID STYLING */
         div[data-testid="stDataFrame"] {
             background-color: #0b132b !important;
-       /* NEON GLOW DATA GRID STYLING */
+      /* NEON GLOW DATA GRID STYLING */
         div[data-testid="stDataFrame"] {
             background-color: #0b132b !important;
             border: 2px solid #00f5d4 !important;
@@ -121,6 +121,9 @@ def inject_custom_styles():
 
         /* Hover Effect for Rows */
         div[data-testid="stDataFrame"] tr:hover td {
+            background-color: #1a2c42 !important;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+        }
             background-color: #1a2c42 !important;
             box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
         }
