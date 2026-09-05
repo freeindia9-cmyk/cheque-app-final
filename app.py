@@ -258,45 +258,34 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
         }
-        /* COMPLETE FILE UPLOADER NEON OVERRIDE */
-        div[data-testid="stFileUploader"],
-        div[data-testid="stFileUploader"] > div,
-        div[data-testid="stFileUploader"] section,
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            background-color: #081026 !important;
+    /* SINGLE CLEAN NEON FILE UPLOADER */
+        div[data-testid="stFileUploader"] {
             border: 2px dashed #00f5d4 !important;
-            border-radius: 14px !important;
-            box-shadow: 0 0 20px rgba(0, 245, 212, 0.4), inset 0 0 12px rgba(0, 245, 212, 0.2) !important;
+            border-radius: 12px !important;
+            background-color: #0b132b !important;
+            padding: 10px !important;
+            box-shadow: 0 0 15px rgba(0, 245, 212, 0.4) !important;
         }
 
-        /* Hover Effect for Upload Box */
-        div[data-testid="stFileUploader"]:hover,
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"]:hover {
-            border-color: #00b4d8 !important;
-            box-shadow: 0 0 30px rgba(0, 245, 212, 0.8), inset 0 0 18px rgba(0, 245, 212, 0.4) !important;
-        }
-
-        /* Upload Inner Button */
-        div[data-testid="stFileUploader"] button {
-            background: linear-gradient(135deg, #00b4d8, #00f5d4) !important;
-            color: #0b132b !important;
+        /* Fix Inner Background & Clear Double Text */
+        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
+            background-color: #0b132b !important;
             border: none !important;
-            border-radius: 8px !important;
-            font-weight: 900 !important;
-            font-family: 'Consolas', 'Courier New', monospace !important;
-            box-shadow: 0 0 15px rgba(0, 245, 212, 0.8) !important;
         }
 
-        /* All Upload Labels, Details, and Helper Texts */
-        div[data-testid="stFileUploader"] label,
-        div[data-testid="stFileUploader"] span,
-        div[data-testid="stFileUploader"] p,
-        div[data-testid="stFileUploader"] small,
-        div[data-testid="stFileUploader"] div {
+        /* Single Font & Single Color for All Upload Texts */
+        div[data-testid="stFileUploader"] * {
+            font-family: 'Consolas', monospace !important;
             color: #00f5d4 !important;
-            font-family: 'Consolas', 'Courier New', monospace !important;
-            font-weight: 700 !important;
-            text-shadow: 0 0 8px rgba(0, 245, 212, 0.7) !important;
+            text-shadow: none !important;
+        }
+
+        /* Clean Inner Upload Button */
+        div[data-testid="stFileUploader"] button {
+            background-color: #101d30 !important;
+            border: 1px solid #00f5d4 !important;
+            border-radius: 8px !important;
+            font-weight: bold !important;
         }
          ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
         div[data-testid="stFileUploader"] {
