@@ -73,6 +73,7 @@ def inject_custom_ultra_graphics_styles():
     """
     Injects high-definition cyberpunk CSS animations, glowing neon borders,
     popup modal styling, glassmorphism card components, and data grid overrides.
+    Includes persistent dynamic banner keyframe sequence for Rama Enterprises.
     """
     st.markdown("""
     <style>
@@ -388,6 +389,47 @@ def inject_custom_ultra_graphics_styles():
             margin-bottom: 22px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* RAMA ENTERPRISES BANNER KEYFRAME ANIMATION ENGINE                      */
+        /* ---------------------------------------------------------------------- */
+
+        @keyframes bannerDisplayCycle {
+            0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
+            10% { opacity: 1; transform: translateY(0) scale(1); }
+            80% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-15px) scale(0.98); }
+        }
+
+        .rama-banner-animated {
+            animation: bannerDisplayCycle 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+            background: linear-gradient(135deg, #00b4d8, #0077b6, #03071e);
+            border: 3px solid #00f5d4;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 245, 212, 0.8), inset 0 0 20px rgba(0, 245, 212, 0.3);
+            margin-bottom: 20px;
+            transition: all 0.5s ease;
+        }
+
+        .rama-banner-title {
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+        }
+
+        .rama-banner-sub {
+            color: #00f5d4;
+            font-size: 15px;
+            font-weight: 800;
+            margin-top: 6px;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
         }
     </style>
     """, unsafe_allow_html=True)
@@ -736,13 +778,54 @@ st.markdown("---")
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
     Generates dynamic HTML email markup formatted for modern email clients.
+    Includes animated top banner card for Rama Enterprises Abbott India Ltd.
     """
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
+    <style>
+        @keyframes bannerDisplayCycle {{
+            0% {{ opacity: 0; transform: translateY(-20px) scale(0.95); }}
+            10% {{ opacity: 1; transform: translateY(0) scale(1); }}
+            80% {{ opacity: 1; transform: translateY(0) scale(1); }}
+            100% {{ opacity: 0; transform: translateY(-15px) scale(0.98); }}
+        }}
+        .rama-banner-animated {{
+            animation: bannerDisplayCycle 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+            background: linear-gradient(135deg, #00b4d8, #0077b6, #03071e);
+            border: 3px solid #00f5d4;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 245, 212, 0.8), inset 0 0 20px rgba(0, 245, 212, 0.3);
+            margin-bottom: 20px;
+        }}
+        .rama-banner-title {{
+            color: #ffffff;
+            font-size: 26px;
+            font-weight: 900;
+            margin: 0;
+            letter-spacing: 2px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+        }}
+        .rama-banner-sub {{
+            color: #00f5d4;
+            font-size: 15px;
+            font-weight: 800;
+            margin-top: 6px;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
+        }}
+    </style>
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
+
+  <!-- ANIMATED RAMA ENTERPRISES BANNER -->
+  <div class="rama-banner-animated">
+      <div class="rama-banner-title">RAMA ENTERPRISES</div>
+      <div class="rama-banner-sub">ABBOTT INDIA LTD, PATNA</div>
+  </div>
 
   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
     <tr>
@@ -868,7 +951,7 @@ if st.session_state['show_inbox_popup']:
         )
         
         st.markdown("#### 📱 Rendered Live Email Preview")
-        st.components.v1.html(preview_html, height=480, scrolling=True)
+        st.components.v1.html(preview_html, height=580, scrolling=True)
     else:
         st.warning("No dataset loaded to preview emails.")
 
