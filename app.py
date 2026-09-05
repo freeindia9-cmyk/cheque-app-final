@@ -94,30 +94,33 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-  /* UNBLOCK CANVA DATA GRID & TRANSPARENT FRAME */
+/* NEON GLOW DATA GRID STYLING */
         div[data-testid="stDataFrame"] {
-            background-color: transparent !important;
-            border: 2px solid #00b4d8 !important;
-            border-radius: 12px !important;
-            padding: 4px !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
+            background-color: #0b132b !important;
+            border: 2px solid #00f5d4 !important;
+            border-radius: 16px !important;
+            padding: 8px !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6), inset 0 0 15px rgba(0, 245, 212, 0.3) !important;
         }
 
-        /* Allow Canvas and Data Grid to Render Clearly */
-        div[data-testid="stDataFrame"] > div,
-        div[data-testid="stDataFrame"] iframe,
-        div[data-testid="stDataFrame"] canvas {
-            background-color: transparent !important;
-            opacity: 1 !important;
-            visibility: visible !important;
-        }
-
-        /* Neon Header and Cell Contrast Fix */
-        .gdg-header-cell, .gdg-cell, .glideDataEditor {
-            background-color: #0d1b2a !important;
+        /* Dark Background and Neon Text for Table Headers and Cells */
+        div[data-testid="stDataFrame"] th, 
+        div[data-testid="stDataFrame"] td,
+        div[data-testid="stDataFrame"] [role="gridcell"] {
+            background-color: #101d30 !important;
             color: #00f5d4 !important;
-            font-family: 'Courier New', monospace !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
             font-weight: 700 !important;
+            font-size: 14px !important;
+            border: 1px solid #00b4d8 !important;
+            text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
+        }
+
+        /* Hover Effect for Rows */
+        div[data-testid="stDataFrame"] tr:hover td {
+            background-color: #1a2c42 !important;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+        }
             font-size: 14px !important;
             text-shadow: 0 0 6px rgba(0, 245, 212, 0.8) !important;
         }
