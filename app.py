@@ -258,15 +258,18 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
         }
-       /* CLEAN NEON DASHED BORDER ONLY */
+     /* FORCE NEON DASHED BORDER ON ENTIRE UPLOAD AREA */
+        div[data-testid="stFileUploader"],
+        div[data-testid="stFileUploader"] > div,
         div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            background-color: #0b132b !important;
             border: 2px dashed #00f5d4 !important;
             border-radius: 12px !important;
-            box-shadow: 0 0 15px rgba(0, 245, 212, 0.4) !important;
+            background-color: #0b132b !important;
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
+            padding: 8px !important;
         }
 
-        /* RESET BUTTON TO DEFAULT SIMPLE STYLE */
+        /* SIMPLE BUTTON STYLE WITH BORDER */
         div[data-testid="stFileUploader"] button {
             background-color: #101d30 !important;
             color: #00f5d4 !important;
