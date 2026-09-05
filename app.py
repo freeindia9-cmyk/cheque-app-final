@@ -258,38 +258,6 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
         }
-    /* REMOVE WHITE BOX & FIX OVERLAPPING TEXT */
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            background-color: #0b132b !important;
-            border: 2px dashed #00f5d4 !important;
-            border-radius: 12px !important;
-            box-shadow: 0 0 15px rgba(0, 245, 212, 0.3) !important;
-        }
-
-        /* Clean Single Text Styling */
-        div[data-testid="stFileUploader"] span,
-        div[data-testid="stFileUploader"] small,
-        div[data-testid="stFileUploader"] p {
-            color: #00f5d4 !important;
-            font-family: 'Consolas', monospace !important;
-            font-size: 13px !important;
-            text-shadow: none !important;
-        }
-
-        /* Remove Extra SVG Pseudo Text Overlay */
-        div[data-testid="stFileUploader"] button::before,
-        div[data-testid="stFileUploader"] button::after {
-            content: none !important;
-        }
-
-        /* Clean Upload Button Inside */
-        div[data-testid="stFileUploader"] button {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00f5d4 !important;
-            border-radius: 8px !important;
-            font-weight: bold !important;
-        }
          ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
         div[data-testid="stFileUploader"] {
             border: 2px dashed #00f5d4 !important;
