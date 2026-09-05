@@ -73,7 +73,6 @@ def inject_custom_ultra_graphics_styles():
     """
     Injects high-definition cyberpunk CSS animations, glowing neon borders,
     popup modal styling, glassmorphism card components, and data grid overrides.
-    Includes persistent dynamic banner keyframe sequence for Rama Enterprises.
     """
     st.markdown("""
     <style>
@@ -392,18 +391,17 @@ def inject_custom_ultra_graphics_styles():
         }
 
         /* ---------------------------------------------------------------------- */
-        /* RAMA ENTERPRISES BANNER KEYFRAME ANIMATION ENGINE                      */
+        /* PERSISTENT RAMA ENTERPRISES BANNER DISPLAY SEQUENCE                    */
         /* ---------------------------------------------------------------------- */
 
         @keyframes bannerDisplayCycle {
-            0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            10% { opacity: 1; transform: translateY(0) scale(1); }
-            80% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-15px) scale(0.98); }
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            50% { opacity: 0.95; transform: scale(0.99); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .rama-banner-animated {
-            animation: bannerDisplayCycle 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+            animation: bannerDisplayCycle 4s ease-in-out infinite;
             background: linear-gradient(135deg, #00b4d8, #0077b6, #03071e);
             border: 3px solid #00f5d4;
             border-radius: 16px;
@@ -411,7 +409,8 @@ def inject_custom_ultra_graphics_styles():
             text-align: center;
             box-shadow: 0 0 40px rgba(0, 245, 212, 0.8), inset 0 0 20px rgba(0, 245, 212, 0.3);
             margin-bottom: 20px;
-            transition: all 0.5s ease;
+            display: block !important;
+            visibility: visible !important;
         }
 
         .rama-banner-title {
@@ -704,81 +703,42 @@ st.markdown("---")
 
 
 # ==============================================================================
-# SECTION 9: INTERACTIVE DATA GRID & EDITING SUITE
+# SECTION 9: TWO-COLUMN LAYOUT: SIMULATOR (LEFT) & LIVE PREVIEW (RIGHT)
 # ==============================================================================
 
-st.markdown("### ✏️ Interactive Data Grid & Dynamic Filters")
+st.markdown("### 🖥️ Interactive Email Inbox Simulator & Live Rendered Preview")
 
-search_query = st.text_input("🔍 Quick Search Filter (Party Name, Email, or Bank)", placeholder="Type to filter records...")
+sim_col, preview_col = st.columns([1, 1])
 
-if df is not None and not df.empty:
-    if search_query:
-        mask = df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)
-        filtered_df = df[mask]
+# --- LEFT COLUMN: SIMULATOR DATA CONTROLS ---
+with sim_col:
+    st.markdown("#### ⚙️ Test Data Controls")
+    
+    if df is not None and not df.empty:
+        sim_party = st.text_input("Simulated Party Name", value=get_field_strict(df.iloc[0], ["Party Name", "Party"], "RAJVEER"))
+        sim_acc = st.text_input("Simulated Account Number", value=get_field_strict(df.iloc[0], ["Account Number", "Account No"], "351800949903"))
+        sim_place = st.text_input("Simulated Place", value=get_field_strict(df.iloc[0], ["Place", "City"], "Patna"))
+        sim_bank = st.text_input("Simulated Bank Name", value=get_field_strict(df.iloc[0], ["Bank Name", "Bank"], "State Bank of India"))
+        
+        sim_u_ail = st.number_input("Used AIL Cheques", value=int(get_field_strict(df.iloc[0], ["Number of cheque used in AIL"], 4)))
+        sim_u_ahpl = st.number_input("Used AHPL Cheques", value=int(get_field_strict(df.iloc[0], ["Number of cheque used In AHPL"], 2)))
+        sim_h_ail = st.number_input("Hand AIL Cheques", value=int(get_field_strict(df.iloc[0], ["Total cheque in hand AIL"], 15)))
+        sim_h_ahpl = st.number_input("Hand AHPL Cheques", value=int(get_field_strict(df.iloc[0], ["Total cheque in hand AHPL"], 18)))
+        sim_date = datetime.now().strftime("%Y-%m-%d")
     else:
-        filtered_df = df
-
-display_df = filtered_df.drop(columns=["Record ID"], errors="ignore")
-edited_df = st.data_editor(display_df, num_rows="dynamic", use_container_width=True)
-
-st.session_state['crm_data'] = edited_df
-filtered_df = st.session_state['crm_data']
-df = st.session_state['crm_data']
-st.markdown("<br>", unsafe_allow_html=True)
+        sim_party, sim_acc, sim_place, sim_bank = "RAJVEER", "351800949903", "Patna", "State Bank of India"
+        sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl = 4, 2, 15, 18
+        sim_date = datetime.now().strftime("%Y-%m-%d")
 
 
 # ==============================================================================
-# SECTION 10: DISPATCH CONTROL ACTION PANEL & EXPORT OPTIONS
-# ==============================================================================
-
-st.markdown("### 🚀 Dispatch Control Actions & Data Exporters")
-col_b1, col_b2, col_b3, col_b4 = st.columns([1.5, 1, 1, 1])
-
-with col_b1:
-    start_dispatch_btn = st.button("🚀 LAUNCH CHEQUE DISPATCH", type="primary", use_container_width=True)
-
-with col_b2:
-    stop_dispatch_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
-
-with col_b3:
-    csv_buffer = io.StringIO()
-    if df is not None:
-        df.to_csv(csv_buffer, index=False)
-    st.download_button(
-        label="📥 EXPORT CSV",
-        data=csv_buffer.getvalue(),
-        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.csv",
-        mime="text/csv",
-        use_container_width=True
-    )
-
-with col_b4:
-    json_buffer = io.StringIO()
-    if df is not None:
-        df.to_json(json_buffer, orient="records", indent=2)
-    st.download_button(
-        label="📄 EXPORT JSON",
-        data=json_buffer.getvalue(),
-        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.json",
-        mime="application/json",
-        use_container_width=True
-    )
-
-if stop_dispatch_btn:
-    st.session_state['stop_dispatch'] = True
-    st.warning("🛑 Emergency Stop Triggered by User!")
-
-st.markdown("---")
-
-
-# ==============================================================================
-# SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE
+# SECTION 10: HTML EMAIL TEMPLATE GENERATOR ENGINE (WITH RIGHT POPUP BANNER)
 # ==============================================================================
 
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
     Generates dynamic HTML email markup formatted for modern email clients.
-    Includes animated top banner card for Rama Enterprises Abbott India Ltd.
+    Includes persistent animated banner box for Rama Enterprises Abbott India Ltd.
     """
     html_content = f"""<!DOCTYPE html>
 <html>
@@ -786,13 +746,12 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
     <meta charset="utf-8">
     <style>
         @keyframes bannerDisplayCycle {{
-            0% {{ opacity: 0; transform: translateY(-20px) scale(0.95); }}
-            10% {{ opacity: 1; transform: translateY(0) scale(1); }}
-            80% {{ opacity: 1; transform: translateY(0) scale(1); }}
-            100% {{ opacity: 0; transform: translateY(-15px) scale(0.98); }}
+            0% {{ opacity: 1; transform: translateY(0) scale(1); }}
+            50% {{ opacity: 0.95; transform: scale(0.99); }}
+            100% {{ opacity: 1; transform: translateY(0) scale(1); }}
         }}
         .rama-banner-animated {{
-            animation: bannerDisplayCycle 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+            animation: bannerDisplayCycle 4s ease-in-out infinite;
             background: linear-gradient(135deg, #00b4d8, #0077b6, #03071e);
             border: 3px solid #00f5d4;
             border-radius: 16px;
@@ -800,6 +759,8 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
             text-align: center;
             box-shadow: 0 0 40px rgba(0, 245, 212, 0.8), inset 0 0 20px rgba(0, 245, 212, 0.3);
             margin-bottom: 20px;
+            display: block !important;
+            visibility: visible !important;
         }}
         .rama-banner-title {{
             color: #ffffff;
@@ -821,7 +782,7 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
 
-  <!-- ANIMATED RAMA ENTERPRISES BANNER -->
+  <!-- PERSISTENT ANIMATED RAMA ENTERPRISES BANNER -->
   <div class="rama-banner-animated">
       <div class="rama-banner-title">RAMA ENTERPRISES</div>
       <div class="rama-banner-sub">ABBOTT INDIA LTD, PATNA</div>
@@ -896,66 +857,84 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
     return html_content
 
 
-# ==============================================================================
-# SECTION 12: RECORD SELECTION & FULL-SCREEN POPUP EMAIL PREVIEW ENGINE
-# ==============================================================================
-
-st.markdown("### 📩 Full-Selection Email Inbox Popup System")
-
-pop_col1, pop_col2 = st.columns([1, 1])
-
-with pop_col1:
-    if st.button("👁️ TOGGLE LIVE SELECTION EMAIL POPUP MODAL", use_container_width=True):
-        st.session_state['show_inbox_popup'] = not st.session_state['show_inbox_popup']
-
-with pop_col2:
-    if st.session_state['show_inbox_popup']:
-        st.success("✨ Email Popup Window: ACTIVE")
-    else:
-        st.info("💡 Email Popup Window: COLLAPSED")
-
-if st.session_state['show_inbox_popup']:
-    st.markdown('<div class="popup-modal-overlay">', unsafe_allow_html=True)
-    st.markdown('<div class="popup-modal-header">📨 Interactive Email Popup Simulator</div>', unsafe_allow_html=True)
+# --- RIGHT COLUMN: LIVE RENDERED PREVIEW (PICTURE 1 LAYOUT) ---
+with preview_col:
+    st.markdown("#### 📱 Live Rendered Email Preview")
     
-    if df is not None and not df.empty:
-        party_list = df.apply(
-            lambda r: f"{get_field_strict(r, ['Party Name', 'Party'], 'Unknown')} ({get_field_strict(r, ['Email', 'Email ID'], 'No Mail')})", 
-            axis=1
-        ).tolist()
-        
-        selected_index = st.selectbox(
-            "🎯 Select Specific Party Record to Preview Email Popup Modal:", 
-            options=range(len(party_list)), 
-            format_func=lambda i: party_list[i],
-            key="popup_record_selector"
-        )
-        
-        sel_row = df.iloc[selected_index]
-        
-        p_name = get_field_strict(sel_row, ["Party Name", "Party"], "Valued Customer")
-        p_date = get_field_strict(sel_row, ["Date", "Entry Date"], datetime.now().strftime("%Y-%m-%d"))
-        p_acc = get_field_strict(sel_row, ["Account Number", "Account No"], "N/A")
-        p_email = get_field_strict(sel_row, ["Email", "Email ID"], "N/A")
-        p_place = get_field_strict(sel_row, ["Place", "City"], "N/A")
-        p_bank = get_field_strict(sel_row, ["Bank Name", "Bank"], "N/A")
-        p_u_ail = get_field_strict(sel_row, ["Number of cheque used in AIL"], "0")
-        p_u_ahpl = get_field_strict(sel_row, ["Number of cheque used In AHPL"], "0")
-        p_h_ail = get_field_strict(sel_row, ["Total cheque in hand AIL"], "0")
-        p_h_ahpl = get_field_strict(sel_row, ["Total cheque in hand AHPL"], "0")
+    right_preview_html = build_email_template(
+        sim_party, sim_date, sim_acc, sim_place, sim_bank,
+        sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl,
+        st.session_state['custom_cfa_header'], st.session_state['custom_email_subject']
+    )
+    st.components.v1.html(right_preview_html, height=720, scrolling=True)
 
-        preview_html = build_email_template(
-            p_name, p_date, p_acc, p_place, p_bank,
-            p_u_ail, p_u_ahpl, p_h_ail, p_h_ahpl,
-            st.session_state['custom_cfa_header'], st.session_state['custom_email_subject']
-        )
-        
-        st.markdown("#### 📱 Rendered Live Email Preview")
-        st.components.v1.html(preview_html, height=580, scrolling=True)
+st.markdown("---")
+
+
+# ==============================================================================
+# SECTION 11: INTERACTIVE DATA GRID & EDITING SUITE
+# ==============================================================================
+
+st.markdown("### ✏️ Interactive Data Grid & Dynamic Filters")
+
+search_query = st.text_input("🔍 Quick Search Filter (Party Name, Email, or Bank)", placeholder="Type to filter records...")
+
+if df is not None and not df.empty:
+    if search_query:
+        mask = df.apply(lambda row: row.astype(str).str.contains(search_query, case=False).any(), axis=1)
+        filtered_df = df[mask]
     else:
-        st.warning("No dataset loaded to preview emails.")
+        filtered_df = df
 
-    st.markdown('</div>', unsafe_allow_html=True)
+display_df = filtered_df.drop(columns=["Record ID"], errors="ignore")
+edited_df = st.data_editor(display_df, num_rows="dynamic", use_container_width=True)
+
+st.session_state['crm_data'] = edited_df
+filtered_df = st.session_state['crm_data']
+df = st.session_state['crm_data']
+st.markdown("<br>", unsafe_allow_html=True)
+
+
+# ==============================================================================
+# SECTION 12: DISPATCH CONTROL ACTION PANEL & EXPORT OPTIONS
+# ==============================================================================
+
+st.markdown("### 🚀 Dispatch Control Actions & Data Exporters")
+col_b1, col_b2, col_b3, col_b4 = st.columns([1.5, 1, 1, 1])
+
+with col_b1:
+    start_dispatch_btn = st.button("🚀 LAUNCH CHEQUE DISPATCH", type="primary", use_container_width=True)
+
+with col_b2:
+    stop_dispatch_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
+
+with col_b3:
+    csv_buffer = io.StringIO()
+    if df is not None:
+        df.to_csv(csv_buffer, index=False)
+    st.download_button(
+        label="📥 EXPORT CSV",
+        data=csv_buffer.getvalue(),
+        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.csv",
+        mime="text/csv",
+        use_container_width=True
+    )
+
+with col_b4:
+    json_buffer = io.StringIO()
+    if df is not None:
+        df.to_json(json_buffer, orient="records", indent=2)
+    st.download_button(
+        label="📄 EXPORT JSON",
+        data=json_buffer.getvalue(),
+        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.json",
+        mime="application/json",
+        use_container_width=True
+    )
+
+if stop_dispatch_btn:
+    st.session_state['stop_dispatch'] = True
+    st.warning("🛑 Emergency Stop Triggered by User!")
 
 st.markdown("---")
 
