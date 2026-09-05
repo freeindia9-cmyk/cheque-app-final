@@ -887,7 +887,9 @@ if start_dispatch_btn:
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
-/* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
+st.markdown("""
+    <style>
+        /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
         div[data-testid="stFileUploader"],
         div[data-testid="stFileUploader"] > div,
         div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
@@ -916,3 +918,5 @@ if st.session_state['dispatch_logs']:
         .stApp {
             animation: appBgGlow 6s infinite ease-in-out !important;
         }
+    </style>
+""", unsafe_allow_html=True)
