@@ -62,7 +62,7 @@ if 'custom_email_subject' not in st.session_state:
     st.session_state['custom_email_subject'] = "BUFFER CHEQUE DETAILS SUMMARY"
 
 if 'custom_cfa_header' not in st.session_state:
-    st.session_state['custom_cfa_header'] = "RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA"
+    st.session_state['custom_cfa_header'] = "RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA"
 
 
 # ==============================================================================
@@ -72,8 +72,7 @@ if 'custom_cfa_header' not in st.session_state:
 def inject_custom_ultra_graphics_styles():
     """
     Injects high-definition cyberpunk CSS animations, glowing neon borders,
-    popup modal styling, glassmorphism card components, and data grid overrides.
-    Includes persistent dynamic banner keyframe sequence for Rama Enterprises.
+    popup modal styling, glassmorphism card components, dynamic overlay animation, and data grid overrides.
     """
     st.markdown("""
     <style>
@@ -389,47 +388,6 @@ def inject_custom_ultra_graphics_styles():
             margin-bottom: 22px;
             text-transform: uppercase;
             letter-spacing: 1.5px;
-        }
-
-        /* ---------------------------------------------------------------------- */
-        /* RAMA ENTERPRISES BANNER KEYFRAME ANIMATION ENGINE                      */
-        /* ---------------------------------------------------------------------- */
-
-        @keyframes bannerDisplayCycle {
-            0% { opacity: 0; transform: translateY(-20px) scale(0.95); }
-            10% { opacity: 1; transform: translateY(0) scale(1); }
-            80% { opacity: 1; transform: translateY(0) scale(1); }
-            100% { opacity: 0; transform: translateY(-15px) scale(0.98); }
-        }
-
-        .rama-banner-animated {
-            animation: bannerDisplayCycle 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-            background: linear-gradient(135deg, #00b4d8, #0077b6, #03071e);
-            border: 3px solid #00f5d4;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 0 40px rgba(0, 245, 212, 0.8), inset 0 0 20px rgba(0, 245, 212, 0.3);
-            margin-bottom: 20px;
-            transition: all 0.5s ease;
-        }
-
-        .rama-banner-title {
-            color: #ffffff;
-            font-size: 26px;
-            font-weight: 900;
-            margin: 0;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
-        }
-
-        .rama-banner-sub {
-            color: #00f5d4;
-            font-size: 15px;
-            font-weight: 800;
-            margin-top: 6px;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
         }
     </style>
     """, unsafe_allow_html=True)
@@ -777,63 +735,111 @@ st.markdown("---")
 
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
-    Generates dynamic HTML email markup formatted for modern email clients.
-    Includes animated top banner card for Rama Enterprises Abbott India Ltd.
+    Generates dynamic HTML email markup formatted for modern email clients,
+    featuring a 4-second full-screen pop-up overlay animation that seamlessly
+    fades out and transitions into the email top header ("RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA").
     """
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <style>
-        @keyframes bannerDisplayCycle {{
-            0% {{ opacity: 0; transform: translateY(-20px) scale(0.95); }}
-            10% {{ opacity: 1; transform: translateY(0) scale(1); }}
-            80% {{ opacity: 1; transform: translateY(0) scale(1); }}
-            100% {{ opacity: 0; transform: translateY(-15px) scale(0.98); }}
+        /* Fade-out Overlay Animation CSS */
+        @keyframes fadeOutTransform {{
+            0% {{
+                opacity: 1;
+                transform: scale(1);
+                visibility: visible;
+            }}
+            75% {{
+                opacity: 1;
+                transform: scale(1);
+            }}
+            95% {{
+                opacity: 0;
+                transform: scale(0.92);
+            }}
+            100% {{
+                opacity: 0;
+                transform: scale(0.85);
+                visibility: hidden;
+                pointer-events: none;
+            }}
         }}
-        .rama-banner-animated {{
-            animation: bannerDisplayCycle 4.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-            background: linear-gradient(135deg, #00b4d8, #0077b6, #03071e);
+
+        .fullscreen-overlay {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle at center, #0d1b2a, #03071e);
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeOutTransform 4s ease-in-out forwards;
+            box-shadow: inset 0 0 100px rgba(0, 245, 212, 0.4);
+        }}
+
+        .overlay-popup-box {{
+            background: #0b132b;
             border: 3px solid #00f5d4;
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 20px;
+            padding: 35px 50px;
             text-align: center;
-            box-shadow: 0 0 40px rgba(0, 245, 212, 0.8), inset 0 0 20px rgba(0, 245, 212, 0.3);
-            margin-bottom: 20px;
+            box-shadow: 0 0 50px rgba(0, 245, 212, 0.8);
         }}
-        .rama-banner-title {{
-            color: #ffffff;
+
+        .overlay-title {{
+            color: #00f5d4;
             font-size: 26px;
             font-weight: 900;
-            margin: 0;
-            letter-spacing: 2px;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(0, 245, 212, 0.8);
         }}
-        .rama-banner-sub {{
-            color: #00f5d4;
-            font-size: 15px;
+
+        .overlay-subtitle {{
+            color: #ffb703;
+            font-size: 18px;
             font-weight: 800;
-            margin-top: 6px;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 10px rgba(0, 245, 212, 0.8);
+            letter-spacing: 0.5px;
+        }}
+
+        /* Header Animation Seamless Transition */
+        @keyframes headerFadeIn {{
+            0% {{ opacity: 0; transform: translateY(-10px); }}
+            75% {{ opacity: 0; transform: translateY(-10px); }}
+            100% {{ opacity: 1; transform: translateY(0); }}
+        }}
+
+        .email-top-header {{
+            animation: headerFadeIn 4.2s ease-in-out forwards;
         }}
     </style>
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
 
-  <!-- ANIMATED RAMA ENTERPRISES BANNER -->
-  <div class="rama-banner-animated">
-      <div class="rama-banner-title">RAMA ENTERPRISES</div>
-      <div class="rama-banner-sub">ABBOTT INDIA LTD, PATNA</div>
+  <!-- Exact 4-Second Full-Screen Fade-Out Overlay Pop-up -->
+  <div class="fullscreen-overlay">
+    <div class="overlay-popup-box">
+      <div class="overlay-title">⚡ {str(email_title).upper()} ⚡</div>
+      <div class="overlay-subtitle">RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA</div>
+    </div>
   </div>
 
   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
     <tr>
       <td style="padding: 24px; text-align: center;">
-        <div style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
-          <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 900; letter-spacing: 1px;">
-            {str(email_title).upper()}
+        <div class="email-top-header" style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
+          <h1 style="margin: 0; color: #ffffff; font-size: 22px; font-weight: 900; letter-spacing: 1px;">
+            RAMA ENTERPRISES ABBOTT INDIA LTD, PATNA
           </h1>
+          <div style="margin-top: 6px; color: #caf0f8; font-size: 14px; font-weight: 700;">
+            {str(email_title).upper()}
+          </div>
         </div>
         <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
           ✨ {str(cfa_title)}
@@ -951,7 +957,7 @@ if st.session_state['show_inbox_popup']:
         )
         
         st.markdown("#### 📱 Rendered Live Email Preview")
-        st.components.v1.html(preview_html, height=580, scrolling=True)
+        st.components.v1.html(preview_html, height=480, scrolling=True)
     else:
         st.warning("No dataset loaded to preview emails.")
 
