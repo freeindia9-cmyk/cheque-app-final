@@ -808,24 +808,24 @@ if st.session_state['dispatch_logs']:
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
 st.markdown("""
 <style>
-    /* Glowing Neon Dashed Border for Upload Box */
+    /* Steady Glowing Neon Dashed Border (Blink nahi karega) */
     div[data-testid="stFileUploader"],
     div[data-testid="stFileUploader"] > div,
     div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
         border: 2px dashed #00f5d4 !important;
         border-radius: 12px !important;
         background-color: #0b132b !important;
-        box-shadow: 0 0 20px rgba(0, 245, 212, 0.6), inset 0 0 10px rgba(0, 245, 212, 0.2) !important;
+        box-shadow: 0 0 18px rgba(0, 245, 212, 0.6) !important; /* Ekdum steady glow */
+        animation: none !important; /* Flickering/Blinking rokhane ke liye */
         padding: 10px !important;
     }
 
-    /* Glowing Browse Button Inside */
+    /* Browse Button Styling */
     div[data-testid="stFileUploader"] button {
         background-color: #101d30 !important;
         color: #00f5d4 !important;
         border: 1px solid #00f5d4 !important;
         border-radius: 6px !important;
-        box-shadow: 0 0 10px rgba(0, 245, 212, 0.4) !important;
     }
 </style>
 """, unsafe_allow_html=True)
