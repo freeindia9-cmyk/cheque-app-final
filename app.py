@@ -883,6 +883,12 @@ if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
 st.markdown("""
+/* FIX TEXT VISIBILITY DURING CELL EDITING */
+        div[data-testid="stDataEditor"] input,
+        div[data-baseweb="input"] input {
+            color: #ffffff !important;
+            background-color: #101d30 !important;
+        }
     <style>
         /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
         div[data-testid="stFileUploader"],
