@@ -589,7 +589,7 @@ if df is not None and not df.empty:
 # Record ID aur Index numbers (0, 1, 2) hatane ke liye
     display_df = filtered_df.drop(columns=['Record ID'], errors='ignore')
 
-    st.dataframe(
+   edited_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
         display_df,
         use_container_width=True,
         height=380,
