@@ -590,11 +590,6 @@ if df is not None and not df.empty:
     display_df = filtered_df.drop(columns=['Record ID'], errors='ignore')
 
    edited_df = st.data_editor(df, num_rows="dynamic", use_container_width=True)
-        display_df,
-        use_container_width=True,
-        height=380,
-        hide_index=True
-    )
     
     st.session_state['crm_data'] = filtered_df
     df = st.session_state['crm_data']
