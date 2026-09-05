@@ -94,57 +94,83 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-        /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
-        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
-            background-color: #16243b !important;
-            border: 2px solid #00b4d8 !important;
-            border-radius: 16px !important;
-            padding: 8px !important;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
+        /* ULTRA VISIBLE SEARCH INPUT ENHANCEMENT */
+        div[aria-label="🔍 Quick Search Filter (Party Name, Email, or Bank)"], 
+        div[data-testid="stTextInput"] input {
+            background-color: #09203f !important;
+            color: #00ffcc !important;
+            border: 3px solid #00f5d4 !important;
+            border-radius: 14px !important;
+            font-size: 16px !important;
+            font-weight: 900 !important;
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.7) !important;
         }
 
-        /* Grid Cells & Header Contrast Enhancement */
+        /* ULTRA VISIBLE HIGH-CONTRAST COLUMN DATA GRID FIX */
+        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
+            background-color: #0a1128 !important;
+            border: 3.5px solid #00f5d4 !important;
+            border-radius: 18px !important;
+            padding: 10px !important;
+            box-shadow: 0 0 40px rgba(0, 245, 212, 0.6) !important;
+        }
+
+        /* Ultra Visible Grid Cells, Headers & Crisp Contrast */
         [data-testid="stDataFrame"] * {
-            background-color: #16243b !important;
+            background-color: #0a1128 !important;
             color: #ffffff !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
+            font-weight: 800 !important;
+            font-size: 15px !important;
         }
 
         /* Glide Data Grid Specific Cell Rules */
-        .gdg-header-cell, .gdg-cell {
-            background-color: #101d30 !important;
+        .gdg-header-cell {
+            background-color: #03081e !important;
+            color: #ffea00 !important;
+            font-weight: 900 !important;
+            font-size: 16px !important;
+            border-bottom: 3px solid #00f5d4 !important;
+            text-transform: uppercase !important;
+        }
+        
+        .gdg-cell {
+            background-color: #0f1c3f !important;
             color: #00f5d4 !important;
-            border-color: #00b4d8 !important;
+            border: 1px solid #00b4d8 !important;
+            font-weight: 700 !important;
         }
 
-        /* Modern File Uploader Dropzone */
+        /* ULTRA VISIBLE UPLOAD BUTTONS & DROPZONE */
         [data-testid="stFileUploadDropzone"] {
-            background: linear-gradient(135deg, #101d30, #0c1827) !important;
-            border: 2px dashed #00b4d8 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3) !important;
+            background: linear-gradient(135deg, #091e3a, #102a45) !important;
+            border: 3.5px dashed #00f5d4 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.5) !important;
             transition: all 0.5s ease-in-out !important;
         }
 
         [data-testid="stFileUploadDropzone"]:hover {
-            border-color: #00f5d4 !important;
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.6) !important;
+            border-color: #ffea00 !important;
+            box-shadow: 0 0 45px rgba(255, 234, 0, 0.8) !important;
         }
 
-        [data-testid="stFileUploadDropzone"] button {
-            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
-            color: #ffffff !important;
-            border: 2px solid #90e0ef !important;
-            border-radius: 10px !important;
-            font-weight: 800 !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6) !important;
+        [data-testid="stFileUploadDropzone"] button,
+        [data-testid="stFileUploadDropzone"] [data-testid="stBaseButton-secondary"] {
+            background: linear-gradient(135deg, #00f5d4, #0077b6) !important;
+            color: #000000 !important;
+            border: 2px solid #ffffff !important;
+            border-radius: 12px !important;
+            font-size: 15px !important;
+            font-weight: 900 !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.9) !important;
             transition: all 0.5s ease-in-out !important;
         }
 
         [data-testid="stFileUploadDropzone"] button:hover {
-            transform: translateY(-3px) scale(1.03);
-            box-shadow: 0 0 30px rgba(144, 224, 239, 0.9) !important;
+            transform: translateY(-3px) scale(1.05);
+            background: linear-gradient(135deg, #ffea00, #ffa000) !important;
+            color: #000000 !important;
+            box-shadow: 0 0 40px rgba(255, 234, 0, 1) !important;
         }
 
         /* Top Cyber Header Banner */
