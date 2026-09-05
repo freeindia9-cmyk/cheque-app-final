@@ -35,16 +35,14 @@ if 'dispatch_logs' not in st.session_state:
     st.session_state['dispatch_logs'] = []
 if 'validation_alerts' not in st.session_state:
     st.session_state['validation_alerts'] = []
-if 'theme_color' not in st.session_state:
-    st.session_state['theme_color'] = "Electric Cyan"
 
 # ==========================================
-# 2. ADVANCED DYNAMIC CSS & UI STYLING ENGINE
+# 2. CLEAN DYNAMIC STYLING (FIXED GRID RENDERING)
 # ==========================================
 def inject_custom_styles():
     st.markdown("""
     <style>
-        /* Global Background and Fonts */
+        /* Global Background and Dark Theme */
         .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
             background: radial-gradient(circle at 50% 20%, #0d1b2a, #0b132b, #040814) !important;
             color: #e0e1dd !important;
@@ -64,13 +62,11 @@ def inject_custom_styles():
         section[data-testid="stSidebar"] h3 {
             color: #90e0ef !important;
             font-weight: 700 !important;
-            text-shadow: 0 0 8px rgba(144, 224, 239, 0.5) !important;
         }
 
         /* High Visibility Text Accent Headers */
         h1, h2, h3, h4, h5, h6 {
             color: #48cae4 !important;
-            text-shadow: 0 0 12px rgba(72, 202, 228, 0.6) !important;
             font-weight: 800 !important;
         }
 
@@ -84,93 +80,7 @@ def inject_custom_styles():
             color: #00f5d4 !important;
             border: 2px solid #00b4d8 !important;
             border-radius: 12px !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
             font-weight: 700 !important;
-            transition: all 0.4s ease-in-out !important;
-        }
-
-        input:focus, div[data-baseweb="input"]:focus-within {
-            border-color: #00f5d4 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
-        }
-
-        /* ULTRA VISIBLE SEARCH INPUT ENHANCEMENT */
-        div[aria-label="🔍 Quick Search Filter (Party Name, Email, or Bank)"], 
-        div[data-testid="stTextInput"] input {
-            background-color: #09203f !important;
-            color: #00ffcc !important;
-            border: 3px solid #00f5d4 !important;
-            border-radius: 14px !important;
-            font-size: 16px !important;
-            font-weight: 900 !important;
-            box-shadow: 0 0 20px rgba(0, 245, 212, 0.7) !important;
-        }
-
-        /* ULTRA VISIBLE HIGH-CONTRAST COLUMN DATA GRID FIX */
-        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
-            background-color: #0a1128 !important;
-            border: 3.5px solid #00f5d4 !important;
-            border-radius: 18px !important;
-            padding: 10px !important;
-            box-shadow: 0 0 40px rgba(0, 245, 212, 0.6) !important;
-        }
-
-        /* Ultra Visible Grid Cells, Headers & Crisp Contrast */
-        [data-testid="stDataFrame"] * {
-            background-color: #0a1128 !important;
-            color: #ffffff !important;
-            font-weight: 800 !important;
-            font-size: 15px !important;
-        }
-
-        /* Glide Data Grid Specific Cell Rules */
-        .gdg-header-cell {
-            background-color: #03081e !important;
-            color: #ffea00 !important;
-            font-weight: 900 !important;
-            font-size: 16px !important;
-            border-bottom: 3px solid #00f5d4 !important;
-            text-transform: uppercase !important;
-        }
-        
-        .gdg-cell {
-            background-color: #0f1c3f !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00b4d8 !important;
-            font-weight: 700 !important;
-        }
-
-        /* ULTRA VISIBLE UPLOAD BUTTONS & DROPZONE */
-        [data-testid="stFileUploadDropzone"] {
-            background: linear-gradient(135deg, #091e3a, #102a45) !important;
-            border: 3.5px dashed #00f5d4 !important;
-            border-radius: 20px !important;
-            box-shadow: 0 0 30px rgba(0, 245, 212, 0.5) !important;
-            transition: all 0.5s ease-in-out !important;
-        }
-
-        [data-testid="stFileUploadDropzone"]:hover {
-            border-color: #ffea00 !important;
-            box-shadow: 0 0 45px rgba(255, 234, 0, 0.8) !important;
-        }
-
-        [data-testid="stFileUploadDropzone"] button,
-        [data-testid="stFileUploadDropzone"] [data-testid="stBaseButton-secondary"] {
-            background: linear-gradient(135deg, #00f5d4, #0077b6) !important;
-            color: #000000 !important;
-            border: 2px solid #ffffff !important;
-            border-radius: 12px !important;
-            font-size: 15px !important;
-            font-weight: 900 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.9) !important;
-            transition: all 0.5s ease-in-out !important;
-        }
-
-        [data-testid="stFileUploadDropzone"] button:hover {
-            transform: translateY(-3px) scale(1.05);
-            background: linear-gradient(135deg, #ffea00, #ffa000) !important;
-            color: #000000 !important;
-            box-shadow: 0 0 40px rgba(255, 234, 0, 1) !important;
         }
 
         /* Top Cyber Header Banner */
@@ -179,7 +89,7 @@ def inject_custom_styles():
             margin-bottom: 30px !important;
             background: rgba(13, 27, 42, 0.85);
             border: 2px solid #00b4d8;
-            box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4);
             backdrop-filter: blur(15px);
             border-radius: 20px;
             padding: 24px;
@@ -192,7 +102,7 @@ def inject_custom_styles():
             font-weight: 900;
             letter-spacing: 2px;
             margin: 0;
-            text-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
+            text-shadow: 0 0 20px rgba(0, 245, 212, 0.7) !important;
         }
 
         .subtitle-badge {
@@ -205,7 +115,6 @@ def inject_custom_styles():
             font-weight: 800;
             color: #ffb703 !important;
             margin-top: 12px;
-            box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
         }
 
         /* Analytics Metric Cards */
@@ -215,14 +124,7 @@ def inject_custom_styles():
             border-radius: 16px;
             padding: 20px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
-            transition: all 0.4s ease-in-out;
-        }
-
-        .metric-card-box:hover {
-            transform: translateY(-5px);
-            border-color: #00f5d4;
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.2);
         }
 
         .metric-label {
@@ -238,7 +140,6 @@ def inject_custom_styles():
             font-weight: 900;
             margin-top: 8px;
             color: #ffffff !important;
-            text-shadow: 0 0 18px rgba(255, 255, 255, 0.8) !important;
         }
 
         /* Dynamic Glowing Action Buttons */
@@ -248,8 +149,6 @@ def inject_custom_styles():
             padding: 16px 24px !important;
             font-size: 15px !important;
             letter-spacing: 1px !important;
-            transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
         }
 
         /* Launch Dispatch Primary Button */
@@ -257,14 +156,7 @@ def inject_custom_styles():
             background: linear-gradient(135deg, #00b4d8, #0077b6) !important;
             color: #ffffff !important;
             border: 2px solid #00f5d4 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
-        }
-
-        div.stButton > button[kind="primary"]:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
-            box-shadow: 0 0 45px rgba(0, 245, 212, 0.95) !important;
         }
 
         /* Emergency Stop Secondary Button */
@@ -272,14 +164,7 @@ def inject_custom_styles():
             background: linear-gradient(135deg, #d90429, #ef233c) !important;
             color: #ffffff !important;
             border: 2px solid #ff4d6d !important;
-            box-shadow: 0 0 25px rgba(239, 35, 60, 0.6) !important;
             width: 100% !important;
-        }
-
-        div.stButton > button[kind="secondary"]:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #ff4d6d, #b7094c) !important;
-            box-shadow: 0 0 45px rgba(255, 77, 109, 0.95) !important;
         }
 
         /* Download Button */
@@ -287,14 +172,7 @@ def inject_custom_styles():
             background: linear-gradient(135deg, #3a0ca3, #4361ee) !important;
             color: #ffffff !important;
             border: 2px solid #4cc9f0 !important;
-            box-shadow: 0 0 25px rgba(76, 201, 240, 0.6) !important;
             width: 100% !important;
-        }
-
-        div.stDownloadButton > button:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #4cc9f0, #7209b7) !important;
-            box-shadow: 0 0 45px rgba(76, 201, 240, 0.95) !important;
         }
 
         /* Log Output Panel */
@@ -507,7 +385,7 @@ with st.expander("🔍 System Data Audit & Health Report", expanded=False):
 st.markdown("---")
 
 # ==========================================
-# 9. INTERACTIVE DATA GRID & FILTERING
+# 9. INTERACTIVE DATA GRID & FILTERING (FULLY VISIBLE & EDITABLE)
 # ==========================================
 st.markdown("### ✏️ Interactive Data Grid")
 
@@ -520,11 +398,12 @@ if df is not None and not df.empty:
     else:
         filtered_df = df
 
+    # Fixed Data Editor to guarantee full visibility and inline editing
     edited_df = st.data_editor(
         filtered_df,
         num_rows="dynamic",
         use_container_width=True,
-        height=380,
+        height=420,
         key="data_editor_grid"
     )
     
@@ -714,7 +593,6 @@ with sim_col1:
 
 with sim_col2:
     st.markdown("#### 📱 Live Rendered Email Preview")
-    # Dynamically pass sidebar inputs to email generator for real-time reactive update
     preview_html = build_email_template(
         sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
         sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title, email_subject_prefix
