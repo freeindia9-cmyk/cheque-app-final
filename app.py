@@ -921,14 +921,22 @@ st.markdown("""
         padding: 4px !important;
     }
 
-    /* 4. HIGH CONTRAST EDITING BOX & TEXT */
+    /* 4. AGGRESSIVE FIX FOR EDITING POPUP & INPUT TEXT VISIBILITY */
     div[data-testid="stDataEditor"] input,
-    div[data-baseweb="popover"] input {
-        color: #00f5d4 !important;
+    div[data-baseweb="popover"] input,
+    div[data-baseweb="base-input"] input,
+    input[aria-label*="data"],
+    input {
+        color: #ffffff !important;
         background-color: #020617 !important;
-        -webkit-text-fill-color: #00f5d4 !important;
+        -webkit-text-fill-color: #ffffff !important;
         font-weight: bold !important;
-        font-size: 14px !important;
+    }
+    
+    div[data-baseweb="popover"] div[data-baseweb="base-input"],
+    div[data-baseweb="menu"] {
+        background-color: #020617 !important;
+        border: 1px solid #00f5d4 !important;
     }
 </style>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True)0
