@@ -586,16 +586,16 @@ if df is not None and not df.empty:
     else:
         filtered_df = df
 
-# Record ID aur Index numbers (0, 1, 2) hatane ke liye
-    display_df = filtered_df.drop(columns=['Record ID'], errors='ignore')
-    if "Record ID" in df.columns:
-    df = df.drop(columns=["Record ID"])
-    edited_df = st.data_editor(filtered_df, num_rows="dynamic", use_container_width=True)
-    st.session_state['crm_data'] = edited_df
-    filtered_df = st.session_state['crm_data']
-    st.session_state['crm_data'] = filtered_df
-    df = st.session_state['crm_data']
+# Record ID ko grid se hatane ke liye
+display_df = filtered_df.drop(columns=["Record ID"], errors="ignore")
 
+# Grid mein display_df pass karein (taaki Record ID na dikhe)
+edited_df = st.data_editor(display_df, num_rows="dynamic", use_container_width=True)
+
+# Session state update karna
+st.session_state['crm_data'] = edited_df
+filtered_df = st.session_state['crm_data']
+df = st.session_state['crm_data']
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
