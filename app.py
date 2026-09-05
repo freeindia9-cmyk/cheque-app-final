@@ -97,30 +97,33 @@ def inject_custom_styles():
 /* NEON GLOW DATA GRID STYLING */
         div[data-testid="stDataFrame"] {
             background-color: #0b132b !important;
-          /* NEON GLOW DATA GRID STYLING */
+         /* NEON GLOW DATA GRID CONTAINER */
         div[data-testid="stDataFrame"] {
             background-color: #0b132b !important;
             border: 2px solid #00f5d4 !important;
             border-radius: 16px !important;
             padding: 8px !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6), inset 0 0 15px rgba(0, 245, 212, 0.3) !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.7), inset 0 0 15px rgba(0, 245, 212, 0.4) !important;
         }
 
-        /* Dark Background and Neon Text for Table Headers and Cells */
-        div[data-testid="stDataFrame"] th, 
-        div[data-testid="stDataFrame"] td,
-        div[data-testid="stDataFrame"] [role="gridcell"] {
+        /* GLIDE GRID CANVAS NEON COLOR & BORDER FORCE */
+        div[data-testid="stDataFrame"] canvas,
+        div[data-testid="stDataFrame"] [role="grid"],
+        div[data-testid="stDataFrame"] .glideDataEditor {
+            filter: drop-shadow(0px 0px 4px #00f5d4) !important;
+            background-color: #101d30 !important;
+        }
+
+        /* NEON HEADER & CELL TEXT OVERRIDE */
+        .gdg-header-cell, .gdg-cell, .dvn-scroller {
             background-color: #101d30 !important;
             color: #00f5d4 !important;
             font-family: 'Consolas', 'Courier New', monospace !important;
-            font-weight: 700 !important;
-            font-size: 14px !important;
+            font-weight: 800 !important;
+            font-size: 15px !important;
+            text-shadow: 0 0 10px #00f5d4, 0 0 20px #00f5d4 !important;
             border: 1px solid #00b4d8 !important;
-            text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
         }
-
-        /* Hover Effect for Rows */
-        div[data-testid="stDataFrame"] tr:hover td {
             background-color: #1a2c42 !important;
             box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
         }
