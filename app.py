@@ -103,12 +103,19 @@ def inject_custom_styles():
             box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
         }
 
-        /* Grid Cells & Header Contrast Enhancement */
-        [data-testid="stDataFrame"] * {
+     /* HIGH-VISIBILITY DATA GRID FIX */
+        div[data-testid="stDataFrame"] {
             background-color: #16243b !important;
-            color: #ffffff !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
+            border: 2px solid #00b4d8 !important;
+            border-radius: 16px !important;
+            padding: 8px !important;
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
+        }
+
+        /* Canvas & Grid Cells Contrast Override */
+        div[data-testid="stDataFrame"] [data-testid="glideDataEditor"],
+        div[data-testid="stDataFrame"] canvas {
+            filter: invert(0.9) hue-rotate(180deg) !important;
         }
 
         /* Glide Data Grid Specific Cell Rules */
