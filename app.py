@@ -97,6 +97,9 @@ def inject_custom_styles():
 /* NEON GLOW DATA GRID STYLING */
         div[data-testid="stDataFrame"] {
             background-color: #0b132b !important;
+          /* NEON GLOW DATA GRID STYLING */
+        div[data-testid="stDataFrame"] {
+            background-color: #0b132b !important;
             border: 2px solid #00f5d4 !important;
             border-radius: 16px !important;
             padding: 8px !important;
