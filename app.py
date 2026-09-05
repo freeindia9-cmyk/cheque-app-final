@@ -12,102 +12,149 @@ import re
 import io
 import json
 
-# ==========================================
-# 1. PAGE CONFIGURATION & STATE INITIALIZATION
-# ==========================================
+# ==============================================================================
+# SECTION 1: GLOBAL SYSTEM PAGE CONFIGURATION & STATE INITIALIZATION
+# ==============================================================================
+
 st.set_page_config(
-    page_title="8K Cyberpunk Cheque Dispatcher Engine",
+    page_title="8K Cyberpunk Cheque Dispatcher Engine Pro Ultra",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Initialize Session State Variables
+# Initialize Session State Variables for Persistent App Operations
+
 if 'crm_data' not in st.session_state:
     st.session_state['crm_data'] = None
+
 if 'sent_count' not in st.session_state:
     st.session_state['sent_count'] = 0
+
 if 'failed_count' not in st.session_state:
     st.session_state['failed_count'] = 0
+
 if 'stop_dispatch' not in st.session_state:
     st.session_state['stop_dispatch'] = False
+
 if 'dispatch_logs' not in st.session_state:
     st.session_state['dispatch_logs'] = []
+
 if 'validation_alerts' not in st.session_state:
     st.session_state['validation_alerts'] = []
-if 'theme_color' not in st.session_state:
-    st.session_state['theme_color'] = "Electric Cyan"
 
-# ==========================================
-# 2. ADVANCED DYNAMIC CSS & UI STYLING ENGINE
-# ==========================================
-def inject_custom_styles():
+if 'theme_color' not in st.session_state:
+    st.session_state['theme_color'] = "Electric Neon Cyan"
+
+if 'show_inbox_popup' not in st.session_state:
+    st.session_state['show_inbox_popup'] = False
+
+if 'selected_record_for_popup' not in st.session_state:
+    st.session_state['selected_record_for_popup'] = 0
+
+if 'smtp_status' not in st.session_state:
+    st.session_state['smtp_status'] = "Not Tested"
+
+if 'column_mapping' not in st.session_state:
+    st.session_state['column_mapping'] = {}
+
+if 'custom_email_subject' not in st.session_state:
+    st.session_state['custom_email_subject'] = "BUFFER CHEQUE DETAILS SUMMARY"
+
+if 'custom_cfa_header' not in st.session_state:
+    st.session_state['custom_cfa_header'] = "RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA"
+
+
+# ==============================================================================
+# SECTION 2: ADVANCED DYNAMIC ULTRA-GRAPHICS CSS & UI STYLING ENGINE
+# ==============================================================================
+
+def inject_custom_ultra_graphics_styles():
+    """
+    Injects high-definition cyberpunk CSS animations, glowing neon borders,
+    popup modal styling, glassmorphism card components, and data grid overrides.
+    """
     st.markdown("""
     <style>
-        /* Global Background and Fonts */
+        /* ---------------------------------------------------------------------- */
+        /* GLOBAL BACKGROUND & GLASSMORPHISM CONTAINER STYLING                    */
+        /* ---------------------------------------------------------------------- */
+        
         .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-            background: radial-gradient(circle at 50% 20%, #0d1b2a, #0b132b, #040814) !important;
+            background: radial-gradient(circle at 50% 10%, #0a1128, #001f54, #03071e) !important;
             color: #e0e1dd !important;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
         }
 
-        /* Sidebar Styling */
+        /* ---------------------------------------------------------------------- */
+        /* SIDEBAR CONTAINER AND COMPONENT STYLING                                */
+        /* ---------------------------------------------------------------------- */
+        
         section[data-testid="stSidebar"] {
-            background-color: #0d1322 !important;
-            border-right: 2px solid #00b4d8 !important;
-            box-shadow: 5px 0 25px rgba(0, 180, 216, 0.25);
+            background-color: #03071e !important;
+            border-right: 2px solid #00f5d4 !important;
+            box-shadow: 8px 0 30px rgba(0, 245, 212, 0.3) !important;
         }
 
         section[data-testid="stSidebar"] label, 
         section[data-testid="stSidebar"] p, 
         section[data-testid="stSidebar"] span,
         section[data-testid="stSidebar"] h3 {
-            color: #90e0ef !important;
-            font-weight: 700 !important;
-            text-shadow: 0 0 8px rgba(144, 224, 239, 0.5) !important;
+            color: #70e000 !important;
+            font-weight: 800 !important;
+            text-shadow: 0 0 10px rgba(112, 224, 0, 0.6) !important;
         }
 
-        /* High Visibility Text Accent Headers */
+        /* ---------------------------------------------------------------------- */
+        /* HIGH VISIBILITY GLOWING HEADERS & TEXT ACCENTS                         */
+        /* ---------------------------------------------------------------------- */
+        
         h1, h2, h3, h4, h5, h6 {
-            color: #48cae4 !important;
-            text-shadow: 0 0 12px rgba(72, 202, 228, 0.6) !important;
-            font-weight: 800 !important;
+            color: #00f5d4 !important;
+            text-shadow: 0 0 15px rgba(0, 245, 212, 0.8) !important;
+            font-weight: 900 !important;
+            letter-spacing: 1px !important;
         }
 
         p, span, label {
             color: #e0e1dd !important;
         }
 
-        /* Input Controls, Textboxes & Selects */
+        /* ---------------------------------------------------------------------- */
+        /* INPUT FIELD & FORM SELECTOR ULTRA STYLING                              */
+        /* ---------------------------------------------------------------------- */
+        
         input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-            background-color: #1b263b !important;
+            background-color: #0d1b2a !important;
             color: #00f5d4 !important;
             border: 2px solid #00b4d8 !important;
             border-radius: 12px !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
+            box-shadow: 0 0 18px rgba(0, 180, 216, 0.4) !important;
             font-weight: 700 !important;
             transition: all 0.4s ease-in-out !important;
         }
 
         input:focus, div[data-baseweb="input"]:focus-within {
-            border-color: #00f5d4 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
+            border-color: #70e000 !important;
+            box-shadow: 0 0 30px rgba(112, 224, 0, 0.9) !important;
         }
 
-/* NEON GLOW DATA GRID STYLING */
+        /* ---------------------------------------------------------------------- */
+        /* DATA GRID TABLE ULTRA HIGH DEFINITION OVERRIDES                        */
+        /* ---------------------------------------------------------------------- */
+        
         div[data-testid="stDataFrame"] {
-            background-color: #0b132b !important;
+            background-color: #03071e !important;
             border: 2px solid #00f5d4 !important;
             border-radius: 16px !important;
-            padding: 8px !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6), inset 0 0 15px rgba(0, 245, 212, 0.3) !important;
+            padding: 10px !important;
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.7), inset 0 0 20px rgba(0, 245, 212, 0.3) !important;
         }
 
-        /* Dark Background and Neon Text for Table Headers and Cells */
         div[data-testid="stDataFrame"] th, 
         div[data-testid="stDataFrame"] td,
         div[data-testid="stDataFrame"] [role="gridcell"] {
-            background-color: #101d30 !important;
+            background-color: #0d1b2a !important;
             color: #00f5d4 !important;
             font-family: 'Consolas', 'Courier New', monospace !important;
             font-weight: 700 !important;
@@ -116,111 +163,101 @@ def inject_custom_styles():
             text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
         }
 
-        /* Hover Effect for Rows */
         div[data-testid="stDataFrame"] tr:hover td {
-            background-color: #1a2c42 !important;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+            background-color: #1b263b !important;
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.6) !important;
         }
 
-        /* Hover Effect for Rows */
-        div[data-testid="stDataFrame"] tr:hover td {
-            background-color: #1a2c42 !important;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
-        }
-            background-color: #1a2c42 !important;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
-        }
-            text-shadow: 0 0 10px #00f5d4, 0 0 20px #00f5d4 !important;
-            border: 1px solid #00b4d8 !important;
-        }
-            background-color: #1a2c42 !important;
-            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
-        }
-            font-size: 14px !important;
-            text-shadow: 0 0 6px rgba(0, 245, 212, 0.8) !important;
-        }
-
-        /* Modern File Uploader Dropzone */
+        /* ---------------------------------------------------------------------- */
+        /* FILE UPLOADER ULTRA GRAPHICS ZONE                                      */
+        /* ---------------------------------------------------------------------- */
+        
         [data-testid="stFileUploadDropzone"], div[data-testid="stFileUploader"] section {
-            background: linear-gradient(135deg, #101d30, #0c1827) !important;
-            border: 2px dashed #00b4d8 !important;
-            border-radius: 16px !important;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3) !important;
+            background: linear-gradient(135deg, #0d1b2a, #1b263b) !important;
+            border: 2px dashed #00f5d4 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.4) !important;
             transition: all 0.5s ease-in-out !important;
         }
 
         [data-testid="stFileUploadDropzone"]:hover, div[data-testid="stFileUploader"] section:hover {
-            border-color: #00f5d4 !important;
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.6) !important;
+            border-color: #70e000 !important;
+            box-shadow: 0 0 45px rgba(112, 224, 0, 0.8) !important;
         }
 
         [data-testid="stFileUploadDropzone"] button, div[data-testid="stFileUploader"] button {
             background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
             color: #ffffff !important;
-            border: 2px solid #90e0ef !important;
-            border-radius: 10px !important;
+            border: 2px solid #70e000 !important;
+            border-radius: 12px !important;
             font-weight: 800 !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.6) !important;
+            box-shadow: 0 0 20px rgba(0, 180, 216, 0.7) !important;
             transition: all 0.5s ease-in-out !important;
         }
 
         [data-testid="stFileUploadDropzone"] button:hover, div[data-testid="stFileUploader"] button:hover {
             transform: translateY(-3px) scale(1.03);
-            background: linear-gradient(135deg, #00f5d4, #00b4d8) !important;
+            background: linear-gradient(135deg, #70e000, #00f5d4) !important;
             color: #000000 !important;
-            box-shadow: 0 0 30px rgba(144, 224, 239, 0.9) !important;
+            box-shadow: 0 0 35px rgba(112, 224, 0, 0.9) !important;
         }
 
-        /* Top Cyber Header Banner */
-        .header-wrapper {
+        /* ---------------------------------------------------------------------- */
+        /* MAIN HEADER ULTRA BRANDING CARD                                        */
+        /* ---------------------------------------------------------------------- */
+        
+        .ultra-header-wrapper {
             margin-top: 10px !important;
             margin-bottom: 30px !important;
-            background: rgba(13, 27, 42, 0.85);
-            border: 2px solid #00b4d8;
-            box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 24px;
+            background: rgba(13, 27, 42, 0.9);
+            border: 3px solid #00f5d4;
+            box-shadow: 0 0 50px rgba(0, 245, 212, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 30px;
             text-align: center;
         }
 
-        .main-title {
+        .ultra-main-title {
             color: #00f5d4 !important;
-            font-size: 38px;
+            font-size: 42px;
             font-weight: 900;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             margin: 0;
-            text-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
+            text-shadow: 0 0 30px rgba(0, 245, 212, 0.9) !important;
         }
 
-        .subtitle-badge {
+        .ultra-subtitle-badge {
             display: inline-block;
-            background: #0b132b;
-            border: 1.5px solid #ffb703;
-            padding: 6px 24px;
-            border-radius: 25px;
-            font-size: 14px;
-            font-weight: 800;
+            background: #03071e;
+            border: 2px solid #ffb703;
+            padding: 8px 28px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 900;
             color: #ffb703 !important;
-            margin-top: 12px;
-            box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
+            margin-top: 15px;
+            box-shadow: 0 0 20px rgba(255, 183, 3, 0.7);
         }
 
-        /* Analytics Metric Cards */
+        /* ---------------------------------------------------------------------- */
+        /* METRIC CARDS & GLASSMORPHISM CONTAINERS                                */
+        /* ---------------------------------------------------------------------- */
+        
         .metric-card-box {
-            background: #111d33 !important;
+            background: #0d1b2a !important;
             border: 2px solid #00b4d8;
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: 18px;
+            padding: 22px;
             text-align: center;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+            box-shadow: 0 0 25px rgba(0, 180, 216, 0.4);
             transition: all 0.4s ease-in-out;
         }
 
         .metric-card-box:hover {
-            transform: translateY(-5px);
+            transform: translateY(-6px);
             border-color: #00f5d4;
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
+            box-shadow: 0 0 40px rgba(0, 245, 212, 0.8);
         }
 
         .metric-label {
@@ -228,164 +265,143 @@ def inject_custom_styles():
             color: #90e0ef !important;
             font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 1.2px;
+            letter-spacing: 1.5px;
         }
 
         .metric-value-num {
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 900;
-            margin-top: 8px;
+            margin-top: 10px;
             color: #ffffff !important;
-            text-shadow: 0 0 18px rgba(255, 255, 255, 0.8) !important;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.9) !important;
         }
 
-        /* Dynamic Glowing Action Buttons */
+        /* ---------------------------------------------------------------------- */
+        /* BUTTON STYLING AND HIGH VISIBILITY GLOW EFFECTS                        */
+        /* ---------------------------------------------------------------------- */
+        
         div.stButton > button, div.stDownloadButton > button {
             font-weight: 900 !important;
-            border-radius: 14px !important;
-            padding: 16px 24px !important;
-            font-size: 15px !important;
-            letter-spacing: 1px !important;
+            border-radius: 16px !important;
+            padding: 18px 26px !important;
+            font-size: 16px !important;
+            letter-spacing: 1.2px !important;
             transition: all 0.6s cubic-bezier(0.25, 1, 0.5, 1) !important;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.9) !important;
         }
 
-        /* Launch Dispatch Primary Button */
         div.stButton > button[kind="primary"] {
             background: linear-gradient(135deg, #00b4d8, #0077b6) !important;
             color: #ffffff !important;
             border: 2px solid #00f5d4 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.7) !important;
             width: 100% !important;
         }
-    /* NEON PULSATE ANIMATION FOR UPLOAD BOX */
-        @keyframes neonPulse {
-            0% {
-                border-color: #00f5d4;
-                box-shadow: 0 0 10px rgba(0, 245, 212, 0.3), inset 0 0 5px rgba(0, 245, 212, 0.2);
-            }
-            50% {
-                border-color: #00b4d8;
-                box-shadow: 0 0 25px rgba(0, 245, 212, 0.8), inset 0 0 15px rgba(0, 245, 212, 0.5);
-            }
-            100% {
-                border-color: #00f5d4;
-                box-shadow: 0 0 10px rgba(0, 245, 212, 0.3), inset 0 0 5px rgba(0, 245, 212, 0.2);
-            }
-        }
 
-        /* APPLY ANIMATION TO UPLOAD CONTAINER */
-        div[data-testid="stFileUploader"],
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            background-color: #0b132b !important;
-            border: 2px dashed #00f5d4 !important;
-            border-radius: 12px !important;
-            animation: neonPulse 2.5s infinite ease-in-out !important;
-            padding: 8px !important;
-        }
-
-        /* SIMPLE BUTTON STYLE */
-        div[data-testid="stFileUploader"] button {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00f5d4 !important;
-            border-radius: 6px !important;
-        }
-         ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
-        div[data-testid="stFileUploader"] {
-            border: 2px dashed #00f5d4 !important;
-            border-radius: 16px !important;
-            background-color: #0b132b !important;
-            padding: 12px !important;
-            box-shadow: 0 0 20px rgba(0, 245, 212, 0.4), inset 0 0 10px rgba(0, 245, 212, 0.2) !important;
-            transition: all 0.4s ease-in-out !important;
-        }
-
-        /* Hover Effect for Upload Box */
-        div[data-testid="stFileUploader"]:hover {
-            border-color: #00b4d8 !important;
-            box-shadow: 0 0 30px rgba(0, 245, 212, 0.8), inset 0 0 15px rgba(0, 245, 212, 0.4) !important;
-            transform: translateY(-2px) !important;
-        }
-
-        /* Upload Button Inside Text & Icon Styling */
-        div[data-testid="stFileUploader"] button {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00f5d4 !important;
-            border-radius: 10px !important;
-            font-weight: 800 !important;
-            font-family: 'Consolas', 'Courier New', monospace !important;
-            text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
-            box-shadow: 0 0 12px rgba(0, 245, 212, 0.3) !important;
-        }
-
-        div[data-testid="stFileUploader"] button:hover {
-            background-color: #00f5d4 !important;
-            color: #0b132b !important;
-            box-shadow: 0 0 20px #00f5d4 !important;
-            text-shadow: none !important;
-        }
-        
         div.stButton > button[kind="primary"]:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
-            box-shadow: 0 0 45px rgba(0, 245, 212, 0.95) !important;
+            transform: translateY(-4px) scale(1.02);
+            background: linear-gradient(135deg, #00f5d4, #70e000) !important;
+            color: #000000 !important;
+            box-shadow: 0 0 50px rgba(0, 245, 212, 1) !important;
         }
 
-        /* Emergency Stop Secondary Button */
         div.stButton > button[kind="secondary"] {
             background: linear-gradient(135deg, #d90429, #ef233c) !important;
             color: #ffffff !important;
             border: 2px solid #ff4d6d !important;
-            box-shadow: 0 0 25px rgba(239, 35, 60, 0.6) !important;
+            box-shadow: 0 0 30px rgba(239, 35, 60, 0.7) !important;
             width: 100% !important;
         }
 
         div.stButton > button[kind="secondary"]:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-4px) scale(1.02);
             background: linear-gradient(135deg, #ff4d6d, #b7094c) !important;
-            box-shadow: 0 0 45px rgba(255, 77, 109, 0.95) !important;
+            box-shadow: 0 0 50px rgba(255, 77, 109, 1) !important;
         }
 
-        /* Download Button */
         div.stDownloadButton > button {
             background: linear-gradient(135deg, #3a0ca3, #4361ee) !important;
             color: #ffffff !important;
             border: 2px solid #4cc9f0 !important;
-            box-shadow: 0 0 25px rgba(76, 201, 240, 0.6) !important;
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.7) !important;
             width: 100% !important;
         }
 
         div.stDownloadButton > button:hover {
-            transform: translateY(-3px) scale(1.02);
+            transform: translateY(-4px) scale(1.02);
             background: linear-gradient(135deg, #4cc9f0, #7209b7) !important;
-            box-shadow: 0 0 45px rgba(76, 201, 240, 0.95) !important;
+            box-shadow: 0 0 50px rgba(76, 201, 240, 1) !important;
         }
 
-        /* Log Output Panel */
+        /* ---------------------------------------------------------------------- */
+        /* SYSTEM TERMINAL CONSOLE LOG BOX                                        */
+        /* ---------------------------------------------------------------------- */
+        
         .log-box {
-            background-color: #060a12;
-            border: 1px solid #00b4d8;
-            border-radius: 12px;
-            padding: 16px;
-            max-height: 280px;
+            background-color: #03071e;
+            border: 2px solid #00b4d8;
+            border-radius: 14px;
+            padding: 18px;
+            max-height: 300px;
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
             font-size: 13px;
-            color: #48cae4;
+            color: #00f5d4;
+            box-shadow: inset 0 0 20px rgba(0, 180, 216, 0.4);
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* BACKGROUND GLOW ANIMATION                                              */
+        /* ---------------------------------------------------------------------- */
+        
+        @keyframes ultraBgGlow {
+            0% { background-color: #0a1128 !important; }
+            50% { background-color: #001f54 !important; }
+            100% { background-color: #0a1128 !important; }
+        }
+
+        .stApp {
+            animation: ultraBgGlow 7s infinite ease-in-out !important;
+        }
+
+        /* ---------------------------------------------------------------------- */
+        /* FULL SELECTION POPUP MODAL STYLING                                     */
+        /* ---------------------------------------------------------------------- */
+        
+        .popup-modal-overlay {
+            background: linear-gradient(145deg, #03071e, #0d1b2a);
+            border: 3px solid #00f5d4;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 0 60px rgba(0, 245, 212, 0.6);
+            margin-top: 25px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .popup-modal-header {
+            color: #00f5d4;
+            font-size: 24px;
+            font-weight: 900;
+            border-bottom: 2px solid #00b4d8;
+            padding-bottom: 12px;
+            margin-bottom: 22px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
     </style>
     """, unsafe_allow_html=True)
 
-inject_custom_styles()
+inject_custom_ultra_graphics_styles()
 
-# ==========================================
-# 3. HELPER UTILITIES & DATA VALIDATORS
-# ==========================================
+
+# ==============================================================================
+# SECTION 3: UTILITY FUNCTIONS & DATA AUDIT ENGINES
+# ==============================================================================
+
 def get_field_strict(row, column_aliases, default_val="N/A"):
     """
-    Extracts values dynamically across various possible column headers.
+    Extracts column values matching aliases regardless of case or spaces.
     """
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
     for col in row.index:
@@ -396,16 +412,18 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
                 return val
     return default_val
 
+
 def validate_email_address(email_str):
     """
-    Validates email format using regex pattern matching.
+    Checks if an email string matches valid email format patterns.
     """
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, str(email_str).strip()))
 
+
 def perform_batch_data_audit(dataframe):
     """
-    Audits incoming dataframe for invalid emails, missing records, or empty fields.
+    Audits the dataset for email validity, missing values, and data health.
     """
     alerts = []
     if dataframe is None or dataframe.empty:
@@ -433,21 +451,39 @@ def perform_batch_data_audit(dataframe):
     
     return alerts
 
-# ==========================================
-# 4. DEFAULT DATASET GENERATION ENGINE
-# ==========================================
+
+def test_smtp_connection(host, port, user, password):
+    """
+    Tests SMTP connection health before starting bulk email dispatch.
+    """
+    try:
+        server = smtplib.SMTP(host, int(port), timeout=5)
+        server.starttls()
+        if user and password:
+            server.login(user.strip(), password.replace(" ", ""))
+        server.quit()
+        return True, "SMTP Connection Successful!"
+    except Exception as e:
+        return False, str(e)
+
+
+# ==============================================================================
+# SECTION 4: DEFAULT DATASET GENERATOR ENGINE
+# ==============================================================================
+
 @st.cache_data
 def generate_default_100_records():
     """
-    Generates a full 100-record dataset for initial demonstration.
+    Generates 100 sample records for testing dispatch workflows.
     """
     parties = [
         "Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", 
         "Amit Gupta", "Vikram Singh", "Neha Kapoor", "Sanjay Dutt",
-        "Pooja Joshi", "Rajesh Kumar", "Meera Nair", "Deepak Chopra"
+        "Pooja Joshi", "Rajesh Kumar", "Meera Nair", "Deepak Chopra",
+        "Karan Malhotra", "Rohan Mehta", "Simran Kaur", "Siddharth Rao"
     ]
-    places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi", "Varanasi", "Ahmedabad", "Jaipur"]
-    banks = ["State Bank of India", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank", "Canara Bank"]
+    places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi", "Varanasi", "Ahmedabad", "Jaipur", "Lucknow"]
+    banks = ["State Bank of India", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank", "Canara Bank", "Bank of Baroda"]
     
     records = []
     base_date = datetime(2026, 8, 1)
@@ -473,12 +509,15 @@ def generate_default_100_records():
         })
     return pd.DataFrame(records)
 
+
 if st.session_state['crm_data'] is None:
     st.session_state['crm_data'] = generate_default_100_records()
 
-# ==========================================
-# 5. SIDEBAR CONFIGURATION STUDIO
-# ==========================================
+
+# ==============================================================================
+# SECTION 5: SIDEBAR CONFIGURATION STUDIO
+# ==============================================================================
+
 with st.sidebar:
     st.markdown("### 🖼️ Branding & Identity Studio")
     logo_file = st.file_uploader("Upload Company Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
@@ -493,10 +532,30 @@ with st.sidebar:
     app_password = st.text_input("16-Digit App Password", type="password")
     dispatch_delay = st.slider("Dispatch Rate Delay (Sec)", 0.2, 5.0, 0.8, step=0.1)
     
+    if st.button("🔌 Test SMTP Connection", use_container_width=True):
+        if sender_email and app_password:
+            is_ok, msg = test_smtp_connection(smtp_server, smtp_port, sender_email, app_password)
+            if is_ok:
+                st.sidebar.success(msg)
+                st.session_state['smtp_status'] = "Connected"
+            else:
+                st.sidebar.error(f"Failed: {msg}")
+                st.session_state['smtp_status'] = "Failed"
+        else:
+            st.sidebar.warning("Provide Email and App Password first!")
+
     st.divider()
-    st.markdown("### 📝 Email Content Settings")
-    email_subject_prefix = st.text_input("Custom Email Subject Prefix", value="BUFFER CHEQUE DETAILS", key="sb_email_subject")
-    custom_cfa_title = st.text_input("CFA Header Title", value="RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA", key="sb_cfa_title")
+    st.markdown("### 📝 Email Customization Studio")
+    st.session_state['custom_email_subject'] = st.text_input(
+        "Custom Email Subject Prefix", 
+        value=st.session_state['custom_email_subject'], 
+        key="sb_email_subject"
+    )
+    st.session_state['custom_cfa_header'] = st.text_input(
+        "CFA Header Title", 
+        value=st.session_state['custom_cfa_header'], 
+        key="sb_cfa_title"
+    )
     
     st.divider()
     st.markdown("### 🛠️ Data Management Tools")
@@ -507,22 +566,26 @@ with st.sidebar:
         st.session_state['dispatch_logs'] = []
         st.rerun()
 
-# ==========================================
-# 6. MAIN APP HEADER BANNER
-# ==========================================
+
+# ==============================================================================
+# SECTION 6: MAIN APP HEADER BANNER
+# ==============================================================================
+
 st.markdown("""
-<div class="header-wrapper">
-    <h1 class="main-title">DHARMENDRA KUMAR (MISHRA)</h1>
-    <span class="subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
-    <p style="color: #90e0ef; margin-top: 12px; font-weight: 700; font-size: 16px;">
-        ⚡ 8K ULTRA-DYNAMIC CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
+<div class="ultra-header-wrapper">
+    <h1 class="ultra-main-title">DHARMENDRA KUMAR (MISHRA)</h1>
+    <span class="ultra-subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
+    <p style="color: #90e0ef; margin-top: 15px; font-weight: 800; font-size: 17px;">
+        ⚡ 8K ULTRA-GRAPHICS CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
     </p>
 </div>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 7. BATCH FILE IMPORT & VALIDATION SECTION
-# ==========================================
+
+# ==============================================================================
+# SECTION 7: BATCH FILE IMPORT & DATA AUDIT
+# ==============================================================================
+
 st.markdown("### 📁 Import Custom Excel/CSV Batch File")
 uploaded_file = st.file_uploader("Upload Batch File (XLSX / CSV)", type=["xlsx", "csv"], key="batch_uploader")
 
@@ -545,9 +608,11 @@ if uploaded_file is not None:
 df = st.session_state['crm_data']
 st.session_state['validation_alerts'] = perform_batch_data_audit(df)
 
-# ==========================================
-# 8. ANALYTICS & METRICS PANEL
-# ==========================================
+
+# ==============================================================================
+# SECTION 8: REAL-TIME METRICS & GRAPHICAL ANALYTICS DASHBOARD
+# ==============================================================================
+
 total_records = len(df) if df is not None else 0
 sent_count = st.session_state['sent_count']
 failed_count = st.session_state['failed_count']
@@ -557,25 +622,50 @@ st.markdown("### 📊 Real-time Batch Metrics & Validation")
 col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 
 with col_m1:
-    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Total Records</div><div class="metric-value-num" style="color:#48cae4 !important;">{total_records}</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Total Records</div><div class="metric-value-num" style="color:#00f5d4 !important;">{total_records}</div></div>', unsafe_allow_html=True)
+
 with col_m2:
-    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Sent Success</div><div class="metric-value-num" style="color:#00f5d4 !important;">{sent_count}</div></div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="metric-card-box"><div class="metric-label">Sent Success</div><div class="metric-value-num" style="color:#70e000 !important;">{sent_count}</div></div>', unsafe_allow_html=True)
+
 with col_m3:
     st.markdown(f'<div class="metric-card-box"><div class="metric-label">Failed / Invalid</div><div class="metric-value-num" style="color:#ff4d6d !important;">{failed_count}</div></div>', unsafe_allow_html=True)
+
 with col_m4:
     st.markdown(f'<div class="metric-card-box"><div class="metric-label">Pending Dispatch</div><div class="metric-value-num" style="color:#ffb703 !important;">{pending_count}</div></div>', unsafe_allow_html=True)
 
-# Show Data Audit Alerts
+# Analytics Visual Chart Tab
+with st.expander("📈 Visual Analytics & Distribution Overview", expanded=False):
+    if df is not None and not df.empty:
+        chart_col1, chart_col2 = st.columns(2)
+        with chart_col1:
+            st.markdown("##### Bank Distribution Analytics")
+            bank_col = [c for c in df.columns if "bank" in c.lower()]
+            if bank_col:
+                bank_counts = df[bank_col[0]].value_counts()
+                st.bar_chart(bank_counts)
+            else:
+                st.info("No bank column detected for chart.")
+
+        with chart_col2:
+            st.markdown("##### Dispatch Status Breakdown")
+            status_df = pd.DataFrame({
+                "Status": ["Sent", "Failed", "Pending"],
+                "Count": [sent_count, failed_count, pending_count]
+            }).set_index("Status")
+            st.bar_chart(status_df)
+
 with st.expander("🔍 System Data Audit & Health Report", expanded=False):
     for alert in st.session_state['validation_alerts']:
         st.write(alert)
 
 st.markdown("---")
 
-# ==========================================
-# 9. INTERACTIVE DATA GRID & FILTERING
-# ==========================================
-st.markdown("### ✏️ Interactive Data Grid")
+
+# ==============================================================================
+# SECTION 9: INTERACTIVE DATA GRID & EDITING SUITE
+# ==============================================================================
+
+st.markdown("### ✏️ Interactive Data Grid & Dynamic Filters")
 
 search_query = st.text_input("🔍 Quick Search Filter (Party Name, Email, or Bank)", placeholder="Type to filter records...")
 
@@ -586,38 +676,49 @@ if df is not None and not df.empty:
     else:
         filtered_df = df
 
-# Record ID ko grid se hatane ke liye
 display_df = filtered_df.drop(columns=["Record ID"], errors="ignore")
-# ==========================================
-
-# Grid mein display_df pass karein (taaki Record ID na dikhe)
 edited_df = st.data_editor(display_df, num_rows="dynamic", use_container_width=True)
 
-# Session state update karna
 st.session_state['crm_data'] = edited_df
 filtered_df = st.session_state['crm_data']
 df = st.session_state['crm_data']
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ==========================================
-# 10. DISPATCH CONTROL ACTION BUTTONS
-# ==========================================
-st.markdown("### 🚀 Dispatch Control Actions")
-col_b1, col_b2, col_b3 = st.columns([1.8, 1.1, 1.1])
+
+# ==============================================================================
+# SECTION 10: DISPATCH CONTROL ACTION PANEL & EXPORT OPTIONS
+# ==============================================================================
+
+st.markdown("### 🚀 Dispatch Control Actions & Data Exporters")
+col_b1, col_b2, col_b3, col_b4 = st.columns([1.5, 1, 1, 1])
 
 with col_b1:
-    start_dispatch_btn = st.button("🚀 LAUNCH CHEQUE DETAILS DISPATCH", type="primary", use_container_width=True)
+    start_dispatch_btn = st.button("🚀 LAUNCH CHEQUE DISPATCH", type="primary", use_container_width=True)
+
 with col_b2:
     stop_dispatch_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
+
 with col_b3:
     csv_buffer = io.StringIO()
     if df is not None:
         df.to_csv(csv_buffer, index=False)
     st.download_button(
-        label="📥 EXPORT CLEAN CSV",
+        label="📥 EXPORT CSV",
         data=csv_buffer.getvalue(),
-        file_name=f"Cheque_Dispatch_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
+        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.csv",
         mime="text/csv",
+        use_container_width=True
+    )
+
+with col_b4:
+    json_buffer = io.StringIO()
+    if df is not None:
+        df.to_json(json_buffer, orient="records", indent=2)
+    st.download_button(
+        label="📄 EXPORT JSON",
+        data=json_buffer.getvalue(),
+        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.json",
+        mime="application/json",
         use_container_width=True
     )
 
@@ -627,132 +728,83 @@ if stop_dispatch_btn:
 
 st.markdown("---")
 
-# ==========================================
-# 11. HTML EMAIL TEMPLATE GENERATOR
-# ==========================================
+
+# ==============================================================================
+# SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE
+# ==============================================================================
+
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
-    Generates HTML email content linking dynamically with Sidebar Email Content inputs.
+    Generates dynamic HTML email markup formatted for modern email clients.
     """
-    html_content = """<!DOCTYPE html>
+    html_content = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <style>
-        @keyframes fullSplashAnimation {
-            0% { opacity: 1; visibility: visible; }
-            80% { opacity: 1; visibility: visible; }
-            100% { opacity: 0; visibility: hidden; height: 0; padding: 0; margin: 0; }
-        }
-
-        .splash-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #0077b6, #023e8a, #03045e);
-            z-index: 99999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            animation: fullSplashAnimation 4s forwards ease-in-out;
-            box-sizing: border-box;
-            padding: 20px;
-        }
-
-        .splash-title {
-            color: #00f5d4;
-            font-size: 26px;
-            font-weight: 900;
-            font-family: Arial, sans-serif;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            text-shadow: 0 0 20px rgba(0, 245, 212, 0.9);
-            margin: 0;
-        }
-
-        .splash-sub {
-            color: #caf0f8;
-            font-size: 14px;
-            font-weight: bold;
-            margin-top: 12px;
-            letter-spacing: 1px;
-            font-family: Arial, sans-serif;
-        }
-    </style>
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
 
-  <!-- 4 SECONDS FULL-SCREEN SPLASH OVERLAY -->
-  <div class="splash-overlay">
-      <div class="splash-title">RAMA ENTERPRISES</div>
-      <div class="splash-sub">ABBOTT INDIA LTD, PATNA</div>
-  </div>
-
-  <!-- MAIN EMAIL BODY -->
   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
     <tr>
       <td style="padding: 24px; text-align: center;">
         <div style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
           <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 900; letter-spacing: 1px;">
-            """ + str(email_title).upper() + """
+            {str(email_title).upper()}
           </h1>
         </div>
         <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
-          ✨ """ + str(cfa_title) + """
+          ✨ {str(cfa_title)}
         </div>
       </td>
     </tr>
     <tr>
       <td style="padding: 0 28px 28px 28px;">
-        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">""" + str(party) + """</b>,</p>
+        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">{str(party)}</b>,</p>
         <p style="color: #caf0f8; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
+        
         <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #1c2541; border-radius: 10px; overflow: hidden;">
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td width="50%" style="color: #90e0ef; font-weight: bold; font-size: 14px;">📅 Date</td>
-            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(date_val) + """</td>
+            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(date_val)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">👤 Party Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(party) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(party)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
-            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">""" + str(acc) + """</td>
+            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">{str(acc)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📍 Place</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(place) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(place)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(bank) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(bank)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(u_ail) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(u_ail)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">""" + str(u_ahpl) + """</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(u_ahpl)}</td>
           </tr>
           <tr style="border-bottom: 1px solid #3a5a40;">
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(h_ail) + """</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(h_ail)}</td>
           </tr>
           <tr>
             <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
-            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">""" + str(h_ahpl) + """</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(h_ahpl)}</td>
           </tr>
         </table>
       </td>
     </tr>
     <tr>
       <td style="background-color: #1c2541; padding: 20px; text-align: center; border-top: 1px solid #3a5a40;">
-        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">""" + str(cfa_title) + """</div>
+        <div style="color: #00f5d4; font-weight: 800; font-size: 14px;">{str(cfa_title)}</div>
       </td>
     </tr>
   </table>
@@ -760,35 +812,75 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
 </html>"""
     return html_content
 
-# ==========================================
-# 12. INTERACTIVE EMAIL INBOX SIMULATOR
-# ==========================================
-st.markdown("### 👁️ Interactive Email Inbox Simulator")
-sim_col1, sim_col2 = st.columns([1, 1], gap="large")
 
-with sim_col1:
-    st.markdown("#### 🧪 Test Data Controls")
-    sim_party = st.text_input("Simulated Party Name", value="RAJVEER", key="sim_party")
-    sim_acc = st.text_input("Simulated Account Number", value="351800949903", key="sim_acc")
-    sim_place = st.text_input("Simulated Place", value="Patna", key="sim_place")
-    sim_bank = st.text_input("Simulated Bank Name", value="State Bank of India", key="sim_bank")
-    sim_u_ail = st.text_input("Used AIL Cheques", value="4", key="sim_u_ail")
-    sim_u_ahpl = st.text_input("Used AHPL Cheques", value="2", key="sim_u_ahpl")
-    sim_h_ail = st.text_input("Hand AIL Cheques", value="15", key="sim_h_ail")
-    sim_h_ahpl = st.text_input("Hand AHPL Cheques", value="18", key="sim_h_ahpl")
+# ==============================================================================
+# SECTION 12: RECORD SELECTION & FULL-SCREEN POPUP EMAIL PREVIEW ENGINE
+# ==============================================================================
 
-with sim_col2:
-    st.markdown("#### 📱 Live Rendered Email Preview")
-    # Dynamically pass sidebar inputs to email generator for real-time reactive update
-    preview_html = build_email_template(
-        sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
-        sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title, email_subject_prefix
-    )
-    st.components.v1.html(preview_html, height=500, scrolling=True)
+st.markdown("### 📩 Full-Selection Email Inbox Popup System")
 
-# ==========================================
-# 13. AUTOMATED DISPATCH EXECUTION ENGINE
-# ==========================================
+pop_col1, pop_col2 = st.columns([1, 1])
+
+with pop_col1:
+    if st.button("👁️ TOGGLE LIVE SELECTION EMAIL POPUP MODAL", use_container_width=True):
+        st.session_state['show_inbox_popup'] = not st.session_state['show_inbox_popup']
+
+with pop_col2:
+    if st.session_state['show_inbox_popup']:
+        st.success("✨ Email Popup Window: ACTIVE")
+    else:
+        st.info("💡 Email Popup Window: COLLAPSED")
+
+if st.session_state['show_inbox_popup']:
+    st.markdown('<div class="popup-modal-overlay">', unsafe_allow_html=True)
+    st.markdown('<div class="popup-modal-header">📨 Interactive Email Popup Simulator</div>', unsafe_allow_html=True)
+    
+    if df is not None and not df.empty:
+        party_list = df.apply(
+            lambda r: f"{get_field_strict(r, ['Party Name', 'Party'], 'Unknown')} ({get_field_strict(r, ['Email', 'Email ID'], 'No Mail')})", 
+            axis=1
+        ).tolist()
+        
+        selected_index = st.selectbox(
+            "🎯 Select Specific Party Record to Preview Email Popup Modal:", 
+            options=range(len(party_list)), 
+            format_func=lambda i: party_list[i],
+            key="popup_record_selector"
+        )
+        
+        sel_row = df.iloc[selected_index]
+        
+        p_name = get_field_strict(sel_row, ["Party Name", "Party"], "Valued Customer")
+        p_date = get_field_strict(sel_row, ["Date", "Entry Date"], datetime.now().strftime("%Y-%m-%d"))
+        p_acc = get_field_strict(sel_row, ["Account Number", "Account No"], "N/A")
+        p_email = get_field_strict(sel_row, ["Email", "Email ID"], "N/A")
+        p_place = get_field_strict(sel_row, ["Place", "City"], "N/A")
+        p_bank = get_field_strict(sel_row, ["Bank Name", "Bank"], "N/A")
+        p_u_ail = get_field_strict(sel_row, ["Number of cheque used in AIL"], "0")
+        p_u_ahpl = get_field_strict(sel_row, ["Number of cheque used In AHPL"], "0")
+        p_h_ail = get_field_strict(sel_row, ["Total cheque in hand AIL"], "0")
+        p_h_ahpl = get_field_strict(sel_row, ["Total cheque in hand AHPL"], "0")
+
+        preview_html = build_email_template(
+            p_name, p_date, p_acc, p_place, p_bank,
+            p_u_ail, p_u_ahpl, p_h_ail, p_h_ahpl,
+            st.session_state['custom_cfa_header'], st.session_state['custom_email_subject']
+        )
+        
+        st.markdown("#### 📱 Rendered Live Email Preview")
+        st.components.v1.html(preview_html, height=480, scrolling=True)
+    else:
+        st.warning("No dataset loaded to preview emails.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
+
+st.markdown("---")
+
+
+# ==============================================================================
+# SECTION 13: AUTOMATED DISPATCH EXECUTION ENGINE
+# ==============================================================================
+
 if start_dispatch_btn:
     st.session_state['stop_dispatch'] = False
     st.session_state['sent_count'] = 0
@@ -808,7 +900,6 @@ if start_dispatch_btn:
         log_container = st.empty()
 
         try:
-            # Establish SMTP Connection
             server = smtplib.SMTP(smtp_server, int(smtp_port))
             server.starttls()
             server.login(sender_email.strip(), app_password.replace(" ", ""))
@@ -816,7 +907,7 @@ if start_dispatch_btn:
             for idx in range(len(df)):
                 if st.session_state['stop_dispatch']:
                     st.warning("🛑 Dispatch process halted manually!")
-                    st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] STOP: Dispatch manually interrupted.")
+                    st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] STOP: Interrupted by user.")
                     break
 
                 row = df.iloc[idx]
@@ -836,13 +927,14 @@ if start_dispatch_btn:
 
                 if validate_email_address(target_email):
                     msg = MIMEMultipart('alternative')
-                    msg['From'] = formataddr((custom_cfa_title, sender_email.strip()))
+                    msg['From'] = formataddr((st.session_state['custom_cfa_header'], sender_email.strip()))
                     msg['To'] = target_email
-                    msg['Subject'] = f"{email_subject_prefix} - {party_name} ({rec_date})"
+                    msg['Subject'] = f"{st.session_state['custom_email_subject']} - {party_name} ({rec_date})"
 
                     full_body = build_email_template(
                         party_name, rec_date, account_val, place_val, bank_val,
-                        used_ail, used_ahpl, hand_ail, hand_ahpl, custom_cfa_title, email_subject_prefix
+                        used_ail, used_ahpl, hand_ail, hand_ahpl, 
+                        st.session_state['custom_cfa_header'], st.session_state['custom_email_subject']
                     )
                     msg.attach(MIMEText(full_body, 'html'))
                     
@@ -863,11 +955,9 @@ if start_dispatch_btn:
                     st.session_state['dispatch_logs'].append(f"[{timestamp_str}] WARNING: {status_msg}")
                     status_box.warning(status_msg)
 
-                # Progress & Logs Update
                 progress = (idx + 1) / len(df)
                 progress_bar.progress(progress)
                 
-                # Render Console Logs
                 log_html = "<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>"
                 log_container.markdown(log_html, unsafe_allow_html=True)
                 
@@ -881,64 +971,30 @@ if start_dispatch_btn:
             st.error(f"❌ Connection Failure: {conn_err}")
             st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] FATAL: {conn_err}")
 
-# Display Historical Activity Logs if Available
+
+# ==============================================================================
+# SECTION 14: DISPATCH LOGS CONSOLE PANEL & AUDIT TRAIL
+# ==============================================================================
+
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
-    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True) 
+    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
+
+
+# ==============================================================================
+# SECTION 15: FOOTER SYSTEM INFORMATION & ARCHITECT CREDITS
+# ==============================================================================
+
+st.markdown("---")
 st.markdown("""
-<style>
-    /* 1. MAIN APP BACKGROUND (Pulsating Glow) */
-    @keyframes appBgGlow {
-        0% { background-color: #050a18 !important; }
-        50% { background-color: #0b1736 !important; }
-        100% { background-color: #050a18 !important; }
-    }
-
-    .stApp {
-        animation: appBgGlow 6s infinite ease-in-out !important;
-    }
-
-    /* 2. UPLOAD BUTTON DESIGN & BORDER */
-    div[data-testid="stFileUploader"],
-    div[data-testid="stFileUploader"] > div,
-    div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-        border: 2px dashed #00f5d4 !important;
-        border-radius: 12px !important;
-        background-color: #0b132b !important;
-        box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
-        padding: 8px !important;
-    }
-
-    div[data-testid="stFileUploader"] button {
-        background-color: #101d30 !important;
-        color: #00f5d4 !important;
-        border: 1px solid #00f5d4 !important;
-        border-radius: 6px !important;
-    }
-
-    /* 3. DATA EDITOR GRID NEON BORDER */
-    div[data-testid="stDataEditor"] {
-        border: 2px solid #00f5d4 !important;
-        border-radius: 10px !important;
-        box-shadow: 0 0 15px rgba(0, 245, 212, 0.2) !important;
-        padding: 4px !important;
-    }
-
-    /* 4. EDITING POPUP & INPUT TEXT VISIBILITY */
-    div[data-testid="stDataEditor"] input,
-    div[data-baseweb="popover"] input,
-    div[data-baseweb="base-input"] input,
-    input {
-        color: #ffffff !important;
-        background-color: #020617 !important;
-        -webkit-text-fill-color: #ffffff !important;
-        font-weight: bold !important;
-    }
-    
-    div[data-baseweb="popover"] div[data-baseweb="base-input"],
-    div[data-baseweb="menu"] {
-        background-color: #020617 !important;
-        border: 1px solid #00f5d4 !important;
-    }
-</style>
+<div style="text-align: center; color: #90e0ef; padding: 22px; font-size: 14px;">
+    ⚡ <b>DHARMENDRA KUMAR (MISHRA) BULK DISPATCHER ENGINE v4.0 PRO ULTRA</b><br>
+    Designed & Built with Streamlit, Python & SMTP Services | Architect: <b>RAJVEER</b><br>
+    <i>All rights reserved. Ready for high-performance enterprise deployments.</i>
+</div>
 """, unsafe_allow_html=True)
+
+
+# ==============================================================================
+# END OF FILE
+# ==============================================================================
