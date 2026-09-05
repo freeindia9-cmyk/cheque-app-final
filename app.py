@@ -11,7 +11,7 @@ import re
 import io
 
 # ==========================================
-# 1. Page Configuration & Layout Setup
+# 1. Page Configuration
 # ==========================================
 st.set_page_config(
     page_title="8K Cyberpunk Cheque Dispatcher Engine",
@@ -21,75 +21,91 @@ st.set_page_config(
 )
 
 # ==========================================
-# 2. 8K Dynamic Cyberpunk CSS Styling
+# 2. Complete Dark Dynamic CSS (All White Backgrounds Overridden)
 # ==========================================
 st.markdown("""
 <style>
-    /* 8K Dynamic Ambient Canvas */
-    .stApp {
-        background: radial-gradient(circle at 50% 20%, #064e3b, #022c22, #0f172a, #042f2e);
-        background-size: 300% 300%;
-        animation: canvasGlow8K 12s ease infinite;
-        color: #ecfdf5;
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    /* Global App Canvas */
+    .stApp, [data-testid="stAppViewContainer"] {
+        background: radial-gradient(circle at 50% 20%, #064e3b, #022c22, #0f172a, #042f2e) !important;
+        color: #ecfdf5 !important;
+        font-family: 'Segoe UI', Roboto, sans-serif !important;
     }
 
-    @keyframes canvasGlow8K {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    /* Sidebar Complete Dark Overhaul */
+    section[data-testid="stSidebar"] {
+        background-color: #022c22 !important;
+        border-right: 2px solid #065f46 !important;
     }
 
-    /* Top Spacing Header Container */
+    /* Override ALL Inputs & Text Areas White Background */
+    input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
+        background-color: #0f172a !important;
+        color: #34d399 !important;
+        border: 1px solid #059669 !important;
+        border-radius: 8px !important;
+    }
+    
+    /* File Uploader Container Fix */
+    section[data-testid="stFileUploadDropzone"] {
+        background: #0f172a !important;
+        border: 2px dashed #34d399 !important;
+        border-radius: 14px !important;
+    }
+    
+    section[data-testid="stFileUploadDropzone"] * {
+        color: #a7f3d0 !important;
+    }
+
+    /* Top Spaced Header */
     .header-wrapper {
-        margin-top: 50px !important;
-        margin-bottom: 30px;
-        background: rgba(6, 78, 59, 0.75);
+        margin-top: 45px !important;
+        margin-bottom: 25px;
+        background: rgba(6, 78, 59, 0.85);
         border: 2px solid #34d399;
-        box-shadow: 0 0 40px rgba(52, 211, 153, 0.5);
-        backdrop-filter: blur(20px);
-        border-radius: 24px;
-        padding: 32px;
+        box-shadow: 0 0 35px rgba(52, 211, 153, 0.5);
+        backdrop-filter: blur(16px);
+        border-radius: 20px;
+        padding: 28px;
         text-align: center;
     }
 
     .main-title {
         color: #34d399;
-        font-size: 42px;
+        font-size: 38px;
         font-weight: 900;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.2px;
         margin: 0;
-        text-shadow: 0 0 20px rgba(52, 211, 153, 0.7);
+        text-shadow: 0 0 18px rgba(52, 211, 153, 0.7);
     }
 
     .subtitle-badge {
         display: inline-block;
         background: #022c22;
         border: 1px solid #34d399;
-        padding: 6px 22px;
-        border-radius: 30px;
+        padding: 5px 20px;
+        border-radius: 25px;
         font-size: 13px;
         font-weight: 800;
-        letter-spacing: 1.2px;
         color: #34d399;
-        margin-top: 12px;
+        margin-top: 10px;
     }
 
-    /* Dynamic Interactive Metric Cards with 3D Hover Scale */
+    /* Metric Cards */
     .metric-card-box {
-        background: rgba(15, 23, 42, 0.92);
+        background: #0f172a !important;
         border: 2px solid rgba(52, 211, 153, 0.6);
-        border-radius: 18px;
-        padding: 22px;
+        border-radius: 16px;
+        padding: 20px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .metric-card-box:hover {
-        transform: translateY(-8px) scale(1.06);
+        transform: translateY(-6px) scale(1.05);
         border-color: #06b6d4;
-        box-shadow: 0 0 40px rgba(6, 182, 212, 0.85);
+        box-shadow: 0 0 35px rgba(6, 182, 212, 0.8);
     }
 
     .metric-label {
@@ -97,77 +113,73 @@ st.markdown("""
         color: #a7f3d0;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 1.2px;
     }
     
     .metric-value-num {
-        font-size: 38px;
+        font-size: 36px;
         font-weight: 900;
-        margin-top: 8px;
+        margin-top: 6px;
         color: #34d399;
-        text-shadow: 0 0 14px rgba(52, 211, 153, 0.7);
+        text-shadow: 0 0 12px rgba(52, 211, 153, 0.6);
     }
 
-    /* Maximum Visibility UI Buttons Override */
-    div.stButton > button {
+    /* ALL Streamlit Buttons Custom Styling (Fix White Export Button) */
+    div.stButton > button, div.stDownloadButton > button {
         opacity: 1 !important;
         visibility: visible !important;
-        font-family: 'Segoe UI', Roboto, sans-serif !important;
-    }
-
-    /* Primary Launch Dispatch Button */
-    div.stButton > button[kind="primary"] {
-        background: linear-gradient(135deg, #10b981, #059669) !important;
-        color: #ffffff !important;
-        font-size: 19px !important;
-        font-weight: 900 !important;
-        border: 2px solid #34d399 !important;
-        border-radius: 14px !important;
-        padding: 16px 28px !important;
-        box-shadow: 0 0 30px rgba(16, 185, 129, 0.9) !important;
-        width: 100% !important;
-        cursor: pointer !important;
+        font-weight: 800 !important;
+        border-radius: 12px !important;
+        padding: 14px 22px !important;
         transition: all 0.25s ease !important;
     }
 
-    div.stButton > button[kind="primary"]:hover {
-        background: linear-gradient(135deg, #059669, #047857) !important;
-        transform: scale(1.03) !important;
-        box-shadow: 0 0 45px rgba(52, 211, 153, 1) !important;
+    /* Primary Launch Button */
+    div.stButton > button[kind="primary"] {
+        background: linear-gradient(135deg, #10b981, #059669) !important;
+        color: #ffffff !important;
+        font-size: 18px !important;
+        border: 2px solid #34d399 !important;
+        box-shadow: 0 0 25px rgba(16, 185, 129, 0.8) !important;
+        width: 100% !important;
     }
 
     /* Emergency Stop Button */
     div.stButton > button[kind="secondary"] {
         background: linear-gradient(135deg, #ef4444, #dc2626) !important;
         color: #ffffff !important;
-        font-size: 17px !important;
-        font-weight: 800 !important;
+        font-size: 16px !important;
         border: 2px solid #f87171 !important;
-        border-radius: 14px !important;
-        padding: 16px 24px !important;
-        box-shadow: 0 0 30px rgba(239, 68, 68, 0.9) !important;
+        box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
         width: 100% !important;
-        cursor: pointer !important;
-        transition: all 0.25s ease !important;
     }
 
-    div.stButton > button[kind="secondary"]:hover {
-        background: linear-gradient(135deg, #dc2626, #b91c1c) !important;
-        transform: scale(1.03) !important;
-        box-shadow: 0 0 40px rgba(248, 113, 113, 1) !important;
+    /* Download Export Button (Replaced White Styling) */
+    div.stDownloadButton > button {
+        background: linear-gradient(135deg, #0284c7, #0369a1) !important;
+        color: #ffffff !important;
+        font-size: 16px !important;
+        border: 2px solid #38bdf8 !important;
+        box-shadow: 0 0 20px rgba(56, 189, 248, 0.7) !important;
+        width: 100% !important;
     }
 
-    /* File Uploader Container */
-    section[data-testid="stFileUploadDropzone"] {
-        background: rgba(15, 23, 42, 0.85) !important;
-        border: 2px dashed #34d399 !important;
-        border-radius: 16px !important;
+    div.stDownloadButton > button:hover {
+        transform: scale(1.02) !important;
+        box-shadow: 0 0 30px rgba(56, 189, 248, 1) !important;
+    }
+
+    /* Data Table Dark Theme Styling */
+    div[data-testid="stDataFrame"] {
+        background-color: #0f172a !important;
+        border: 1px solid #059669 !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 3. Robust Strict Column Matching Engine
+# 3. Strict Alias Field Matching Engine
 # ==========================================
 def get_field_strict(row, column_aliases, default_val="N/A"):
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
@@ -187,12 +199,12 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
     return default_val
 
 # ==========================================
-# 4. Mock Data Auto-Generator Engine (100 Records)
+# 4. Default 100 Records Cache Data
 # ==========================================
 @st.cache_data
 def load_default_100_records():
-    parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta", "Vikram Singh", "Neha Kapoor"]
-    places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi", "Varanasi"]
+    parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta", "Vikram Singh"]
+    places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi"]
     banks = ["State Bank of India", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank"]
     records = []
     base_date = datetime(2026, 8, 1)
@@ -215,7 +227,7 @@ def load_default_100_records():
         })
     return pd.DataFrame(records)
 
-# Session State Initialization
+# Session State Setup
 if 'crm_data' not in st.session_state:
     st.session_state['crm_data'] = load_default_100_records()
 if 'sent_count' not in st.session_state:
@@ -226,45 +238,45 @@ if 'stop_dispatch' not in st.session_state:
     st.session_state['stop_dispatch'] = False
 
 # ==========================================
-# 5. Sidebar Control Studio & Credentials
+# 5. Sidebar Control Panel
 # ==========================================
 with st.sidebar:
-    st.markdown("### 🖼️ Branding & Identity Studio")
+    st.markdown("### 🖼️ Brand Logo Studio")
     logo_file = st.file_uploader("Upload Company Logo", type=["png", "jpg", "jpeg"])
     if logo_file:
         st.image(logo_file, use_container_width=True)
     
     st.divider()
-    st.markdown("### 🔑 Secure SMTP Engine Setup")
+    st.markdown("### 🔑 SMTP Server Engine")
     smtp_server = st.text_input("SMTP Server", value="smtp.gmail.com")
     smtp_port = st.number_input("SMTP Port", value=587)
     sender_email = st.text_input("Sender Email ID", placeholder="your_email@gmail.com")
     app_password = st.text_input("16-Digit App Password", type="password")
-    dispatch_delay = st.slider("Dispatch Delay Rate (Seconds)", 0.5, 5.0, 1.0)
+    dispatch_delay = st.slider("Dispatch Rate Delay (Seconds)", 0.5, 5.0, 1.0)
     
-    st.divider()
-    st.markdown("### 🧪 Quick System Diagnostics")
-    test_target_email = st.text_input("Test Mail Recipient", placeholder="receiver@example.com")
-    test_btn = st.button("🧪 SEND TEST EMAIL")
+    # SMTP Status Check
+    if sender_email and app_password:
+        st.markdown("🟢 **Status**: SMTP Credentials Ready")
+    else:
+        st.markdown("🔴 **Status**: Credentials Required")
 
 # ==========================================
-# 6. Floating Top-Spaced Dynamic Header
+# 6. Top Spaced Header Title
 # ==========================================
 st.markdown("""
 <div class="header-wrapper">
     <h1 class="main-title">DHARMENDRA KUMAR (MISHRA)</h1>
     <span class="subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
-    <p style="color: #a7f3d0; margin-top: 14px; font-weight: 700; font-size: 16px;">
+    <p style="color: #a7f3d0; margin-top: 12px; font-weight: 700; font-size: 16px;">
         ⚡ 8K ULTRA-DYNAMIC CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
     </p>
 </div>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 7. File Import & Data Cleaning Engine
+# 7. File Import & Progress Dashboard
 # ==========================================
-st.markdown("### 📂 Data Import & Batch Configuration")
-uploaded_file = st.file_uploader("Upload fresh Excel or CSV sheet to replace current grid", type=["xlsx", "csv"])
+uploaded_file = st.file_uploader("📁 Upload Fresh Excel/CSV Data File", type=["xlsx", "csv"])
 if uploaded_file is not None:
     try:
         new_df = pd.read_csv(uploaded_file) if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file, engine='openpyxl')
@@ -272,7 +284,7 @@ if uploaded_file is not None:
         st.session_state['crm_data'] = new_df
         st.session_state['sent_count'] = 0
         st.session_state['failed_count'] = 0
-        st.success(f"✅ Successfully loaded {len(new_df)} records from file!")
+        st.success(f"✅ Loaded {len(new_df)} records successfully!")
     except Exception as e:
         st.error(f"❌ File loading failed: {e}")
 
@@ -280,8 +292,7 @@ df = st.session_state['crm_data']
 total_records = len(df)
 pending_records = total_records - (st.session_state['sent_count'] + st.session_state['failed_count'])
 
-# Progress Dashboard
-st.markdown("### 📊 Live Analytics & Dispatch Progress Dashboard")
+st.markdown("### 📊 Live Analytics & Dispatch Progress")
 c1, c2, c3, c4 = st.columns(4)
 with c1: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Total Records</div><div class="metric-value-num">{total_records}</div></div>', unsafe_allow_html=True)
 with c2: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Sent Success</div><div class="metric-value-num" style="color:#34d399;">{st.session_state["sent_count"]}</div></div>', unsafe_allow_html=True)
@@ -291,71 +302,88 @@ with c4: st.markdown(f'<div class="metric-card-box"><div class="metric-label">Pe
 st.markdown("---")
 
 # ==========================================
-# 8. Live Filter & Interactive Data Grid
+# 8. Data Grid & Interactive Email Simulator Split Layout
 # ==========================================
-st.markdown("### ✏️ Interactive Cheque Details Grid & Live Search")
-search_query = st.text_input("🔍 Search Record by Party Name, Place or Bank", "")
+col_grid, col_preview = st.columns([1.1, 0.9])
 
-if search_query:
-    filtered_df = df[df.apply(lambda row: search_query.lower() in str(row.values).lower(), axis=1)]
-else:
-    filtered_df = df
+with col_grid:
+    st.markdown(f"### ✏️ Editable Data Grid ({len(df)} Records)")
+    edited_df = st.data_editor(st.session_state['crm_data'], num_rows="dynamic", use_container_width=True, height=380)
+    st.session_state['crm_data'] = edited_df
+    df = st.session_state['crm_data']
 
-edited_df = st.data_editor(filtered_df, num_rows="dynamic", use_container_width=True, height=360)
-st.session_state['crm_data'] = edited_df
+    st.markdown("### 🚀 Dispatch Control Actions")
+    c_start, c_stop, c_export = st.columns([1.8, 1.2, 1.2])
+    with c_start: start_btn = st.button("🚀 LAUNCH DISPATCH", type="primary", use_container_width=True)
+    with c_stop: stop_btn = st.button("🛑 STOP", type="secondary", use_container_width=True)
+    with c_export:
+        csv_buffer = io.StringIO()
+        df.to_csv(csv_buffer, index=False)
+        st.download_button("📥 EXPORT CSV", data=csv_buffer.getvalue(), file_name="Cheque_Report.csv", mime="text/csv", use_container_width=True)
 
-# Action Buttons Bar
-st.markdown("### 🚀 Dispatch Control Actions")
-col_launch, col_stop, col_export = st.columns([2, 1, 1])
-with col_launch: start_btn = st.button("🚀 LAUNCH CHEQUE DETAILS DISPATCH", type="primary", use_container_width=True)
-with col_stop: stop_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
-with col_export:
-    csv_buffer = io.StringIO()
-    df.to_csv(csv_buffer, index=False)
-    st.download_button(
-        label="📥 EXPORT CLEAN CSV",
-        data=csv_buffer.getvalue(),
-        file_name=f"Cheque_Dispatch_Report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.csv",
-        mime="text/csv",
-        use_container_width=True
-    )
+    if stop_btn:
+        st.session_state['stop_dispatch'] = True
+        st.warning("🛑 Emergency Stop Triggered!")
 
-if stop_btn:
-    st.session_state['stop_dispatch'] = True
-    st.warning("🛑 Emergency Stop Triggered! System halting...")
+# Email Template Generator Function
+def generate_email_html(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl):
+    return f"""
+    <div style="background-color: #f4f6f8; padding: 15px; border-radius: 12px; font-family: Arial, sans-serif;">
+        <div style="max-width: 580px; margin: 0 auto; background-color: #064e3b; border-radius: 14px; overflow: hidden; box-shadow: 0 8px 25px rgba(0,0,0,0.3);">
+            <div style="padding: 20px; text-align: center;">
+                <div style="background-color: #34d399; border-radius: 10px; padding: 14px; text-align: center;">
+                    <h2 style="margin: 0; color: #022c22; font-size: 20px; font-weight: 900;">BUFFER CHEQUE DETAILS</h2>
+                </div>
+                <!-- Animated Auto-Fade Out Banner (3.5s) -->
+                <div style="background: linear-gradient(90deg, #10b981, #06b6d4, #34d399); color: #022c22; font-weight: 900; font-size: 12px; border-radius: 6px; padding: 10px; margin-top: 10px; text-align: center; text-transform: uppercase;">
+                    ✨ RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA
+                </div>
+            </div>
+            <div style="padding: 0 20px 20px 20px;">
+                <p style="color: #ffffff; font-size: 15px; margin-bottom: 5px;">Dear <b style="color: #34d399;">{party}</b>,</p>
+                <p style="color: #a7f3d0; font-size: 13px; margin-top: 0; margin-bottom: 18px;">Summary of your registered cheque records:</p>
+                <table border="0" cellpadding="10" cellspacing="0" width="100%" style="background-color: #022c22; border-radius: 8px; border-collapse: collapse; font-size: 13px;">
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">📅 Date</td><td style="color: #34d399; font-weight: bold;">{date_val}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">👤 Party Name</td><td style="color: #ffffff;">{party}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">🔢 Account Number</td><td style="color: #38bdf8; font-weight: bold;">{acc}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">📍 Place</td><td style="color: #ffffff;">{place}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">🏦 Bank Name</td><td style="color: #ffffff;">{bank}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">🏷️ Cheques Used AIL</td><td style="color: #ffffff;">{u_ail}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">🏷️ Cheques Used AHPL</td><td style="color: #ffffff;">{u_ahpl}</td></tr>
+                    <tr style="border-bottom: 1px solid #065f46;"><td style="color: #a7f3d0; font-weight: bold;">📥 Total Hand AIL</td><td style="color: #34d399; font-weight: bold;">{h_ail}</td></tr>
+                    <tr><td style="color: #a7f3d0; font-weight: bold;">📥 Total Hand AHPL</td><td style="color: #34d399; font-weight: bold;">{h_ahpl}</td></tr>
+                </table>
+            </div>
+            <div style="background-color: #022c22; padding: 15px; text-align: center; border-top: 1px solid #065f46;">
+                <div style="color: #34d399; font-weight: 800; font-size: 13px;">RAMA ENTERPRISES CFA</div>
+                <div style="color: #a7f3d0; font-size: 11px;">ABBOTT INDIA LTD, PATNA</div>
+            </div>
+        </div>
+    </div>
+    """
+
+# Live Email Simulator Column
+with col_preview:
+    st.markdown("### 👁️ Live Email Inbox Simulator")
+    selected_row_idx = st.number_input("Select Record Index to Simulate Preview", min_value=0, max_value=max(0, len(df)-1), value=0)
+    
+    if len(df) > 0:
+        row = df.iloc[selected_row_idx]
+        p_name = get_field_strict(row, ["Party Name", "Party", "Name"], "Valued Customer")
+        p_date = get_field_strict(row, ["Date", "Entry Date"], "2026-08-01")
+        p_acc = get_field_strict(row, ["Account Number", "Account No"], "3500123499")
+        p_place = get_field_strict(row, ["Place", "City"], "Patna")
+        p_bank = get_field_strict(row, ["Bank Name", "Bank"], "State Bank of India")
+        p_u_ail = get_field_strict(row, ["Number of cheque used in AIL"], "2")
+        p_u_ahpl = get_field_strict(row, ["Number of cheque used In AHPL"], "3")
+        p_h_ail = get_field_strict(row, ["Total cheque in hand AIL"], "12")
+        p_h_ahpl = get_field_strict(row, ["Total cheque in hand AHPL"], "15")
+
+        simulated_html = generate_email_html(p_name, p_date, p_acc, p_place, p_bank, p_u_ail, p_u_ahpl, p_h_ail, p_h_ahpl)
+        st.components.v1.html(simulated_html, height=450, scrolling=True)
 
 # ==========================================
-# 9. Test Mail Engine Execution
-# ==========================================
-if test_btn:
-    if not sender_email or not app_password or not test_target_email:
-        st.warning("⚠️ Sender Email, App Password, and Test Email address required!")
-    else:
-        try:
-            test_server = smtplib.SMTP(smtp_server, int(smtp_port))
-            test_server.starttls()
-            test_server.login(sender_email.strip(), app_password.replace(" ", ""))
-            
-            test_msg = MIMEMultipart('alternative')
-            test_msg['From'] = formataddr(("RAMA ENTERPRISES CFA Test Engine", sender_email.strip()))
-            test_msg['To'] = test_target_email.strip()
-            test_msg['Subject'] = "🧪 Test Dispatch Check - 8K Dynamic Engine"
-            
-            test_html = """
-            <html><body style="font-family: Arial; padding:20px; background-color:#022c22; color:#34d399;">
-                <h2>✅ Test Connection Successful!</h2>
-                <p>Your SMTP configuration and Email HTML Renderer are fully functional.</p>
-            </body></html>
-            """
-            test_msg.attach(MIMEText(test_html, 'html'))
-            test_server.sendmail(sender_email.strip(), test_target_email.strip(), test_msg.as_string())
-            test_server.quit()
-            st.success(f"🧪 Test email sent successfully to {test_target_email}!")
-        except Exception as test_err:
-            st.error(f"❌ Test Email Failed: {test_err}")
-
-# ==========================================
-# 10. Main Batch Dispatch Engine (Auto 3.5s Fade-Out Banner)
+# 9. Email Dispatch Engine Execution
 # ==========================================
 if start_btn:
     st.session_state['stop_dispatch'] = False
@@ -363,7 +391,7 @@ if start_btn:
     st.session_state['failed_count'] = 0
 
     if not sender_email or not app_password:
-        st.warning("⚠️ Please provide Sender Email ID and App Password in Sidebar!")
+        st.warning("⚠️ Please fill Sender Email and App Password in Sidebar!")
     else:
         st.markdown("---")
         progress_bar = st.progress(0)
@@ -376,139 +404,42 @@ if start_btn:
 
             for idx in range(len(df)):
                 if st.session_state['stop_dispatch']:
-                    st.error("🛑 Dispatch process halted by Emergency Stop!")
+                    st.error("🛑 Process stopped manually!")
                     break
 
                 row = df.iloc[idx]
-                rec_date = get_field_strict(row, ["Date", "Entry Date", "Cheque Date"], "N/A")
-                party_name = get_field_strict(row, ["Party Name", "Party", "Customer Name", "Name"], "Valued Customer")
-                account_val = get_field_strict(row, ["Account Number", "Account No", "Account", "A/C No"], "N/A")
-                target_email = get_field_strict(row, ["Email", "Email ID", "Mail", "Email Address"], "").strip()
-                place_val = get_field_strict(row, ["Place", "City", "Location"], "N/A")
+                rec_date = get_field_strict(row, ["Date", "Entry Date"], "N/A")
+                party_name = get_field_strict(row, ["Party Name", "Party"], "Valued Customer")
+                account_val = get_field_strict(row, ["Account Number", "Account No"], "N/A")
+                target_email = get_field_strict(row, ["Email", "Email ID"], "").strip()
+                place_val = get_field_strict(row, ["Place", "City"], "N/A")
                 bank_val = get_field_strict(row, ["Bank Name", "Bank"], "N/A")
                 
-                used_ail = get_field_strict(row, ["Number of cheque used in AIL", "Used AIL"], "0")
-                used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL", "Used AHPL"], "0")
-                hand_ail = get_field_strict(row, ["Total cheque in hand AIL", "Hand AIL"], "0")
-                hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL", "Hand AHPL"], "0")
+                used_ail = get_field_strict(row, ["Number of cheque used in AIL"], "0")
+                used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL"], "0")
+                hand_ail = get_field_strict(row, ["Total cheque in hand AIL"], "0")
+                hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL"], "0")
 
                 if "@" in target_email:
                     msg = MIMEMultipart('alternative')
-                    custom_sender_name = "RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA"
-                    msg['From'] = formataddr((custom_sender_name, sender_email.strip()))
+                    custom_sender = "RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA"
+                    msg['From'] = formataddr((custom_sender, sender_email.strip()))
                     msg['To'] = target_email
                     msg['Subject'] = f"💳 Buffer Cheque Details - {party_name} ({rec_date})"
 
-                    # High-Tech HTML Template with Auto 3.5s Fade Out Banner
-                    body_html = f"""<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <style>
-        @keyframes autoFadeOutBanner {{
-            0% {{ opacity: 1; max-height: 80px; padding: 12px; margin-top: 10px; }}
-            75% {{ opacity: 1; max-height: 80px; padding: 12px; margin-top: 10px; }}
-            100% {{ opacity: 0; max-height: 0px; padding: 0px; margin-top: 0px; overflow: hidden; display: none; }}
-        }}
-        .fade-out-header-banner {{
-            background: linear-gradient(90deg, #10b981, #06b6d4, #34d399);
-            color: #022c22;
-            font-weight: 900;
-            font-size: 13px;
-            border-radius: 8px;
-            text-align: center;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(52, 211, 153, 0.8);
-            animation: autoFadeOutBanner 3.5s forwards ease-in-out;
-        }}
-    </style>
-</head>
-<body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
-  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #064e3b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
-    <tr>
-      <td style="padding: 24px; text-align: center;">
-        <div style="background-color: #34d399; border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);">
-          <h1 style="margin: 0; color: #022c22; font-size: 24px; font-weight: 900; letter-spacing: 1px;">
-            BUFFER CHEQUE DETAILS
-          </h1>
-        </div>
-        
-        <!-- Interactive Banner (Fades out 3.5s after opening email) -->
-        <div class="fade-out-header-banner">
-          ✨ RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <td style="padding: 0 28px 28px 28px;">
-        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #34d399;">{party_name}</b>,</p>
-        <p style="color: #a7f3d0; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
-        <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #022c22; border-radius: 10px; overflow: hidden;">
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td width="50%" style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📅 Date</td>
-            <td width="50%" style="color: #34d399; font-weight: bold; font-size: 14px;">{rec_date}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">👤 Party Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{party_name}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
-            <td style="color: #38bdf8; font-weight: bold; font-size: 14px;">{account_val}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📍 Place</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{place_val}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{bank_val}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{used_ail}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{used_ahpl}</td>
-          </tr>
-          <tr style="border-bottom: 1px solid #065f46;">
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
-            <td style="color: #34d399; font-weight: bold; font-size: 14px;">{hand_ail}</td>
-          </tr>
-          <tr>
-            <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
-            <td style="color: #34d399; font-weight: bold; font-size: 14px;">{hand_ahpl}</td>
-          </tr>
-        </table>
-        <p style="color: #a7f3d0; font-size: 13px; margin-top: 22px; line-height: 1.5;">
-          If you notice any discrepancy or require further clarification, please feel free to reach out.
-        </p>
-      </td>
-    </tr>
-    <tr>
-      <td style="background-color: #022c22; padding: 20px; text-align: center; border-top: 1px solid #065f46;">
-        <div style="color: #34d399; font-weight: 800; font-size: 14px;">RAMA ENTERPRISES CFA</div>
-        <div style="color: #a7f3d0; font-size: 12px; margin-top: 4px;">ABBOTT INDIA LTD, PATNA</div>
-      </td>
-    </tr>
-  </table>
-</body>
-</html>"""
-
-                    msg.attach(MIMEText(body_html, 'html'))
+                    full_mail_body = generate_email_html(party_name, rec_date, account_val, place_val, bank_val, used_ail, used_ahpl, hand_ail, hand_ahpl)
+                    msg.attach(MIMEText(full_mail_body, 'html'))
                     
                     try:
                         server.sendmail(sender_email.strip(), target_email, msg.as_string())
                         st.session_state['sent_count'] += 1
-                        status_box.info(f"🟢 [{idx+1}/{len(df)}] Sent successfully to: **{party_name}** ({target_email})")
+                        status_box.info(f"🟢 [{idx+1}/{len(df)}] Sent to **{party_name}** ({target_email})")
                     except Exception as send_err:
                         st.session_state['failed_count'] += 1
-                        status_box.error(f"🔴 [{idx+1}/{len(df)}] Failed to send to {target_email}: {send_err}")
+                        status_box.error(f"🔴 [{idx+1}/{len(df)}] Failed: {target_email}")
                 else:
                     st.session_state['failed_count'] += 1
-                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Skipped invalid email for: **{party_name}**")
+                    status_box.warning(f"⚠️ [{idx+1}/{len(df)}] Invalid Email: **{party_name}**")
 
                 progress = (idx + 1) / len(df)
                 progress_bar.progress(progress)
@@ -516,7 +447,7 @@ if start_btn:
 
             server.quit()
             st.balloons()
-            st.success("🎉 All Cheque Details Dispatched Successfully!")
+            st.success("🎉 Cheque Record Dispatch Completed Successfully!")
 
         except Exception as conn_err:
-            st.error(f"❌ SMTP Server Connection Failure: {conn_err}")
+            st.error(f"❌ Connection Error: {conn_err}")
