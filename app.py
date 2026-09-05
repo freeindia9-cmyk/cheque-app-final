@@ -881,8 +881,7 @@ if start_dispatch_btn:
 # Display Historical Activity Logs if Available
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
-    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
-st.markdown("""
+    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True) 
 /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
         div[data-testid="stFileUploader"],
         div[data-testid="stFileUploader"] > div,
@@ -901,24 +900,23 @@ st.markdown("""
             border-radius: 6px !important;
         }
 
-        /* 2. DATA EDITOR GRID: ONLY GRID BG CLEANED, BORDER INTACT */
+        /* 2. DATA EDITOR GRID BG CLEANUP & NEON BORDER */
         div[data-testid="stDataEditor"] {
             border: 2px solid #00f5d4 !important;
             border-radius: 10px !important;
+            padding: 4px !important;
+        }
+
+        /* Target Streamlit data grid internal wrappers and canvas */
+        div[data-testid="stDataEditor"] div[data-baseweb="block"],
+        div[data-testid="stDataEditor"] [role="region"] {
             background-color: transparent !important;
         }
 
-        /* Grid ke andar ke cells aur table background se dark blue hatane ke liye */
-        div[data-testid="stDataEditor"] div, 
-        div[data-testid="stDataEditor"] canvas,
-        div[data-testid="stDataEditor"] [data-baseweb="base-input"] {
-            background-color: transparent !important;
-        }
-
-        /* Edit karte waqt input box ka text aur background clear dikhe */
+        /* Input text visibility during editing */
         div[data-testid="stDataEditor"] input {
             color: #ffffff !important;
-            background-color: #162247 !important;
+            background-color: #111b38 !important;
             -webkit-text-fill-color: #ffffff !important;
         }
 
@@ -932,35 +930,3 @@ st.markdown("""
         .stApp {
             animation: appBgGlow 6s infinite ease-in-out !important;
         }
-    <style>
-        /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
-        div[data-testid="stFileUploader"],
-        div[data-testid="stFileUploader"] > div,
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            border: 2px dashed #00f5d4 !important;
-            border-radius: 12px !important;
-            background-color: #0b132b !important;
-            box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
-            padding: 8px !important;
-        }
-
-        /* 2. UPLOAD INNER BUTTON STYLE */
-        div[data-testid="stFileUploader"] button {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00f5d4 !important;
-            border-radius: 6px !important;
-        }
-
-        /* 3. MAIN APP BACKGROUND PULSATING GLOW */
-        @keyframes appBgGlow {
-            0% { background-color: #050a18 !important; }
-            50% { background-color: #0b1736 !important; }
-            100% { background-color: #050a18 !important; }
-        }
-
-        .stApp {
-            animation: appBgGlow 6s infinite ease-in-out !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
