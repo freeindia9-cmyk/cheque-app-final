@@ -882,51 +882,53 @@ if start_dispatch_btn:
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True) 
-/* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
-        div[data-testid="stFileUploader"],
-        div[data-testid="stFileUploader"] > div,
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            border: 2px dashed #00f5d4 !important;
-            border-radius: 12px !important;
-            background-color: #0b132b !important;
-            box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
-            padding: 8px !important;
-        }
+st.markdown("""
+<style>
+    /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
+    div[data-testid="stFileUploader"],
+    div[data-testid="stFileUploader"] > div,
+    div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
+        border: 2px dashed #00f5d4 !important;
+        border-radius: 12px !important;
+        background-color: #0b132b !important;
+        box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
+        padding: 8px !important;
+    }
 
-        div[data-testid="stFileUploader"] button {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00f5d4 !important;
-            border-radius: 6px !important;
-        }
+    div[data-testid="stFileUploader"] button {
+        background-color: #101d30 !important;
+        color: #00f5d4 !important;
+        border: 1px solid #00f5d4 !important;
+        border-radius: 6px !important;
+    }
 
-        /* 2. DATA EDITOR GRID BG CLEANUP & NEON BORDER */
-        div[data-testid="stDataEditor"] {
-            border: 2px solid #00f5d4 !important;
-            border-radius: 10px !important;
-            padding: 4px !important;
-        }
+    /* 2. DATA EDITOR GRID BG CLEANUP & NEON BORDER */
+    div[data-testid="stDataEditor"] {
+        border: 2px solid #00f5d4 !important;
+        border-radius: 10px !important;
+        padding: 4px !important;
+    }
 
-        /* Target Streamlit data grid internal wrappers and canvas */
-        div[data-testid="stDataEditor"] div[data-baseweb="block"],
-        div[data-testid="stDataEditor"] [role="region"] {
-            background-color: transparent !important;
-        }
+    div[data-testid="stDataEditor"] div[data-baseweb="block"],
+    div[data-testid="stDataEditor"] [role="region"] {
+        background-color: transparent !important;
+    }
 
-        /* Input text visibility during editing */
-        div[data-testid="stDataEditor"] input {
-            color: #ffffff !important;
-            background-color: #111b38 !important;
-            -webkit-text-fill-color: #ffffff !important;
-        }
+    div[data-testid="stDataEditor"] input {
+        color: #ffffff !important;
+        background-color: #111b38 !important;
+        -webkit-text-fill-color: #ffffff !important;
+    }
 
-        /* 3. MAIN APP BACKGROUND PULSATING GLOW */
-        @keyframes appBgGlow {
-            0% { background-color: #050a18 !important; }
-            50% { background-color: #0b1736 !important; }
-            100% { background-color: #050a18 !important; }
-        }
+    /* 3. MAIN APP BACKGROUND PULSATING GLOW */
+    @keyframes appBgGlow {
+        0% { background-color: #050a18 !important; }
+        50% { background-color: #0b1736 !important; }
+        100% { background-color: #050a18 !important; }
+    }
 
-        .stApp {
-            animation: appBgGlow 6s infinite ease-in-out !important;
-        }
+    .stApp {
+        animation: appBgGlow 6s infinite ease-in-out !important;
+    }
+</style>
+""", unsafe_allow_html=True)
