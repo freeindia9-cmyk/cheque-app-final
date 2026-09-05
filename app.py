@@ -16,7 +16,7 @@ import json
 # 1. PAGE CONFIGURATION & STATE INITIALIZATION
 # ==========================================
 st.set_page_config(
-    page_title="8K Cyberpunk Cheque Dispatcher Engine",
+    page_title="DHARMENDRA KUMAR (MISHRA) - Bulk Dispatcher",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -42,16 +42,16 @@ if 'validation_alerts' not in st.session_state:
 def inject_custom_styles():
     st.markdown("""
     <style>
-        /* Global Background and Fonts */
+        /* Global Canvas Styling */
         .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-            background: radial-gradient(circle at 50% 20%, #0d1b2a, #0b132b, #040814) !important;
+            background-color: #070d18 !important;
             color: #e0e1dd !important;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
         }
 
-        /* Sidebar Styling */
+        /* Sidebar Customization */
         section[data-testid="stSidebar"] {
-            background-color: #0d1322 !important;
+            background-color: #0b132b !important;
             border-right: 2px solid #00b4d8 !important;
             box-shadow: 5px 0 25px rgba(0, 180, 216, 0.25);
         }
@@ -62,13 +62,11 @@ def inject_custom_styles():
         section[data-testid="stSidebar"] h3 {
             color: #90e0ef !important;
             font-weight: 700 !important;
-            text-shadow: 0 0 8px rgba(144, 224, 239, 0.5) !important;
         }
 
-        /* High Visibility Text Accent Headers */
+        /* Accent Text & Typography */
         h1, h2, h3, h4, h5, h6 {
             color: #48cae4 !important;
-            text-shadow: 0 0 12px rgba(72, 202, 228, 0.6) !important;
             font-weight: 800 !important;
         }
 
@@ -76,149 +74,143 @@ def inject_custom_styles():
             color: #e0e1dd !important;
         }
 
-        /* Input Controls, Textboxes & Selects */
+        /* Form Text Inputs & Input Boxes */
         input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
-            background-color: #1b263b !important;
+            background-color: #0f1c32 !important;
             color: #00f5d4 !important;
-            border: 2px solid #00b4d8 !important;
-            border-radius: 12px !important;
-            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
-            font-weight: 700 !important;
+            border: 1px solid #00b4d8 !important;
+            border-radius: 8px !important;
         }
 
-        /* Top Cyber Header Banner */
+        /* Cyber File Uploader & Dropzone Area */
+        div[data-testid="stFileUploader"] {
+            background-color: #0b1528 !important;
+            border: 2px dashed #00b4d8 !important;
+            border-radius: 12px !important;
+            padding: 16px !important;
+        }
+
+        [data-testid="stFileUploadDropzone"] {
+            background-color: #091222 !important;
+            border: 1px dashed #00b4d8 !important;
+            border-radius: 10px !important;
+        }
+
+        /* Custom Unified Button Styling (Upload, Browse & Standard Buttons) */
+        div[data-testid="stFileUploader"] button, 
+        div[data-testid="stFileUploader"] label[role="button"],
+        [data-testid="stFileUploadDropzone"] button,
+        button[data-testid="baseButton-secondary"],
+        button[data-testid="baseButton-primary"],
+        .stButton > button {
+            background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
+            color: #ffffff !important;
+            border: 1px solid #00f5d4 !important;
+            border-radius: 8px !important;
+            font-weight: 700 !important;
+            padding: 8px 18px !important;
+            box-shadow: 0 0 12px rgba(0, 180, 216, 0.4) !important;
+            transition: all 0.3s ease-in-out !important;
+        }
+
+        div[data-testid="stFileUploader"] button:hover, 
+        div[data-testid="stFileUploader"] label[role="button"]:hover,
+        [data-testid="stFileUploadDropzone"] button:hover,
+        button[data-testid="baseButton-secondary"]:hover,
+        button[data-testid="baseButton-primary"]:hover,
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #00b4d8, #00f5d4) !important;
+            color: #070d18 !important;
+            box-shadow: 0 0 22px rgba(0, 245, 212, 0.8) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Emergency Stop Button Special Override */
+        div.stButton > button[kind="secondary"] {
+            background: linear-gradient(135deg, #d90429, #ef233c) !important;
+            color: #ffffff !important;
+            border: 1px solid #ff4d6d !important;
+            box-shadow: 0 0 15px rgba(239, 35, 60, 0.5) !important;
+        }
+
+        div.stButton > button[kind="secondary"]:hover {
+            background: linear-gradient(135deg, #ff4d6d, #b7094c) !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 25px rgba(255, 77, 109, 0.8) !important;
+        }
+
+        /* Data Grid & Interactive Table Fixes */
+        div[data-testid="stDataEditor"] {
+            background-color: #0b132b !important;
+            border: 1px solid #00b4d8 !important;
+            border-radius: 10px !important;
+        }
+
+        /* Header Canvas Frame */
         .header-wrapper {
-            margin-top: 10px !important;
-            margin-bottom: 30px !important;
-            background: rgba(13, 27, 42, 0.85);
+            margin-top: 5px !important;
+            margin-bottom: 25px !important;
+            background: #0b132b;
             border: 2px solid #00b4d8;
-            box-shadow: 0 0 40px rgba(0, 180, 216, 0.5);
-            backdrop-filter: blur(15px);
-            border-radius: 20px;
-            padding: 24px;
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4);
+            border-radius: 16px;
+            padding: 22px;
             text-align: center;
         }
 
         .main-title {
             color: #00f5d4 !important;
-            font-size: 38px;
+            font-size: 34px;
             font-weight: 900;
-            letter-spacing: 2px;
             margin: 0;
-            text-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
+            text-shadow: 0 0 20px rgba(0, 245, 212, 0.7) !important;
         }
 
         .subtitle-badge {
             display: inline-block;
-            background: #0b132b;
-            border: 1.5px solid #ffb703;
-            padding: 6px 24px;
-            border-radius: 25px;
-            font-size: 14px;
+            background: #0d1b2a;
+            border: 1px solid #ffb703;
+            padding: 4px 20px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 800;
             color: #ffb703 !important;
-            margin-top: 12px;
-            box-shadow: 0 0 15px rgba(255, 183, 3, 0.5);
+            margin-top: 10px;
         }
 
-        /* Analytics Metric Cards */
+        /* Live Analytics Metric Cards */
         .metric-card-box {
-            background: #111d33 !important;
-            border: 2px solid #00b4d8;
-            border-radius: 16px;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
-            transition: all 0.4s ease-in-out;
-        }
-
-        .metric-card-box:hover {
-            transform: translateY(-5px);
-            border-color: #00f5d4;
-            box-shadow: 0 0 35px rgba(0, 245, 212, 0.7);
-        }
-
-        .metric-label {
-            font-size: 13px;
-            color: #90e0ef !important;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.2px;
-        }
-
-        .metric-value-num {
-            font-size: 36px;
-            font-weight: 900;
-            margin-top: 8px;
-            color: #ffffff !important;
-            text-shadow: 0 0 18px rgba(255, 255, 255, 0.8) !important;
-        }
-
-        /* Dynamic Glowing Action Buttons */
-        div.stButton > button, div.stDownloadButton > button {
-            font-weight: 900 !important;
-            border-radius: 14px !important;
-            padding: 16px 24px !important;
-            font-size: 15px !important;
-            letter-spacing: 1px !important;
-            transition: all 0.4s ease-in-out !important;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8) !important;
-        }
-
-        /* Launch Dispatch Primary Button */
-        div.stButton > button[kind="primary"] {
-            background: linear-gradient(135deg, #00b4d8, #0077b6) !important;
-            color: #ffffff !important;
-            border: 2px solid #00f5d4 !important;
-            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
-            width: 100% !important;
-        }
-
-        div.stButton > button[kind="primary"]:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
-            box-shadow: 0 0 45px rgba(0, 245, 212, 0.95) !important;
-        }
-
-        /* Emergency Stop Secondary Button */
-        div.stButton > button[kind="secondary"] {
-            background: linear-gradient(135deg, #d90429, #ef233c) !important;
-            color: #ffffff !important;
-            border: 2px solid #ff4d6d !important;
-            box-shadow: 0 0 25px rgba(239, 35, 60, 0.6) !important;
-            width: 100% !important;
-        }
-
-        div.stButton > button[kind="secondary"]:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #ff4d6d, #b7094c) !important;
-            box-shadow: 0 0 45px rgba(255, 77, 109, 0.95) !important;
-        }
-
-        /* Download Button */
-        div.stDownloadButton > button {
-            background: linear-gradient(135deg, #3a0ca3, #4361ee) !important;
-            color: #ffffff !important;
-            border: 2px solid #4cc9f0 !important;
-            box-shadow: 0 0 25px rgba(76, 201, 240, 0.6) !important;
-            width: 100% !important;
-        }
-
-        div.stDownloadButton > button:hover {
-            transform: translateY(-3px) scale(1.02);
-            background: linear-gradient(135deg, #4cc9f0, #7209b7) !important;
-            box-shadow: 0 0 45px rgba(76, 201, 240, 0.95) !important;
-        }
-
-        /* Log Output Panel */
-        .log-box {
-            background-color: #060a12;
+            background: #0b132b !important;
             border: 1px solid #00b4d8;
             border-radius: 12px;
             padding: 16px;
-            max-height: 280px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.2);
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #90e0ef !important;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .metric-value-num {
+            font-size: 32px;
+            font-weight: 900;
+            margin-top: 6px;
+            color: #ffffff !important;
+        }
+
+        /* Console Log Window */
+        .log-box {
+            background-color: #040812;
+            border: 1px solid #00b4d8;
+            border-radius: 10px;
+            padding: 14px;
+            max-height: 250px;
             overflow-y: auto;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: monospace;
             font-size: 13px;
             color: #48cae4;
         }
@@ -228,7 +220,7 @@ def inject_custom_styles():
 inject_custom_styles()
 
 # ==========================================
-# 3. HELPER UTILITIES & DATA VALIDATORS
+# 3. DATA HELPERS & AUDIT VALIDATORS
 # ==========================================
 def get_field_strict(row, column_aliases, default_val="N/A"):
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
@@ -272,7 +264,7 @@ def perform_batch_data_audit(dataframe):
     return alerts
 
 # ==========================================
-# 4. DEFAULT DATASET GENERATION ENGINE
+# 4. DEFAULT 100 SAMPLE RECORDS GENERATOR
 # ==========================================
 @st.cache_data
 def generate_default_100_records():
@@ -312,24 +304,24 @@ if st.session_state['crm_data'] is None:
     st.session_state['crm_data'] = generate_default_100_records()
 
 # ==========================================
-# 5. SIDEBAR CONFIGURATION STUDIO
+# 5. SIDEBAR BRANDING & CONFIGURATION STUDIO
 # ==========================================
 with st.sidebar:
     st.markdown("### 🖼️ Branding Studio")
-    logo_file = st.file_uploader("Upload Company Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
+    logo_file = st.file_uploader("Upload High-Res Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
     if logo_file:
         st.image(logo_file, use_container_width=True)
     
     st.divider()
-    st.markdown("### 🔑 Secure SMTP Credentials")
-    smtp_server = st.text_input("SMTP Server Host", value="smtp.gmail.com")
+    st.markdown("### 🔑 Secure SMTP Engine")
+    smtp_server = st.text_input("SMTP Server", value="smtp.gmail.com")
     smtp_port = st.number_input("SMTP Port", value=587, min_value=1, max_value=65535)
     sender_email = st.text_input("Sender Email ID", placeholder="your_email@gmail.com")
     app_password = st.text_input("16-Digit App Password", type="password")
     dispatch_delay = st.slider("Dispatch Delay (Sec)", 0.2, 5.0, 0.8, step=0.1)
     
     st.divider()
-    st.markdown("### 📝 Email Content Settings")
+    st.markdown("### 📝 Custom Email Header Settings")
     email_subject_prefix = st.text_input("Custom Email Subject Prefix", value="BUFFER CHEQUE DETAILS", key="sb_email_subject")
     custom_cfa_title = st.text_input("CFA Header Title", value="RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA", key="sb_cfa_title")
     
@@ -349,17 +341,17 @@ st.markdown("""
 <div class="header-wrapper">
     <h1 class="main-title">DHARMENDRA KUMAR (MISHRA)</h1>
     <span class="subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
-    <p style="color: #90e0ef; margin-top: 12px; font-weight: 700; font-size: 16px;">
-        ⚡ 8K CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
+    <p style="color: #90e0ef; margin-top: 10px; font-weight: 700; font-size: 15px;">
+        ⚡ ULTRA-FAST AUTOMATED DISPATCHER & DYNAMIC EMAIL ENGINE
     </p>
 </div>
 """, unsafe_allow_html=True)
 
 # ==========================================
-# 7. BATCH FILE IMPORT & VALIDATION SECTION
+# 7. BATCH EXCEL/CSV FILE UPLOADER
 # ==========================================
-st.markdown("### 📁 Upload Fresh Excel/CSV Batch File")
-uploaded_file = st.file_uploader("Upload Batch File (XLSX / CSV)", type=["xlsx", "csv"], key="batch_uploader")
+st.markdown("### 📁 Raw Excel / CSV Import (Data Preserved)")
+uploaded_file = st.file_uploader("Upload fresh Excel file to replace or update active queue", type=["xlsx", "csv"], key="batch_uploader")
 
 if uploaded_file is not None:
     try:
@@ -381,14 +373,14 @@ df = st.session_state['crm_data']
 st.session_state['validation_alerts'] = perform_batch_data_audit(df)
 
 # ==========================================
-# 8. ANALYTICS & METRICS PANEL
+# 8. LIVE ANALYTICS DASHBOARD
 # ==========================================
 total_records = len(df) if df is not None else 0
 sent_count = st.session_state['sent_count']
 failed_count = st.session_state['failed_count']
 pending_count = max(0, total_records - (sent_count + failed_count))
 
-st.markdown("### 📊 Live Dispatch Progress Analytics")
+st.markdown("### 📊 Live Processing Dashboard")
 col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 
 with col_m1:
@@ -400,14 +392,14 @@ with col_m3:
 with col_m4:
     st.markdown(f'<div class="metric-card-box"><div class="metric-label">Queue Pending</div><div class="metric-value-num" style="color:#ffb703 !important;">{pending_count}</div></div>', unsafe_allow_html=True)
 
-with st.expander("🔍 System Data Audit & Health Report", expanded=False):
+with st.expander("🔍 System Data Audit & Integrity Report", expanded=False):
     for alert in st.session_state['validation_alerts']:
         st.write(alert)
 
 st.markdown("---")
 
 # ==========================================
-# 9. INTERACTIVE DATA GRID & FILTERING
+# 9. INTERACTIVE LIVE DATA GRID
 # ==========================================
 st.markdown("### ✏️ Interactive Live Grid (100 Records Ready)")
 
@@ -435,7 +427,7 @@ if df is not None and not df.empty:
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
-# 10. DISPATCH CONTROL ACTION BUTTONS
+# 10. DISPATCH CONTROL ACTIONS
 # ==========================================
 st.markdown("### 🚀 Dispatch Control Actions")
 col_b1, col_b2, col_b3 = st.columns([1.8, 1.1, 1.1])
@@ -463,10 +455,10 @@ if stop_dispatch_btn:
 st.markdown("---")
 
 # ==========================================
-# 11. HTML EMAIL TEMPLATE GENERATOR
+# 11. HTML DYNAMIC EMAIL TEMPLATE BUILDER
 # ==========================================
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
-    html_content = f"""<!DOCTYPE html>
+    return f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -588,7 +580,6 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
   </table>
 </body>
 </html>"""
-    return html_content
 
 # ==========================================
 # 12. INTERACTIVE EMAIL INBOX SIMULATOR
@@ -608,7 +599,7 @@ with sim_col1:
     sim_h_ahpl = st.text_input("Hand AHPL Cheques", value="18", key="sim_h_ahpl")
 
 with sim_col2:
-    st.markdown("#### 📱 Email Preview")
+    st.markdown("#### 📱 Live Email Preview")
     preview_html = build_email_template(
         sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
         sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title, email_subject_prefix
@@ -616,7 +607,7 @@ with sim_col2:
     st.components.v1.html(preview_html, height=500, scrolling=True)
 
 # ==========================================
-# 13. AUTOMATED DISPATCH EXECUTION ENGINE
+# 13. REAL-TIME BULK EMAIL DISPATCH ENGINE
 # ==========================================
 if start_dispatch_btn:
     st.session_state['stop_dispatch'] = False
@@ -630,7 +621,7 @@ if start_dispatch_btn:
         st.error("⚠️ No data available to dispatch!")
     else:
         st.markdown("---")
-        st.markdown("### 📡 Live Dispatch Stream")
+        st.markdown("### 📡 Live Dispatch Console Stream")
         
         progress_bar = st.progress(0)
         status_box = st.empty()
