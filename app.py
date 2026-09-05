@@ -50,38 +50,7 @@ def inject_custom_styles():
             color: #e0e1dd !important;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
         }
-def inject_custom_styles():
-    st.markdown("""
-    <style>
-        /* Global Background and Fonts */
-        .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
-            background: radial-gradient(circle at 50% 20%, #0d1b2a, #0b132b, #040814) !important;
-            color: #e0e1dd !important;
-        }
 
-        /* --- APNA NAYA WALA CODE YAHAN PASTE KAREIN --- */
-        /* FORCE NEON DASHED BORDER ON ENTIRE UPLOAD AREA */
-        div[data-testid="stFileUploader"],
-        div[data-testid="stFileUploader"] > div,
-        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
-            border: 2px dashed #00f5d4 !important;
-            border-radius: 12px !important;
-            background-color: #0b132b !important;
-            box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
-            padding: 8px !important;
-        }
-
-        /* SIMPLE BUTTON STYLE WITH BORDER */
-        div[data-testid="stFileUploader"] button {
-            background-color: #101d30 !important;
-            color: #00f5d4 !important;
-            border: 1px solid #00f5d4 !important;
-            border-radius: 6px !important;
-        }
-        /* --------------------------------------------- */
-
-    </style>
-    """, unsafe_allow_html=True)
         /* Sidebar Styling */
         section[data-testid="stSidebar"] {
             background-color: #0d1322 !important;
