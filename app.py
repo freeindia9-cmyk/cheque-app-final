@@ -9,9 +9,7 @@ from datetime import datetime, timedelta
 import random
 import re
 
-# ==========================================
 # 1. Page Configuration
-# ==========================================
 st.set_page_config(
     page_title="DHARMENDRA KUMAR (MISHRA) - 8K Dynamic Cheque Dispatcher",
     page_icon="⚡",
@@ -19,9 +17,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# ==========================================
-# 2. 8K Ultra-Dynamic Cyberpunk Glassmorphic UI CSS
-# ==========================================
+# 2. 8K Ultra-Dynamic Cyberpunk Glassmorphism UI CSS
 st.markdown("""
 <style>
     /* 8K Animated Dynamic Background */
@@ -89,7 +85,7 @@ st.markdown("""
         margin-top: 8px;
     }
 
-    /* 8K Glass Cards with Interactive Hover Zoom */
+    /* 8K Glass Cards with Hover Zoom */
     .metric-card {
         background: rgba(15, 23, 42, 0.7);
         border: 1px solid rgba(52, 211, 153, 0.4);
@@ -123,7 +119,7 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
     }
 
-    /* Glowing Launch Button */
+    /* Dynamic Primary Button */
     div.stButton > button[kind="primary"] {
         background: linear-gradient(135deg, #10b981, #059669, #06b6d4) !important;
         background-size: 200% 200% !important;
@@ -161,19 +157,15 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 3. Flexible Strict Field Matching Engine
-# ==========================================
+# 3. Flexible Field Matching Engine
 def get_field_strict(row, column_aliases, default_val="N/A"):
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
-    # Exact Match First
     for col in row.index:
         col_clean = re.sub(r'[^a-zA-Z0-9]', '', str(col)).lower()
         if col_clean in clean_aliases:
             val = str(row[col]).strip()
             if val and val.lower() not in ["nan", "none", "n/a", "", "null"]:
                 return val
-    # Substring Match Fallback
     for col in row.index:
         col_clean = re.sub(r'[^a-zA-Z0-9]', '', str(col)).lower()
         for alias in clean_aliases:
@@ -183,9 +175,7 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
                     return val
     return default_val
 
-# ==========================================
-# 4. Default 100 Records Generator
-# ==========================================
+# 4. Default Records Generator (100 Sample Records)
 @st.cache_data
 def load_default_100_records():
     parties = ["Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", "Amit Gupta"]
@@ -212,19 +202,14 @@ def load_default_100_records():
         })
     return pd.DataFrame(records)
 
-# Session State Initialization
 if 'crm_data' not in st.session_state:
     st.session_state['crm_data'] = load_default_100_records()
 if 'sent_count' not in st.session_state:
     st.session_state['sent_count'] = 0
 if 'failed_count' not in st.session_state:
     st.session_state['failed_count'] = 0
-if 'stop_dispatch' not in st.session_state:
-    st.session_state['stop_dispatch'] = False
 
-# ==========================================
-# 5. Sidebar Controls & Credentials
-# ==========================================
+# 5. Sidebar Controls
 with st.sidebar:
     st.markdown("### 🖼️ Branding Studio")
     logo_file = st.file_uploader("Upload High-Res Logo", type=["png", "jpg", "jpeg"])
@@ -236,9 +221,7 @@ with st.sidebar:
     app_password = st.text_input("16-Digit App Password", type="password")
     dispatch_delay = st.slider("Dispatch Rate Delay (Seconds)", 0.5, 5.0, 1.0)
 
-# ==========================================
-# 6. Floating Dynamic Header Box
-# ==========================================
+# 6. Dynamic Header Box
 st.markdown("""
 <div class="header-box">
     <h1 class="floating-header">DHARMENDRA KUMAR (MISHRA)</h1>
@@ -249,10 +232,8 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 7. File Import & Progress Dashboard
-# ==========================================
-uploaded_file = st.file_uploader("Upload fresh Excel/CSV file", type=["xlsx", "csv"])
+# 7. File Import & Live Dashboard
+uploaded_file = st.file_uploader("Upload fresh Excel file", type=["xlsx", "csv"])
 if uploaded_file is not None:
     try:
         new_df = pd.read_csv(uploaded_file) if uploaded_file.name.endswith('.csv') else pd.read_excel(uploaded_file, engine='openpyxl')
@@ -276,34 +257,29 @@ with c3: st.markdown(f'<div class="metric-card"><div class="metric-title">Failed
 with c4: st.markdown(f'<div class="metric-card"><div class="metric-title">Pending</div><div class="metric-value" style="color:#fbbf24;">{max(0, pending_records)}</div></div>', unsafe_allow_html=True)
 
 st.markdown("---")
-
-# ==========================================
-# 8. Interactive Data Grid (Editable / Removable)
-# ==========================================
 st.markdown(f"### ✏️ Interactive Cheque Details Grid ({len(df)} Records Ready)")
 edited_df = st.data_editor(st.session_state['crm_data'], num_rows="dynamic", use_container_width=True, height=380)
 st.session_state['crm_data'] = edited_df
 df = st.session_state['crm_data']
 
-# Dispatch Buttons
+if 'stop_dispatch' not in st.session_state:
+    st.session_state['stop_dispatch'] = False
+
 col_start, col_stop = st.columns([2, 1])
 with col_start: start_btn = st.button("🚀 LAUNCH CHEQUE DETAILS DISPATCH", type="primary", use_container_width=True)
 with col_stop: stop_btn = st.button("🛑 EMERGENCY STOP", type="secondary", use_container_width=True)
 
 if stop_btn:
     st.session_state['stop_dispatch'] = True
-    st.warning("🛑 Emergency Stop Triggered! Process halting...")
+    st.warning("🛑 Dispatch process stopped.")
 
-# ==========================================
-# 9. Automated Email Dispatch Engine
-# ==========================================
 if start_btn:
     st.session_state['stop_dispatch'] = False
     st.session_state['sent_count'] = 0
     st.session_state['failed_count'] = 0
 
     if not sender_email or not app_password:
-        st.warning("⚠️ Sidebar mein Sender Email ID aur App Password fill karein!")
+        st.warning("⚠️ Sidebar mein Sender Email ID aur App Password bharein!")
     else:
         st.markdown("---")
         progress_bar = st.progress(0)
@@ -316,7 +292,7 @@ if start_btn:
 
             for idx in range(len(df)):
                 if st.session_state['stop_dispatch']:
-                    st.error("🛑 Dispatch process stopped manually!")
+                    st.error("🛑 Dispatch process halted manually!")
                     break
 
                 row = df.iloc[idx]
@@ -339,7 +315,7 @@ if start_btn:
                     msg['To'] = target_email
                     msg['Subject'] = f"💳 Buffer Cheque Details - {party_name} ({rec_date})"
 
-                    # 🎨 Selection-Grade HTML Email Body with 3-Second Fade-Out Dynamic Banner
+                    # 🎨 HTML EMAIL TEMPLATE WITH 3-SECOND FADE-OUT BANNER & COMPLETE DATA
                     body_html = f"""
                     <!DOCTYPE html>
                     <html>
@@ -368,7 +344,7 @@ if start_btn:
                     <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
                       <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #064e3b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
                         
-                        <!-- HEADER SECTION -->
+                        <!-- HEADER BOX -->
                         <tr>
                           <td style="padding: 24px; text-align: center;">
                             <div style="background-color: #34d399; border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(52, 211, 153, 0.6);">
@@ -377,14 +353,14 @@ if start_btn:
                               </h1>
                             </div>
 
-                            <!-- 3-SECOND FADE OUT GLOWING BANNER -->
+                            <!-- 3-SECOND DYNAMIC FADE OUT BANNER -->
                             <div class="animated-subbanner">
                               ✨ RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA
                             </div>
                           </td>
                         </tr>
 
-                        <!-- CHEQUE DATA CONTENT -->
+                        <!-- BODY CONTENT -->
                         <tr>
                           <td style="padding: 0 28px 28px 28px;">
                             <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #34d399;">{party_name}</b>,</p>
@@ -418,4 +394,20 @@ if start_btn:
                               </tr>
                               <tr style="border-bottom: 1px solid #065f46;">
                                 <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-                                <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{used_ahpl}<
+                                <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{used_ahpl}</td>
+                              </tr>
+                              <tr style="border-bottom: 1px solid #065f46;">
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
+                                <td style="color: #34d399; font-weight: bold; font-size: 14px;">{hand_ail}</td>
+                              </tr>
+                              <tr>
+                                <td style="color: #a7f3d0; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
+                                <td style="color: #34d399; font-weight: bold; font-size: 14px;">{hand_ahpl}</td>
+                              </tr>
+                            </table>
+
+                            <p style="color: #a7f3d0; font-size: 13px; margin-top: 22px; line-height: 1.5;">
+                              If you notice any discrepancy or require further clarification, please feel free to reach out.
+                            </p>
+                          </td>
+                        </
