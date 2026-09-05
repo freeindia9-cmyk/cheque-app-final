@@ -94,32 +94,54 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-        /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
-        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
-            background-color: #16243b !important;
-            border: 2px solid #00b4d8 !important;
+/* NEON GLOW DATA GRID STYLING */
+        div[data-testid="stDataFrame"] {
+            background-color: #0b132b !important;
+            border: 2px solid #00f5d4 !important;
             border-radius: 16px !important;
             padding: 8px !important;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6), inset 0 0 15px rgba(0, 245, 212, 0.3) !important;
         }
 
-        /* Grid Cells & Header Contrast Enhancement */
-        [data-testid="stDataFrame"] * {
-            background-color: #16243b !important;
-            color: #ffffff !important;
-            font-weight: 600 !important;
-            font-size: 14px !important;
-        }
-
-        /* Glide Data Grid Specific Cell Rules */
-        .gdg-header-cell, .gdg-cell {
+        /* Dark Background and Neon Text for Table Headers and Cells */
+        div[data-testid="stDataFrame"] th, 
+        div[data-testid="stDataFrame"] td,
+        div[data-testid="stDataFrame"] [role="gridcell"] {
             background-color: #101d30 !important;
             color: #00f5d4 !important;
-            border-color: #00b4d8 !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+            font-weight: 700 !important;
+            font-size: 14px !important;
+            border: 1px solid #00b4d8 !important;
+            text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
+        }
+
+        /* Hover Effect for Rows */
+        div[data-testid="stDataFrame"] tr:hover td {
+            background-color: #1a2c42 !important;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+        }
+
+        /* Hover Effect for Rows */
+        div[data-testid="stDataFrame"] tr:hover td {
+            background-color: #1a2c42 !important;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+        }
+            background-color: #1a2c42 !important;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+        }
+            text-shadow: 0 0 10px #00f5d4, 0 0 20px #00f5d4 !important;
+            border: 1px solid #00b4d8 !important;
+        }
+            background-color: #1a2c42 !important;
+            box-shadow: 0 0 10px rgba(0, 245, 212, 0.5) !important;
+        }
+            font-size: 14px !important;
+            text-shadow: 0 0 6px rgba(0, 245, 212, 0.8) !important;
         }
 
         /* Modern File Uploader Dropzone */
-        [data-testid="stFileUploadDropzone"] {
+        [data-testid="stFileUploadDropzone"], div[data-testid="stFileUploader"] section {
             background: linear-gradient(135deg, #101d30, #0c1827) !important;
             border: 2px dashed #00b4d8 !important;
             border-radius: 16px !important;
@@ -127,12 +149,12 @@ def inject_custom_styles():
             transition: all 0.5s ease-in-out !important;
         }
 
-        [data-testid="stFileUploadDropzone"]:hover {
+        [data-testid="stFileUploadDropzone"]:hover, div[data-testid="stFileUploader"] section:hover {
             border-color: #00f5d4 !important;
             box-shadow: 0 0 35px rgba(0, 245, 212, 0.6) !important;
         }
 
-        [data-testid="stFileUploadDropzone"] button {
+        [data-testid="stFileUploadDropzone"] button, div[data-testid="stFileUploader"] button {
             background: linear-gradient(135deg, #0077b6, #00b4d8) !important;
             color: #ffffff !important;
             border: 2px solid #90e0ef !important;
@@ -142,8 +164,10 @@ def inject_custom_styles():
             transition: all 0.5s ease-in-out !important;
         }
 
-        [data-testid="stFileUploadDropzone"] button:hover {
+        [data-testid="stFileUploadDropzone"] button:hover, div[data-testid="stFileUploader"] button:hover {
             transform: translateY(-3px) scale(1.03);
+            background: linear-gradient(135deg, #00f5d4, #00b4d8) !important;
+            color: #000000 !important;
             box-shadow: 0 0 30px rgba(144, 224, 239, 0.9) !important;
         }
 
@@ -234,7 +258,75 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
         }
+    /* NEON PULSATE ANIMATION FOR UPLOAD BOX */
+        @keyframes neonPulse {
+            0% {
+                border-color: #00f5d4;
+                box-shadow: 0 0 10px rgba(0, 245, 212, 0.3), inset 0 0 5px rgba(0, 245, 212, 0.2);
+            }
+            50% {
+                border-color: #00b4d8;
+                box-shadow: 0 0 25px rgba(0, 245, 212, 0.8), inset 0 0 15px rgba(0, 245, 212, 0.5);
+            }
+            100% {
+                border-color: #00f5d4;
+                box-shadow: 0 0 10px rgba(0, 245, 212, 0.3), inset 0 0 5px rgba(0, 245, 212, 0.2);
+            }
+        }
 
+        /* APPLY ANIMATION TO UPLOAD CONTAINER */
+        div[data-testid="stFileUploader"],
+        div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
+            background-color: #0b132b !important;
+            border: 2px dashed #00f5d4 !important;
+            border-radius: 12px !important;
+            animation: neonPulse 2.5s infinite ease-in-out !important;
+            padding: 8px !important;
+        }
+
+        /* SIMPLE BUTTON STYLE */
+        div[data-testid="stFileUploader"] button {
+            background-color: #101d30 !important;
+            color: #00f5d4 !important;
+            border: 1px solid #00f5d4 !important;
+            border-radius: 6px !important;
+        }
+         ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
+        div[data-testid="stFileUploader"] {
+            border: 2px dashed #00f5d4 !important;
+            border-radius: 16px !important;
+            background-color: #0b132b !important;
+            padding: 12px !important;
+            box-shadow: 0 0 20px rgba(0, 245, 212, 0.4), inset 0 0 10px rgba(0, 245, 212, 0.2) !important;
+            transition: all 0.4s ease-in-out !important;
+        }
+
+        /* Hover Effect for Upload Box */
+        div[data-testid="stFileUploader"]:hover {
+            border-color: #00b4d8 !important;
+            box-shadow: 0 0 30px rgba(0, 245, 212, 0.8), inset 0 0 15px rgba(0, 245, 212, 0.4) !important;
+            transform: translateY(-2px) !important;
+        }
+
+        /* Upload Button Inside Text & Icon Styling */
+        div[data-testid="stFileUploader"] button {
+            background-color: #101d30 !important;
+            color: #00f5d4 !important;
+            border: 1px solid #00f5d4 !important;
+            border-radius: 10px !important;
+            font-weight: 800 !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+            text-shadow: 0 0 8px rgba(0, 245, 212, 0.8) !important;
+            box-shadow: 0 0 12px rgba(0, 245, 212, 0.3) !important;
+        }
+
+        div[data-testid="stFileUploader"] button:hover {
+            background-color: #00f5d4 !important;
+            color: #0b132b !important;
+            box-shadow: 0 0 20px #00f5d4 !important;
+            text-shadow: none !important;
+        }
+        
         div.stButton > button[kind="primary"]:hover {
             transform: translateY(-3px) scale(1.02);
             background: linear-gradient(135deg, #00f5d4, #0096c7) !important;
@@ -494,18 +586,91 @@ if df is not None and not df.empty:
     else:
         filtered_df = df
 
-    edited_df = st.data_editor(
-        filtered_df,
-        num_rows="dynamic",
-        use_container_width=True,
-        height=380,
-        key="data_editor_grid"
-    )
-    
-    if not search_query:
-        st.session_state['crm_data'] = edited_df
-        df = st.session_state['crm_data']
+# Record ID ko grid se hatane ke liye
+display_df = filtered_df.drop(columns=["Record ID"], errors="ignore")
+# ==========================================
+# 10. DISPATCH CONTROL ACTION BUTTONS
+# ==========================================
+st.markdown("### 🚀 Dispatch Control Actions")
 
+col_b1, col_b2 = st.columns(2)
+
+with col_b1:
+    start_dispatch = st.button("🔥 Start Secure Batch Dispatch", use_container_width=True)
+
+with col_b2:
+    stop_dispatch = st.button("🛑 Halt / Stop Dispatch", use_container_width=True)
+
+if start_dispatch:
+    import smtplib
+    from email.mime.text import MIMEText
+    from email.mime.multipart import MIMEMultipart
+    import time
+
+    if not sender_email or not app_password:
+        st.error("❌ Please provide Sender Email ID and App Password in the sidebar setup!")
+    else:
+        success_count = 0
+        fail_count = 0
+        
+        progress_bar = st.progress(0)
+        status_text = st.empty()
+        
+        total_rows_to_send = len(filtered_df)
+        
+        for idx, row in filtered_df.iterrows():
+            recipient_email = str(row.get('Email', ''))
+            
+            # --- SAFETY CHECK: SAMPLE/DUMMY EMAILS SE ASLI EMAIL ROKNE KE LIYE ---
+            if any(dummy in recipient_email.lower() for dummy in ['sample', 'clientdomain', 'example', 'test', 'dummy', 'xyz']):
+                # Dummy/sample email hone par real SMTP mail send nahi hogi, sirf skip ho jayegi
+                fail_count += 1
+                continue
+            
+            try:
+                # Real SMTP connection & dispatch logic
+                msg = MIMEMultipart()
+                msg['From'] = sender_email
+                msg['To'] = recipient_email
+                msg['Subject'] = f"{email_subject_prefix} - {row.get('Party Name', 'Client')}"
+                
+                body = f"""
+                {custom_cfa_title}
+                ----------------------------------------
+                Record ID: {row.get('Record ID', 'N/A')}
+                Date: {row.get('Date', 'N/A')}
+                Party Name: {row.get('Party Name', 'N/A')}
+                Account Number: {row.get('Account Number', 'N/A')}
+                Place: {row.get('Place', 'N/A')}
+                Bank Name: {row.get('Bank Name', 'N/A')}
+                Cheques Used (AIL): {row.get('Number of cheque used in AIL', 0)}
+                Cheques Used (AHPL): {row.get('Number of cheque used In AHPL', 0)}
+                ----------------------------------------
+                """
+                msg.attach(MIMEText(body, 'plain'))
+                
+                server = smtplib.SMTP(smtp_server, smtp_port)
+                server.starttls()
+                server.login(sender_email, app_password)
+                server.sendmail(sender_email, recipient_email, msg.as_string())
+                server.quit()
+                
+                success_count += 1
+                st.session_state['sent_count'] = success_count
+                time.sleep(dispatch_delay)
+                
+            except Exception as e:
+                fail_count += 1
+                st.session_state['failed_count'] = fail_count
+        
+        st.success(f"🎉 Batch Dispatch Completed! Success: {success_count}, Skipped/Failed: {fail_count}")
+# Grid mein display_df pass karein (taaki Record ID na dikhe)
+edited_df = st.data_editor(display_df, num_rows="dynamic", use_container_width=True)
+
+# Session state update karna
+st.session_state['crm_data'] = edited_df
+filtered_df = st.session_state['crm_data']
+df = st.session_state['crm_data']
 st.markdown("<br>", unsafe_allow_html=True)
 
 # ==========================================
@@ -688,6 +853,7 @@ with sim_col1:
 
 with sim_col2:
     st.markdown("#### 📱 Live Rendered Email Preview")
+    # Dynamically pass sidebar inputs to email generator for real-time reactive update
     preview_html = build_email_template(
         sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
         sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title, email_subject_prefix
@@ -728,27 +894,10 @@ if start_dispatch_btn:
                     break
 
                 row = df.iloc[idx]
-                target_email = get_field_strict(row, ["Email", "Email ID"], "").strip()
-                party_name = get_field_strict(row, ["Party Name", "Party"], "Valued Customer")
-                timestamp_str = datetime.now().strftime('%H:%M:%S')
-
-                # --- SAFETY CHECK: SAMPLE / DUMMY EMAILS ROKNE KE LIYE ---
-                if any(dummy in target_email.lower() for dummy in ['sample', 'clientdomain', 'example', 'test', 'dummy', 'xyz']):
-                    st.session_state['failed_count'] += 1
-                    status_msg = f"⏩ [{idx+1}/{len(df)}] Skipped Dummy/Sample Address: {target_email}"
-                    st.session_state['dispatch_logs'].append(f"[{timestamp_str}] SAFETY SKIP: {status_msg}")
-                    status_box.warning(status_msg)
-                    
-                    # Progress & Logs Update
-                    progress = (idx + 1) / len(df)
-                    progress_bar.progress(progress)
-                    log_html = "<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>"
-                    log_container.markdown(log_html, unsafe_allow_html=True)
-                    time.sleep(0.2)
-                    continue
-
                 rec_date = get_field_strict(row, ["Date", "Entry Date"], datetime.now().strftime("%Y-%m-%d"))
+                party_name = get_field_strict(row, ["Party Name", "Party"], "Valued Customer")
                 account_val = get_field_strict(row, ["Account Number", "Account No"], "N/A")
+                target_email = get_field_strict(row, ["Email", "Email ID"], "").strip()
                 place_val = get_field_strict(row, ["Place", "City"], "N/A")
                 bank_val = get_field_strict(row, ["Bank Name", "Bank"], "N/A")
                 
@@ -756,6 +905,8 @@ if start_dispatch_btn:
                 used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL"], "0")
                 hand_ail = get_field_strict(row, ["Total cheque in hand AIL"], "0")
                 hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL"], "0")
+
+                timestamp_str = datetime.now().strftime('%H:%M:%S')
 
                 if validate_email_address(target_email):
                     msg = MIMEMultipart('alternative')
@@ -789,6 +940,8 @@ if start_dispatch_btn:
                 # Progress & Logs Update
                 progress = (idx + 1) / len(df)
                 progress_bar.progress(progress)
+                
+                # Render Console Logs
                 log_html = "<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>"
                 log_container.markdown(log_html, unsafe_allow_html=True)
                 
@@ -805,27 +958,61 @@ if start_dispatch_btn:
 # Display Historical Activity Logs if Available
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
-    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
+    st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True) 
 st.markdown("""
 <style>
-    /* Glowing Neon Dashed Border for Upload Box */
+    /* 1. MAIN APP BACKGROUND (Pulsating Glow) */
+    @keyframes appBgGlow {
+        0% { background-color: #050a18 !important; }
+        50% { background-color: #0b1736 !important; }
+        100% { background-color: #050a18 !important; }
+    }
+
+    .stApp {
+        animation: appBgGlow 6s infinite ease-in-out !important;
+    }
+
+    /* 2. UPLOAD BUTTON DESIGN & BORDER */
     div[data-testid="stFileUploader"],
     div[data-testid="stFileUploader"] > div,
     div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
         border: 2px dashed #00f5d4 !important;
         border-radius: 12px !important;
         background-color: #0b132b !important;
-        box-shadow: 0 0 20px rgba(0, 245, 212, 0.6), inset 0 0 10px rgba(0, 245, 212, 0.2) !important;
-        padding: 10px !important;
+        box-shadow: 0 0 12px rgba(0, 245, 212, 0.4) !important;
+        padding: 8px !important;
     }
 
-    /* Glowing Browse Button Inside */
     div[data-testid="stFileUploader"] button {
         background-color: #101d30 !important;
         color: #00f5d4 !important;
         border: 1px solid #00f5d4 !important;
         border-radius: 6px !important;
-        box-shadow: 0 0 10px rgba(0, 245, 212, 0.4) !important;
+    }
+
+    /* 3. DATA EDITOR GRID NEON BORDER */
+    div[data-testid="stDataEditor"] {
+        border: 2px solid #00f5d4 !important;
+        border-radius: 10px !important;
+        box-shadow: 0 0 15px rgba(0, 245, 212, 0.2) !important;
+        padding: 4px !important;
+    }
+
+    /* 4. EDITING POPUP & INPUT TEXT VISIBILITY */
+    div[data-testid="stDataEditor"] input,
+    div[data-baseweb="popover"] input,
+    div[data-baseweb="base-input"] input,
+    input {
+        color: #ffffff !important;
+        background-color: #020617 !important;
+        -webkit-text-fill-color: #ffffff !important;
+        font-weight: bold !important;
+    }
+    
+    div[data-baseweb="popover"] div[data-baseweb="base-input"],
+    div[data-baseweb="menu"] {
+        background-color: #020617 !important;
+        border: 1px solid #00f5d4 !important;
     }
 </style>
 """, unsafe_allow_html=True)
