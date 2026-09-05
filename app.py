@@ -806,16 +806,16 @@ if start_dispatch_btn:
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
-st.markdown("""
+    st.markdown("""
 <style>
-    /* Soft & Balanced Neon Dashed Border */
+    /* Perfect Neon Glow (Na zyada, na kam - Ekdam proper chamakta hua) */
     div[data-testid="stFileUploader"],
     div[data-testid="stFileUploader"] > div,
     div[data-testid="stFileUploader"] [data-testid="stFileUploadDropzone"] {
         border: 2px dashed #00f5d4 !important;
         border-radius: 12px !important;
         background-color: #0b132b !important;
-        box-shadow: 0 0 8px rgba(0, 245, 212, 0.25) !important; /* Bahut halka aur soft glow */
+        box-shadow: 0 0 16px rgba(0, 245, 212, 0.7), inset 0 0 8px rgba(0, 245, 212, 0.3) !important;
         animation: none !important;
         padding: 10px !important;
     }
@@ -826,6 +826,7 @@ st.markdown("""
         color: #00f5d4 !important;
         border: 1px solid #00f5d4 !important;
         border-radius: 6px !important;
+        box-shadow: 0 0 8px rgba(0, 245, 212, 0.4) !important;
     }
 </style>
 """, unsafe_allow_html=True)
