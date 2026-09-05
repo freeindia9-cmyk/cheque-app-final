@@ -12,9 +12,10 @@ import re
 import io
 import json
 
-# ==========================================
-# 1. PAGE CONFIGURATION & STATE INITIALIZATION
-# ==========================================
+# ==============================================================================
+# SECTION 1: PAGE CONFIGURATION & STATE INITIALIZATION
+# ==============================================================================
+# Set wide layout and page configuration for Streamlit web application
 st.set_page_config(
     page_title="DHARMENDRA KUMAR (MISHRA) - Bulk Dispatcher",
     page_icon="⚡",
@@ -22,34 +23,45 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Initialize Session State Variables
+# Initialize Session State Variables to prevent loss during reruns
 if 'crm_data' not in st.session_state:
     st.session_state['crm_data'] = None
+
 if 'sent_count' not in st.session_state:
     st.session_state['sent_count'] = 0
+
 if 'failed_count' not in st.session_state:
     st.session_state['failed_count'] = 0
+
 if 'stop_dispatch' not in st.session_state:
     st.session_state['stop_dispatch'] = False
+
 if 'dispatch_logs' not in st.session_state:
     st.session_state['dispatch_logs'] = []
+
 if 'validation_alerts' not in st.session_state:
     st.session_state['validation_alerts'] = []
 
-# ==========================================
-# 2. ADVANCED DYNAMIC CSS & UI STYLING ENGINE
-# ==========================================
+if 'current_page' not in st.session_state:
+    st.session_state['current_page'] = 1
+
+if 'active_tab' not in st.session_state:
+    st.session_state['active_tab'] = "Dashboard"
+
+# ==============================================================================
+# SECTION 2: ADVANCED DYNAMIC CSS & UI STYLING ENGINE
+# ==============================================================================
 def inject_custom_styles():
     st.markdown("""
     <style>
-        /* Global Canvas Styling */
+        /* Global Canvas & Background Styling */
         .stApp, [data-testid="stAppViewContainer"], [data-testid="stHeader"] {
             background-color: #070d18 !important;
             color: #e0e1dd !important;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif !important;
         }
 
-        /* Sidebar Customization */
+        /* Sidebar Styling */
         section[data-testid="stSidebar"] {
             background-color: #0b132b !important;
             border-right: 2px solid #00b4d8 !important;
@@ -74,7 +86,7 @@ def inject_custom_styles():
             color: #e0e1dd !important;
         }
 
-        /* Form Text Inputs & Input Boxes */
+        /* Form Text Inputs & Select Boxes */
         input, select, textarea, div[data-baseweb="input"] > div, div[data-baseweb="select"] > div {
             background-color: #0f1c32 !important;
             color: #00f5d4 !important;
@@ -82,7 +94,7 @@ def inject_custom_styles():
             border-radius: 8px !important;
         }
 
-        /* Cyber File Uploader & Dropzone Area */
+        /* File Upload Dropzone Container */
         div[data-testid="stFileUploader"] {
             background-color: #0b1528 !important;
             border: 2px dashed #00b4d8 !important;
@@ -125,7 +137,7 @@ def inject_custom_styles():
             transform: translateY(-1px);
         }
 
-        /* Emergency Stop Button Special Override */
+        /* Emergency Stop Button Styling Override */
         div.stButton > button[kind="secondary"] {
             background: linear-gradient(135deg, #d90429, #ef233c) !important;
             color: #ffffff !important;
@@ -139,7 +151,7 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(255, 77, 109, 0.8) !important;
         }
 
-        /* Data Grid & Interactive Table Fixes */
+        /* Data Grid & Interactive Table Styling */
         div[data-testid="stDataEditor"] {
             background-color: #0b132b !important;
             border: 1px solid #00b4d8 !important;
@@ -219,13 +231,18 @@ def inject_custom_styles():
 
 inject_custom_styles()
 
-# ==========================================
-# 3. DATA HELPERS & AUDIT VALIDATORS
-# ==========================================
+# ==============================================================================
+# SECTION 3: HELPER FUNCTIONS & DATA VALIDATION ENGINE
+# ==============================================================================
+def normalize_column_name(col_name):
+    """Normalize string column names for strict field matching."""
+    return re.sub(r'[^a-zA-Z0-9]', '', str(col_name)).lower()
+
 def get_field_strict(row, column_aliases, default_val="N/A"):
-    clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
+    """Extract column field safely matching multiple potential alias names."""
+    clean_aliases = [normalize_column_name(a) for a in column_aliases]
     for col in row.index:
-        col_clean = re.sub(r'[^a-zA-Z0-9]', '', str(col)).lower()
+        col_clean = normalize_column_name(col)
         if col_clean in clean_aliases:
             val = str(row[col]).strip()
             if val and val.lower() not in ["nan", "none", "n/a", "", "null"]:
@@ -233,10 +250,12 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
     return default_val
 
 def validate_email_address(email_str):
+    """Validate standard RFC email string patterns."""
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, str(email_str).strip()))
 
 def perform_batch_data_audit(dataframe):
+    """Perform a comprehensive audit on the loaded dataset."""
     alerts = []
     if dataframe is None or dataframe.empty:
         return ["Dataset is empty. Please upload data or load default sample records."]
@@ -244,34 +263,48 @@ def perform_batch_data_audit(dataframe):
     total_rows = len(dataframe)
     invalid_email_count = 0
     missing_account_count = 0
+    duplicate_email_set = set()
+    duplicate_email_count = 0
 
     for idx, row in dataframe.iterrows():
-        email_val = get_field_strict(row, ["Email", "Email ID", "Mail"], "")
+        email_val = get_field_strict(row, ["Email", "Email ID", "Mail", "Recipient"], "")
         if not validate_email_address(email_val):
             invalid_email_count += 1
+        else:
+            if email_val in duplicate_email_set:
+                duplicate_email_count += 1
+            else:
+                duplicate_email_set.add(email_val)
 
-        acc_val = get_field_strict(row, ["Account Number", "Account No", "Acc"], "")
+        acc_val = get_field_strict(row, ["Account Number", "Account No", "Acc", "Account"], "")
         if acc_val == "N/A" or not acc_val:
             missing_account_count += 1
 
     if invalid_email_count > 0:
         alerts.append(f"⚠️ {invalid_email_count} out of {total_rows} records contain invalid/missing Email IDs.")
+    
+    if duplicate_email_count > 0:
+        alerts.append(f"ℹ️ {duplicate_email_count} duplicate email entries detected in current batch.")
+        
     if missing_account_count > 0:
         alerts.append(f"⚠️ {missing_account_count} records are missing Account Numbers.")
+        
     if not alerts:
         alerts.append("✅ Data Audit Passed: All records are well-formatted and ready for dispatch.")
     
     return alerts
 
-# ==========================================
-# 4. DEFAULT 100 SAMPLE RECORDS GENERATOR
-# ==========================================
+# ==============================================================================
+# SECTION 4: DEFAULT 100 SAMPLE RECORDS GENERATOR
+# ==============================================================================
 @st.cache_data
 def generate_default_100_records():
+    """Generates 100 sample records for testing dispatch workflows."""
     parties = [
         "Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", 
         "Amit Gupta", "Vikram Singh", "Neha Kapoor", "Sanjay Dutt",
-        "Pooja Joshi", "Rajesh Kumar", "Meera Nair", "Deepak Chopra"
+        "Pooja Joshi", "Rajesh Kumar", "Meera Nair", "Deepak Chopra",
+        "Sunil Mehta", "Kavita Reddy", "Alok Srivastava", "Swati Mishra"
     ]
     places = ["Patna", "Delhi", "Mumbai", "Kolkata", "Bangalore", "Ranchi", "Varanasi", "Ahmedabad", "Jaipur"]
     banks = ["State Bank of India", "HDFC Bank", "ICICI Bank", "Axis Bank", "Punjab National Bank", "Canara Bank"]
@@ -300,12 +333,13 @@ def generate_default_100_records():
         })
     return pd.DataFrame(records)
 
+# Ensure sample data is assigned if state is empty
 if st.session_state['crm_data'] is None:
     st.session_state['crm_data'] = generate_default_100_records()
 
-# ==========================================
-# 5. SIDEBAR BRANDING & CONFIGURATION STUDIO
-# ==========================================
+# ==============================================================================
+# SECTION 5: SIDEBAR BRANDING & CONFIGURATION STUDIO
+# ==============================================================================
 with st.sidebar:
     st.markdown("### 🖼️ Branding Studio")
     logo_file = st.file_uploader("Upload High-Res Logo", type=["png", "jpg", "jpeg"], key="logo_uploader")
@@ -334,9 +368,9 @@ with st.sidebar:
         st.session_state['dispatch_logs'] = []
         st.rerun()
 
-# ==========================================
-# 6. MAIN APP HEADER BANNER
-# ==========================================
+# ==============================================================================
+# SECTION 6: MAIN APP HEADER BANNER
+# ==============================================================================
 st.markdown("""
 <div class="header-wrapper">
     <h1 class="main-title">DHARMENDRA KUMAR (MISHRA)</h1>
@@ -347,9 +381,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ==========================================
-# 7. BATCH EXCEL/CSV FILE UPLOADER
-# ==========================================
+# ==============================================================================
+# SECTION 7: BATCH EXCEL/CSV FILE UPLOADER
+# ==============================================================================
 st.markdown("### 📁 Raw Excel / CSV Import (Data Preserved)")
 uploaded_file = st.file_uploader("Upload fresh Excel file to replace or update active queue", type=["xlsx", "csv"], key="batch_uploader")
 
@@ -372,9 +406,9 @@ if uploaded_file is not None:
 df = st.session_state['crm_data']
 st.session_state['validation_alerts'] = perform_batch_data_audit(df)
 
-# ==========================================
-# 8. LIVE ANALYTICS DASHBOARD
-# ==========================================
+# ==============================================================================
+# SECTION 8: LIVE ANALYTICS DASHBOARD
+# ==============================================================================
 total_records = len(df) if df is not None else 0
 sent_count = st.session_state['sent_count']
 failed_count = st.session_state['failed_count']
@@ -398,9 +432,9 @@ with st.expander("🔍 System Data Audit & Integrity Report", expanded=False):
 
 st.markdown("---")
 
-# ==========================================
-# 9. INTERACTIVE LIVE DATA GRID
-# ==========================================
+# ==============================================================================
+# SECTION 9: INTERACTIVE LIVE DATA GRID
+# ==============================================================================
 st.markdown("### ✏️ Interactive Live Grid (100 Records Ready)")
 
 search_query = st.text_input("🔍 Quick Search Filter (Party Name, Email, or Bank)", placeholder="Type to filter records...")
@@ -426,9 +460,9 @@ if df is not None and not df.empty:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# ==========================================
-# 10. DISPATCH CONTROL ACTIONS
-# ==========================================
+# ==============================================================================
+# SECTION 10: DISPATCH CONTROL ACTIONS
+# ==============================================================================
 st.markdown("### 🚀 Dispatch Control Actions")
 col_b1, col_b2, col_b3 = st.columns([1.8, 1.1, 1.1])
 
@@ -454,9 +488,9 @@ if stop_dispatch_btn:
 
 st.markdown("---")
 
-# ==========================================
-# 11. HTML DYNAMIC EMAIL TEMPLATE BUILDER
-# ==========================================
+# ==============================================================================
+# SECTION 11: HTML DYNAMIC EMAIL TEMPLATE BUILDER
+# ==============================================================================
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     return f"""<!DOCTYPE html>
 <html>
@@ -581,9 +615,9 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
 </body>
 </html>"""
 
-# ==========================================
-# 12. INTERACTIVE EMAIL INBOX SIMULATOR
-# ==========================================
+# ==============================================================================
+# SECTION 12: INTERACTIVE EMAIL INBOX SIMULATOR
+# ==============================================================================
 st.markdown("### 👁️ Live Rendered Inbox View")
 sim_col1, sim_col2 = st.columns([1, 1], gap="large")
 
@@ -606,9 +640,9 @@ with sim_col2:
     )
     st.components.v1.html(preview_html, height=500, scrolling=True)
 
-# ==========================================
-# 13. REAL-TIME BULK EMAIL DISPATCH ENGINE
-# ==========================================
+# ==============================================================================
+# SECTION 13: REAL-TIME BULK EMAIL DISPATCH ENGINE
+# ==============================================================================
 if start_dispatch_btn:
     st.session_state['stop_dispatch'] = False
     st.session_state['sent_count'] = 0
@@ -698,6 +732,11 @@ if start_dispatch_btn:
             st.error(f"❌ Connection Failure: {conn_err}")
             st.session_state['dispatch_logs'].append(f"[{datetime.now().strftime('%H:%M:%S')}] FATAL: {conn_err}")
 
+# Display persistent dispatch log history
 if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
+
+# ==============================================================================
+# END OF SCRIPT
+# ==============================================================================
