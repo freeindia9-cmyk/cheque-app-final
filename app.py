@@ -883,11 +883,19 @@ if st.session_state['dispatch_logs']:
     st.markdown("### 📜 Dispatch Logs Console")
     st.markdown("<div class='log-box'>" + "<br>".join(st.session_state['dispatch_logs']) + "</div>", unsafe_allow_html=True)
 st.markdown("""
-/* FIX TEXT VISIBILITY DURING CELL EDITING */
-        div[data-testid="stDataEditor"] input,
-        div[data-baseweb="input"] input {
+/* PERFECT DATA EDITOR CELL EDITING STYLE */
+        div[data-testid="stDataEditor"] div[data-baseweb="input"] input,
+        div[data-testid="stDataEditor"] input {
             color: #ffffff !important;
-            background-color: #101d30 !important;
+            background-color: #0e1a36 !important;
+            -webkit-text-fill-color: #ffffff !important;
+        }
+        
+        /* EDITING POPUP OR CELL BORDER GLOW */
+        div[data-testid="stDataEditor"] [data-baseweb="input"] {
+            background-color: #0e1a36 !important;
+            border: 1px solid #00f5d4 !important;
+            border-radius: 4px !important;
         }
     <style>
         /* 1. UPLOAD BUTTON DASHED BORDER & CONTAINMENT */
