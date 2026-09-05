@@ -258,7 +258,26 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
             width: 100% !important;
         } 
-/* ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
+/* UPLOAD SECTION COMPLETE NEON TEXT & GLOW */
+        div[data-testid="stFileUploader"] label,
+        div[data-testid="stFileUploader"] span,
+        div[data-testid="stFileUploader"] p,
+        div[data-testid="stFileUploader"] small,
+        div[data-testid="stFileUploader"] section {
+            color: #00f5d4 !important;
+            font-family: 'Consolas', 'Courier New', monospace !important;
+            font-weight: 800 !important;
+            text-shadow: 0 0 10px #00f5d4, 0 0 20px rgba(0, 245, 212, 0.8) !important;
+        }
+
+        /* Upload Container Outer Border Glow */
+        div[data-testid="stFileUploader"] section[aria-label="Upload Company Logo"],
+        div[data-testid="stFileUploader"] > div {
+            border: 2px solid #00f5d4 !important;
+            border-radius: 16px !important;
+            background-color: #0b132b !important;
+            box-shadow: 0 0 25px rgba(0, 245, 212, 0.6) !important;
+        }/* ATTRACTIVE NEON UPLOAD BUTTON & DROPZONE */
         div[data-testid="stFileUploader"] {
             border: 2px dashed #00f5d4 !important;
             border-radius: 16px !important;
