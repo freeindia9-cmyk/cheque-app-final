@@ -94,36 +94,32 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-   /* HIGH-VISIBILITY NEON DATA GRID FIX */
-        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
-            background-color: #0b132b !important;
+  /* UNBLOCK CANVA DATA GRID & TRANSPARENT FRAME */
+        div[data-testid="stDataFrame"] {
+            background-color: transparent !important;
             border: 2px solid #00b4d8 !important;
-            border-radius: 16px !important;
-            padding: 8px !important;
-            box-shadow: 0 0 25px rgba(0, 180, 216, 0.5) !important;
+            border-radius: 12px !important;
+            padding: 4px !important;
+            box-shadow: 0 0 15px rgba(0, 180, 216, 0.3) !important;
         }
 
-        /* Neon Text and Font Styling for Grid Cells */
-        .gdg-header-cell, .gdg-cell, .dvn-scroller, .glideDataEditor {
-            background-color: #101d30 !important;
+        /* Allow Canvas and Data Grid to Render Clearly */
+        div[data-testid="stDataFrame"] > div,
+        div[data-testid="stDataFrame"] iframe,
+        div[data-testid="stDataFrame"] canvas {
+            background-color: transparent !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Neon Header and Cell Contrast Fix */
+        .gdg-header-cell, .gdg-cell, .glideDataEditor {
+            background-color: #0d1b2a !important;
             color: #00f5d4 !important;
-            font-family: 'Courier New', Courier, monospace, sans-serif !important;
+            font-family: 'Courier New', monospace !important;
             font-weight: 700 !important;
             font-size: 14px !important;
-            text-shadow: 0 0 8px rgba(0, 245, 212, 0.7) !important;
-            border-color: #00b4d8 !important;
-        }
-
-        /* Canvas Element High-Contrast Force View */
-        div[data-testid="stDataFrame"] canvas {
-            background-color: #0b132b !important;
-            filter: drop-shadow(0px 0px 3px #00f5d4) !important;
-        }
-
-        div[data-testid="stDataFrame"] iframe, 
-        div[data-testid="stDataFrame"] canvas {
-            background-color: #0b132b !important;
-            color: #00f5d4 !important;
+            text-shadow: 0 0 6px rgba(0, 245, 212, 0.8) !important;
         }
 
         /* Modern File Uploader Dropzone */
