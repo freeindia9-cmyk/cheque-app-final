@@ -67,7 +67,7 @@ def inject_custom_styles():
             text-shadow: 0 0 8px rgba(144, 224, 239, 0.5) !important;
         }
 
-        /* Replaced Pure Green Text with Modern Cyan/Blue/Gold Accent Text */
+        /* High Visibility Text Accent Headers */
         h1, h2, h3, h4, h5, h6 {
             color: #48cae4 !important;
             text-shadow: 0 0 12px rgba(72, 202, 228, 0.6) !important;
@@ -94,18 +94,28 @@ def inject_custom_styles():
             box-shadow: 0 0 25px rgba(0, 245, 212, 0.8) !important;
         }
 
-        /* Interactive Data Grid Container */
-        div[data-testid="stDataFrame"] {
-            background-color: #0d1b2a !important;
+        /* HIGH-VISIBILITY DATA GRID FIX (NO MORE BLACK BACKGROUND/TEXT ISSUE) */
+        div[data-testid="stDataFrame"], div[data-testid="data-grid-canvas"], div[aria-label="Data Grid"] {
+            background-color: #16243b !important;
             border: 2px solid #00b4d8 !important;
             border-radius: 16px !important;
-            padding: 10px !important;
-            box-shadow: 0 0 30px rgba(0, 180, 216, 0.3) !important;
+            padding: 8px !important;
+            box-shadow: 0 0 30px rgba(0, 180, 216, 0.4) !important;
         }
 
-        div[data-testid="stDataFrame"] * {
-            background-color: #0d1b2a !important;
+        /* Grid Cells & Header Contrast Enhancement */
+        [data-testid="stDataFrame"] * {
+            background-color: #16243b !important;
             color: #ffffff !important;
+            font-weight: 600 !important;
+            font-size: 14px !important;
+        }
+
+        /* Glide Data Grid Specific Cell Rules */
+        .gdg-header-cell, .gdg-cell {
+            background-color: #101d30 !important;
+            color: #00f5d4 !important;
+            border-color: #00b4d8 !important;
         }
 
         /* Modern File Uploader Dropzone */
@@ -205,7 +215,7 @@ def inject_custom_styles():
             text-shadow: 0 0 18px rgba(255, 255, 255, 0.8) !important;
         }
 
-        /* Slow, Elegant Glowing Action Buttons */
+        /* Dynamic Glowing Action Buttons */
         div.stButton > button, div.stDownloadButton > button {
             font-weight: 900 !important;
             border-radius: 14px !important;
@@ -393,8 +403,8 @@ with st.sidebar:
     
     st.divider()
     st.markdown("### 📝 Email Content Settings")
-    email_subject_prefix = st.text_input("Custom Email Subject Prefix", value="💳 Buffer Cheque Details")
-    custom_cfa_title = st.text_input("CFA Header Title", value="RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA")
+    email_subject_prefix = st.text_input("Custom Email Subject Prefix", value="BUFFER CHEQUE DETAILS", key="sb_email_subject")
+    custom_cfa_title = st.text_input("CFA Header Title", value="RAMA ENTERPRISES CFA, ABBOTT INDIA LTD, PATNA", key="sb_cfa_title")
     
     st.divider()
     st.markdown("### 🛠️ Data Management Tools")
@@ -529,9 +539,9 @@ st.markdown("---")
 # ==========================================
 # 11. HTML EMAIL TEMPLATE GENERATOR
 # ==========================================
-def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title):
+def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
-    Generates HTML email content without f-string syntax issues.
+    Generates HTML email content linking dynamically with Sidebar Email Content inputs.
     """
     html_content = """<!DOCTYPE html>
 <html>
@@ -585,17 +595,19 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
 </head>
 <body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
 
+  <!-- 4 SECONDS FULL-SCREEN SPLASH OVERLAY -->
   <div class="splash-overlay">
       <div class="splash-title">RAMA ENTERPRISES</div>
       <div class="splash-sub">ABBOTT INDIA LTD, PATNA</div>
   </div>
 
+  <!-- MAIN EMAIL BODY -->
   <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
     <tr>
       <td style="padding: 24px; text-align: center;">
         <div style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
           <h1 style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 900; letter-spacing: 1px;">
-            BUFFER CHEQUE DETAILS
+            """ + str(email_title).upper() + """
           </h1>
         </div>
         <div style="margin-top: 12px; font-weight: bold; color: #90e0ef; font-size: 13px;">
@@ -676,9 +688,10 @@ with sim_col1:
 
 with sim_col2:
     st.markdown("#### 📱 Live Rendered Email Preview")
+    # Dynamically pass sidebar inputs to email generator for real-time reactive update
     preview_html = build_email_template(
         sim_party, datetime.now().strftime("%Y-%m-%d"), sim_acc, sim_place, sim_bank,
-        sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title
+        sim_u_ail, sim_u_ahpl, sim_h_ail, sim_h_ahpl, custom_cfa_title, email_subject_prefix
     )
     st.components.v1.html(preview_html, height=500, scrolling=True)
 
@@ -738,7 +751,7 @@ if start_dispatch_btn:
 
                     full_body = build_email_template(
                         party_name, rec_date, account_val, place_val, bank_val,
-                        used_ail, used_ahpl, hand_ail, hand_ahpl, custom_cfa_title
+                        used_ail, used_ahpl, hand_ail, hand_ahpl, custom_cfa_title, email_subject_prefix
                     )
                     msg.attach(MIMEText(full_body, 'html'))
                     
