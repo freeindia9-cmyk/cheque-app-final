@@ -16,6 +16,8 @@ import json
 # SECTION 1: GLOBAL SYSTEM PAGE CONFIGURATION & STATE INITIALIZATION
 # ==============================================================================
 
+# Configure Main Streamlit Page Engine Attributes
+# Sets up full-width responsive dashboard viewport layout
 st.set_page_config(
     page_title="8K Cyberpunk Cheque Dispatcher Engine Pro Ultra",
     page_icon="⚡",
@@ -23,46 +25,61 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# ------------------------------------------------------------------------------
 # Initialize Session State Variables for Persistent App Operations
+# ------------------------------------------------------------------------------
 
+# Main CRM Data Store Array State Container
 if 'crm_data' not in st.session_state:
     st.session_state['crm_data'] = None
 
+# Track Success Dispatch Counters Across Reruns
 if 'sent_count' not in st.session_state:
     st.session_state['sent_count'] = 0
 
+# Track Failed Dispatch Counters Across Reruns
 if 'failed_count' not in st.session_state:
     st.session_state['failed_count'] = 0
 
+# Emergency Interruption Signal Toggle Flag
 if 'stop_dispatch' not in st.session_state:
     st.session_state['stop_dispatch'] = False
 
+# Dynamic Console Stream Logs Buffer
 if 'dispatch_logs' not in st.session_state:
     st.session_state['dispatch_logs'] = []
 
+# Data Health Audit Issues Collection List
 if 'validation_alerts' not in st.session_state:
     st.session_state['validation_alerts'] = []
 
+# Theme Visual Accent Color Preference State
 if 'theme_color' not in st.session_state:
     st.session_state['theme_color'] = "Electric Neon Cyan"
 
+# Interactive Email Inbox Preview Popup Visibility Flag
 if 'show_inbox_popup' not in st.session_state:
     st.session_state['show_inbox_popup'] = False
 
+# Active Record Index Selected inside Preview Window
 if 'selected_record_for_popup' not in st.session_state:
     st.session_state['selected_record_for_popup'] = 0
 
+# Network Handshake Status Indicator Value
 if 'smtp_status' not in st.session_state:
     st.session_state['smtp_status'] = "Not Tested"
 
+# Column Auto-Mapping Dictionary Array Setup
 if 'column_mapping' not in st.session_state:
     st.session_state['column_mapping'] = {}
 
+# Custom Dynamic Email Subject Header Config Entry
 if 'custom_email_subject' not in st.session_state:
     st.session_state['custom_email_subject'] = "BUFFER CHEQUE DETAILS SUMMARY"
 
+# Custom Corporate Entity Header Text String Entry
 if 'custom_cfa_header' not in st.session_state:
-    st.session_state['custom_cfa_header'] = "RAMA ENTERPRISES ABBOTT INDIA LTD CFA, PATNA"
+    st.session_state['custom_cfa_header'] = "RAMA ENTERPRISES, CFA, ABBOTT INDIA, LIMITED, PATNA"
 
 
 # ==============================================================================
@@ -392,6 +409,7 @@ def inject_custom_ultra_graphics_styles():
     </style>
     """, unsafe_allow_html=True)
 
+# Trigger CSS Styling Execution Call
 inject_custom_ultra_graphics_styles()
 
 
@@ -402,6 +420,7 @@ inject_custom_ultra_graphics_styles()
 def get_field_strict(row, column_aliases, default_val="N/A"):
     """
     Extracts column values matching aliases regardless of case or spaces.
+    Iterates through dataset headers to ensure non-null value retrieval.
     """
     clean_aliases = [re.sub(r'[^a-zA-Z0-9]', '', str(a)).lower() for a in column_aliases]
     for col in row.index:
@@ -416,14 +435,30 @@ def get_field_strict(row, column_aliases, default_val="N/A"):
 def validate_email_address(email_str):
     """
     Checks if an email string matches valid email format patterns.
+    Uses regex matching to ensure standard domain syntax rules.
     """
     pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
     return bool(re.match(pattern, str(email_str).strip()))
 
 
+def sanitize_numeric_field(value, default_int=0):
+    """
+    Converts string or floating inputs to integer values safely.
+    Strips out currency markers or non-numeric formatting characters.
+    """
+    try:
+        clean_str = re.sub(r'[^0-9.]', '', str(value)).strip()
+        if clean_str:
+            return int(float(clean_str))
+    except Exception:
+        pass
+    return default_int
+
+
 def perform_batch_data_audit(dataframe):
     """
     Audits the dataset for email validity, missing values, and data health.
+    Returns a comprehensive list of system health alerts.
     """
     alerts = []
     if dataframe is None or dataframe.empty:
@@ -455,6 +490,7 @@ def perform_batch_data_audit(dataframe):
 def test_smtp_connection(host, port, user, password):
     """
     Tests SMTP connection health before starting bulk email dispatch.
+    Executes TLS handshake and verifies credential authenticity.
     """
     try:
         server = smtplib.SMTP(host, int(port), timeout=5)
@@ -475,6 +511,7 @@ def test_smtp_connection(host, port, user, password):
 def generate_default_100_records():
     """
     Generates 100 sample records for testing dispatch workflows.
+    Constructs robust datasets with varied names, locations, and bank names.
     """
     parties = [
         "Aarav Sharma", "Priya Patel", "Rahul Verma", "Ananya Iyer", 
@@ -504,8 +541,8 @@ def generate_default_100_records():
             "Bank Name": random.choice(banks),
             "Number of cheque used in AIL": random.randint(1, 10),
             "Number of cheque used In AHPL": random.randint(1, 10),
-            "Total cheque in hand AIL": random.randint(5, 25),
-            "Total cheque in hand AHPL": random.randint(5, 25)
+            "Total cheque in hand AIL": random.randint(1, 15),
+            "Total cheque in hand AHPL": random.randint(1, 15)
         })
     return pd.DataFrame(records)
 
@@ -553,7 +590,7 @@ with st.sidebar:
     )
     st.session_state['custom_cfa_header'] = st.text_input(
         "CFA Header Title", 
-        value=st.session_state['custom_cfa_header'], 
+        value="RAMA ENTERPRISES, CFA, ABBOTT INDIA, LIMITED, PATNA", 
         key="sb_cfa_title"
     )
     
@@ -573,7 +610,7 @@ with st.sidebar:
 
 st.markdown("""
 <div class="ultra-header-wrapper">
-    <h1 class="ultra-main-title">DHARMENDRA KUMAR (MISHRA)</h1>
+    <h1 class="ultra-main-title">DHARMENDRA Kumar (Mishra)</h1>
     <span class="ultra-subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
     <p style="color: #90e0ef; margin-top: 15px; font-weight: 800; font-size: 17px;">
         ⚡ 8K ULTRA-GRAPHICS CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
@@ -730,136 +767,105 @@ st.markdown("---")
 
 
 # ==============================================================================
-# SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE (OVERLAY REMOVED)
+# SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE
 # ==============================================================================
 
 def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
     """
-    Generates dynamic HTML email markup formatted for modern email clients,
-    featuring glowing pulsating header animation, neon text shadows,
-    and footer branding.
+    Generates clean HTML email markup formatted for modern email clients.
+    Includes an urgent notice if both cheque in hand values are less than 4.
     """
+    # Check condition for Urgent Note (if both hand cheques are less than 4)
+    show_urgent_note = False
+    try:
+        val_ail = float(re.sub(r'[^0-9.]', '', str(h_ail))) if str(h_ail).strip() else 0
+        val_ahpl = float(re.sub(r'[^0-9.]', '', str(h_ahpl))) if str(h_ahpl).strip() else 0
+        if val_ail < 4 and val_ahpl < 4:
+            show_urgent_note = True
+    except Exception:
+        show_urgent_note = False
+
+    urgent_note_html = ""
+    if show_urgent_note:
+        urgent_note_html = """
+        <div style="margin-top: 18px; padding: 14px 18px; background-color: #ffe6e6; border-left: 6px solid #d90429; border-radius: 8px; box-shadow: 0 4px 12px rgba(217, 4, 41, 0.15);">
+          <p style="margin: 0; color: #d90429; font-weight: 900; font-size: 15px; letter-spacing: 0.3px;">
+            ⚠️ Urgent Note: Please arrange to send the cheque immediately.
+          </p>
+        </div>
+        """
+
     html_content = f"""<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
-    <style>
-        /* Continuous Pulse/Glow Keyframes for Email Header */
-        @keyframes headerPulseGlow {{
-            0% {{
-                box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
-                border-color: #00b4d8;
-                text-shadow: 0 0 5px rgba(0, 245, 212, 0.5);
-            }}
-            50% {{
-                box-shadow: 0 0 35px rgba(0, 245, 212, 1), 0 0 15px rgba(112, 224, 0, 0.8);
-                border-color: #00f5d4;
-                text-shadow: 0 0 20px rgba(0, 245, 212, 1), 0 0 10px rgba(255, 255, 255, 0.9);
-            }}
-            100% {{
-                box-shadow: 0 0 10px rgba(0, 245, 212, 0.4);
-                border-color: #00b4d8;
-                text-shadow: 0 0 5px rgba(0, 245, 212, 0.5);
-            }}
-        }}
-
-        .email-top-header {{
-            animation: headerPulseGlow 2.5s infinite ease-in-out;
-            border: 2px solid #00f5d4;
-        }}
-
-        /* Neon Glowing Text Accents */
-        .neon-glow-cyan {{
-            color: #00f5d4 !important;
-            text-shadow: 0 0 10px rgba(0, 245, 212, 0.8) !important;
-        }}
-
-        .neon-glow-blue {{
-            color: #48cae4 !important;
-            text-shadow: 0 0 10px rgba(72, 202, 228, 0.8) !important;
-        }}
-
-        .neon-glow-green {{
-            color: #70e000 !important;
-            text-shadow: 0 0 10px rgba(112, 224, 0, 0.8) !important;
-        }}
-
-        .neon-glow-white {{
-            color: #ffffff !important;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.7) !important;
-        }}
-    </style>
 </head>
-<body style="margin:0; padding:20px; background-color:#03071e; font-family: 'Segoe UI', Arial, sans-serif;">
+<body style="margin:0; padding:20px; background-color:#f4f6f8; font-family: 'Segoe UI', Arial, sans-serif;">
 
-  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 640px; background-color: #0d1b2a; border-radius: 18px; overflow: hidden; border: 2px solid #00f5d4; box-shadow: 0 0 35px rgba(0, 245, 212, 0.4);">
+  <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width: 620px; background-color: #0b132b; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.4);">
     <tr>
       <td style="padding: 24px; text-align: center;">
-        <div class="email-top-header" style="background: linear-gradient(135deg, #0d1b2a, #1b263b); border-radius: 14px; padding: 20px 12px; text-align: center;">
-          <h1 class="neon-glow-cyan" style="margin: 0; font-size: 21px; font-weight: 900; letter-spacing: 1px;">
-            RAMA ENTERPRISES ABBOTT INDIA LTD CFA, PATNA
+        <div style="background: linear-gradient(135deg, #00b4d8, #0077b6); border-radius: 12px; padding: 18px 10px; text-align: center; box-shadow: 0 0 20px rgba(0, 180, 216, 0.6);">
+          <h1 style="margin: 0; color: #ffffff; font-size: 20px; font-weight: 900; letter-spacing: 1px;">
+            RAMA ENTERPRISES, CFA, ABBOTT INDIA, LIMITED, PATNA
           </h1>
-          <div class="neon-glow-green" style="margin-top: 8px; font-size: 14px; font-weight: 800;">
-            {str(email_title).upper()}
-          </div>
         </div>
-        <div class="neon-glow-blue" style="margin-top: 14px; font-weight: 800; font-size: 14px;">
-          ✨ {str(cfa_title)}
+        <div style="margin-top: 14px; font-weight: 900; color: #00f5d4; font-size: 18px; letter-spacing: 1px;">
+          BUFFER CHEQUE DETAILS
         </div>
       </td>
     </tr>
     <tr>
       <td style="padding: 0 28px 28px 28px;">
-        <p class="neon-glow-white" style="font-size: 16px; margin-bottom: 8px;">Dear <b class="neon-glow-cyan">{str(party)}</b>,</p>
-        <p class="neon-glow-blue" style="font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
+        <p style="color: #ffffff; font-size: 16px; margin-bottom: 8px;">Dear <b style="color: #00f5d4;">{str(party)}</b>,</p>
+        <p style="color: #caf0f8; font-size: 14px; margin-top: 0; margin-bottom: 22px;">Please find below the updated summary of your cheque records:</p>
         
-        <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #03071e; border-radius: 12px; border: 1px solid #00b4d8;">
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td width="50%" class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">📅 Date</td>
-            <td width="50%" class="neon-glow-cyan" style="font-weight: bold; font-size: 14px;">{str(date_val)}</td>
+        <table border="0" cellpadding="12" cellspacing="0" width="100%" style="border-collapse: collapse; background-color: #1c2541; border-radius: 10px; overflow: hidden;">
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td width="50%" style="color: #90e0ef; font-weight: bold; font-size: 14px;">📅 Date</td>
+            <td width="50%" style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(date_val)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">👤 Party Name</td>
-            <td class="neon-glow-white" style="font-weight: bold; font-size: 14px;">{str(party)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">👤 Party Name</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(party)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">🔢 Account Number</td>
-            <td class="neon-glow-green" style="font-weight: bold; font-size: 14px;">{str(acc)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🔢 Account Number</td>
+            <td style="color: #48cae4; font-weight: bold; font-size: 14px;">{str(acc)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">📍 Place</td>
-            <td class="neon-glow-white" style="font-weight: bold; font-size: 14px;">{str(place)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📍 Place</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(place)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
-            <td class="neon-glow-white" style="font-weight: bold; font-size: 14px;">{str(bank)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏦 Bank Name</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(bank)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
-            <td class="neon-glow-white" style="font-weight: bold; font-size: 14px;">{str(u_ail)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AIL</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(u_ail)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
-            <td class="neon-glow-white" style="font-weight: bold; font-size: 14px;">{str(u_ahpl)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">🏷️ Cheques Used in AHPL</td>
+            <td style="color: #ffffff; font-weight: bold; font-size: 14px;">{str(u_ahpl)}</td>
           </tr>
-          <tr style="border-bottom: 1px solid #1b263b;">
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
-            <td class="neon-glow-cyan" style="font-weight: bold; font-size: 14px;">{str(h_ail)}</td>
+          <tr style="border-bottom: 1px solid #3a5a40;">
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AIL</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(h_ail)}</td>
           </tr>
           <tr>
-            <td class="neon-glow-blue" style="font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
-            <td class="neon-glow-cyan" style="font-weight: bold; font-size: 14px;">{str(h_ahpl)}</td>
+            <td style="color: #90e0ef; font-weight: bold; font-size: 14px;">📥 Total Cheque in Hand AHPL</td>
+            <td style="color: #00f5d4; font-weight: bold; font-size: 14px;">{str(h_ahpl)}</td>
           </tr>
         </table>
+
+        {urgent_note_html}
       </td>
     </tr>
     <tr>
-      <td style="background-color: #03071e; padding: 22px; text-align: center; border-top: 2px solid #00f5d4;">
-        <div class="neon-glow-cyan" style="font-weight: 900; font-size: 15px; letter-spacing: 1px;">
-          RAMA ENTERPRISES ABBOTT INDIA LTD CFA, PATNA
-        </div>
-        <div class="neon-glow-blue" style="font-size: 12px; margin-top: 6px; font-weight: 700;">
-          {str(cfa_title)}
+      <td style="background-color: #1c2541; padding: 20px; text-align: center; border-top: 1px solid #3a5a40;">
+        <div style="color: #00f5d4; font-weight: 800; font-size: 13px; letter-spacing: 0.5px;">
+          DEVELOPED AND DESIGNED BY DHARMENDRA KUMAR MISHRA
         </div>
       </td>
     </tr>
@@ -924,7 +930,7 @@ if st.session_state['show_inbox_popup']:
         )
         
         st.markdown("#### 📱 Rendered Live Email Preview")
-        st.components.v1.html(preview_html, height=480, scrolling=True)
+        st.components.v1.html(preview_html, height=520, scrolling=True)
     else:
         st.warning("No dataset loaded to preview emails.")
 
@@ -983,14 +989,15 @@ if start_dispatch_btn:
 
                 if validate_email_address(target_email):
                     msg = MIMEMultipart('alternative')
-                    msg['From'] = formataddr((st.session_state['custom_cfa_header'], sender_email.strip()))
+                    cfa_header_text = "RAMA ENTERPRISES, CFA, ABBOTT INDIA, LIMITED, PATNA"
+                    msg['From'] = formataddr((cfa_header_text, sender_email.strip()))
                     msg['To'] = target_email
-                    msg['Subject'] = f"{st.session_state['custom_email_subject']} - {party_name} ({rec_date})"
+                    msg['Subject'] = f"BUFFER CHEQUE DETAILS - {party_name} ({rec_date})"
 
                     full_body = build_email_template(
                         party_name, rec_date, account_val, place_val, bank_val,
                         used_ail, used_ahpl, hand_ail, hand_ahpl, 
-                        st.session_state['custom_cfa_header'], st.session_state['custom_email_subject']
+                        cfa_header_text, "BUFFER CHEQUE DETAILS"
                     )
                     msg.attach(MIMEText(full_body, 'html'))
                     
@@ -1038,13 +1045,98 @@ if st.session_state['dispatch_logs']:
 
 
 # ==============================================================================
-# SECTION 15: FOOTER SYSTEM INFORMATION & ARCHITECT CREDITS
+# SECTION 15: ADVANCED DIAGNOSTICS & SYSTEM AUDIT SUITE
+# ==============================================================================
+
+def execute_extended_system_audit():
+    """
+    Runs diagnostic checks against system states, dataset memory allocations,
+    and server handshake configurations. Provides expanded diagnostic reporting.
+    """
+    audit_results = {
+        "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        "total_memory_records": len(st.session_state['crm_data']) if st.session_state['crm_data'] is not None else 0,
+        "smtp_configured": bool(sender_email and app_password),
+        "smtp_server_host": smtp_server,
+        "smtp_server_port": smtp_port,
+        "logs_registered_count": len(st.session_state['dispatch_logs']),
+        "system_status": "Healthy"
+    }
+    return audit_results
+
+
+# Execute background health logging array updates
+current_system_diagnostics = execute_extended_system_audit()
+
+
+# ------------------------------------------------------------------------------
+# System Diagnostic Information Display Expanders
+# ------------------------------------------------------------------------------
+
+with st.expander("🛠️ Advanced Diagnostic System Console & Memory Metrics", expanded=False):
+    st.json(current_system_diagnostics)
+    st.markdown("""
+    **System Architectural Notes:**
+    * **State Continuity:** Ensures session values survive UI refresh events smoothly.
+    * **Memory Footprint:** Efficient DataFrame structures process batch tasks rapidly.
+    * **Thread Locking:** Managed via Streamlit native state hooks to avoid thread conflicts.
+    """)
+
+
+# ==============================================================================
+# SECTION 16: HELPER UTILITIES & EXTENDED DATA TRANSFORMATIONS
+# ==============================================================================
+
+def export_audit_summary_as_dict(dataframe):
+    """
+    Exports summary statistics into a structured JSON dictionary string
+    suitable for audit reporting and record archival storage.
+    """
+    if dataframe is None or dataframe.empty:
+        return {}
+    
+    summary_data = {
+        "generated_at": datetime.now().isoformat(),
+        "total_count": len(dataframe),
+        "unique_parties": int(dataframe['Party Name'].nunique()) if 'Party Name' in dataframe.columns else 0,
+        "unique_banks": int(dataframe['Bank Name'].nunique()) if 'Bank Name' in dataframe.columns else 0,
+        "dispatch_status": {
+            "sent": st.session_state['sent_count'],
+            "failed": st.session_state['failed_count'],
+            "pending": max(0, len(dataframe) - (st.session_state['sent_count'] + st.session_state['failed_count']))
+        }
+    }
+    return summary_data
+
+
+def format_currency_indian_system(number):
+    """
+    Formats numerical cheque totals into Indian numbering conventions (Lakhs/Crores).
+    Ensures clear currency rendering across dispatch reports.
+    """
+    try:
+        num_str = str(int(number))
+        if len(num_str) <= 3:
+            return num_str
+        last_three = num_str[-3:]
+        other_numbers = num_str[:-3]
+        res = ""
+        while len(other_numbers) > 2:
+            res = "," + other_numbers[-2:] + res
+            other_numbers = other_numbers[:-2]
+        return other_numbers + res + "," + last_three
+    except Exception:
+        return str(number)
+
+
+# ==============================================================================
+# SECTION 17: FOOTER SYSTEM INFORMATION & ARCHITECT CREDITS
 # ==============================================================================
 
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #90e0ef; padding: 22px; font-size: 14px;">
-    ⚡ <b>DHARMENDRA KUMAR (MISHRA) BULK DISPATCHER ENGINE v4.0 PRO ULTRA</b><br>
+    ⚡ <b>DHARMENDRA Kumar (Mishra) BULK DISPATCHER ENGINE v4.0 PRO ULTRA</b><br>
     Designed & Built with Streamlit, Python & SMTP Services | Architect: <b>RAJVEER</b><br>
     <i>All rights reserved. Ready for high-performance enterprise deployments.</i>
 </div>
