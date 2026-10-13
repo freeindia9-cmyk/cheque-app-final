@@ -1136,7 +1136,7 @@ def format_currency_indian_system(number):
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #90e0ef; padding: 22px; font-size: 14px;">
-    ⚡ <b>DHARMENDRA Kumar (Mishra) BULK DISPATCHER ENGINE v4.0 PRO ULTRA</b><br>
+    ⚡ <b>BUFFER CHEQUE SUMMARY BULK DISPATCHER ENGINE v4.0 PRO ULTRA</b><br>
     Designed & Built with Streamlit, Python & SMTP Services | Architect: <b>RAJVEER</b><br>
     <i>All rights reserved. Ready for high-performance enterprise deployments.</i>
 </div>
