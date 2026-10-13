@@ -610,7 +610,7 @@ with st.sidebar:
 
 st.markdown("""
 <div class="ultra-header-wrapper">
-    <h1 class="ultra-main-title">DHARMENDRA Kumar (Mishra)</h1>
+    <h1 class="ultra-main-title">BUFFER CHEQUE SUMMARY</h1>
     <span class="ultra-subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
     <p style="color: #90e0ef; margin-top: 15px; font-weight: 800; font-size: 17px;">
         ⚡ 8K ULTRA-GRAPHICS CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
