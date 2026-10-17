@@ -611,9 +611,9 @@ with st.sidebar:
 st.markdown("""
 <div class="ultra-header-wrapper">
     <h1 class="ultra-main-title">BUFFER CHEQUE SUMMARY</h1>
-    <span class="ultra-subtitle-badge">✨ ARCHITECT & DESIGNER: RAJVEER</span>
+    <span class="ultra-subtitle-badge">✨ ARCHITECT & DESIGNER: DHARMENDRA KUMAR(MISHRA)</span>
     <p style="color: #90e0ef; margin-top: 15px; font-weight: 800; font-size: 17px;">
-        ⚡ 8K ULTRA-GRAPHICS CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
+      🤖  CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
     </p>
 </div>
 """, unsafe_allow_html=True)
