@@ -613,7 +613,7 @@ st.markdown("""
     <h1 class="ultra-main-title">BUFFER CHEQUE SUMMARY</h1>
     <span class="ultra-subtitle-badge">✨ ARCHITECT & DESIGNER: DHARMENDRA KUMAR(MISHRA)</span>
     <p style="color: #90e0ef; margin-top: 15px; font-weight: 800; font-size: 17px;">
-      🤖  CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
+      📩  CHEQUE DISPATCHER & AUTOMATED EMAIL MANAGEMENT ENGINE
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -1136,8 +1136,8 @@ def format_currency_indian_system(number):
 st.markdown("---")
 st.markdown("""
 <div style="text-align: center; color: #90e0ef; padding: 22px; font-size: 14px;">
-    ⚡ <b>BUFFER CHEQUE SUMMARY BULK DISPATCHER ENGINE v4.0 PRO ULTRA</b><br>
-    Designed & Built with Streamlit, Python & SMTP Services | Architect: <b>RAJVEER</b><br>
+    ⚡ <b>BUFFER CHEQUE SUMMARY DETAILS</b><br>
+    Designed & Built with AI, Python & SMTP Services | Architect: <b>RAJVEER</b><br>
     <i>All rights reserved. Ready for high-performance enterprise deployments.</i>
 </div>
 """, unsafe_allow_html=True)
