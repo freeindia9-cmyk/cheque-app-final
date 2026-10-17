@@ -19,7 +19,7 @@ import json
 # Configure Main Streamlit Page Engine Attributes
 # Sets up full-width responsive dashboard viewport layout
 st.set_page_config(
-    page_title="8K Cyberpunk Cheque Dispatcher Engine Pro Ultra",
+    page_title="BUFFER CHEQUE DETAILS",
     page_icon="⚡",
     layout="wide",
     initial_sidebar_state="expanded"
