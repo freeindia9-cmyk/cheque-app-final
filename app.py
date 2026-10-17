@@ -770,7 +770,7 @@ st.markdown("---")
 # SECTION 11: HTML EMAIL TEMPLATE GENERATOR ENGINE
 # ==============================================================================
 
-def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail, h_ahpl, cfa_title, email_title):
+def build_email_template(party, date_val, acc, place, bank, u_ahpl, u_ail, h_ahpl, h_ail, cfa_title, email_title):
     """
     Generates clean HTML email markup formatted for modern email clients.
     Includes an urgent notice if both cheque in hand values are less than 4.
@@ -778,9 +778,9 @@ def build_email_template(party, date_val, acc, place, bank, u_ail, u_ahpl, h_ail
     # Check condition for Urgent Note (if both hand cheques are less than 4)
     show_urgent_note = False
     try:
-        val_ail = float(re.sub(r'[^0-9.]', '', str(h_ail))) if str(h_ail).strip() else 0
         val_ahpl = float(re.sub(r'[^0-9.]', '', str(h_ahpl))) if str(h_ahpl).strip() else 0
-        if val_ail < 4 and val_ahpl < 4:
+        val_ail = float(re.sub(r'[^0-9.]', '', str(h_ail))) if str(h_ail).strip() else 0
+        if val_ahpl < 4 and val_ail < 4:
             show_urgent_note = True
     except Exception:
         show_urgent_note = False
