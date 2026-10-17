@@ -541,8 +541,8 @@ def generate_default_100_records():
             "Bank Name": random.choice(banks),
             "Number of cheque used in AIL": random.randint(1, 10),
             "Number of cheque used In AHPL": random.randint(1, 10),
-            "Total cheque in hand AIL": random.randint(1, 15),
-            "Total cheque in hand AHPL": random.randint(1, 15)
+            "Total cheque in hand AHPL": random.randint(1, 15),
+            "Total cheque in hand AIL": random.randint(1, 15)
         })
     return pd.DataFrame(records)
 
@@ -919,8 +919,8 @@ if st.session_state['show_inbox_popup']:
         p_bank = get_field_strict(sel_row, ["Bank Name", "Bank"], "N/A")
         p_u_ail = get_field_strict(sel_row, ["Number of cheque used in AIL"], "0")
         p_u_ahpl = get_field_strict(sel_row, ["Number of cheque used In AHPL"], "0")
-        p_h_ail = get_field_strict(sel_row, ["Total cheque in hand AIL"], "0")
-        p_h_ahpl = get_field_strict(sel_row, ["Total cheque in hand AHPL"], "0")
+        p_h_ail = get_field_strict(sel_row, ["Total cheque in hand AHPL"], "0")
+        p_h_ahpl = get_field_strict(sel_row, ["Total cheque in hand AIL"], "0")
 
         preview_html = build_email_template(
             p_name, p_date, p_acc, p_place, p_bank,
@@ -981,8 +981,8 @@ if start_dispatch_btn:
                 
                 used_ail = get_field_strict(row, ["Number of cheque used in AIL"], "0")
                 used_ahpl = get_field_strict(row, ["Number of cheque used In AHPL"], "0")
-                hand_ail = get_field_strict(row, ["Total cheque in hand AIL"], "0")
-                hand_ahpl = get_field_strict(row, ["Total cheque in hand AHPL"], "0")
+                hand_ail = get_field_strict(row, ["Total cheque in hand AHPL"], "0")
+                hand_ahpl = get_field_strict(row, ["Total cheque in hand AIL"], "0")
 
                 timestamp_str = datetime.now().strftime('%H:%M:%S')
 
