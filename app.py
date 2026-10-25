@@ -11,7 +11,6 @@ import random
 import re
 import io
 import json
-
 # ==============================================================================
 # SECTION 1: GLOBAL SYSTEM PAGE CONFIGURATION & STATE INITIALIZATION
 # ==============================================================================
@@ -745,19 +744,6 @@ with col_b3:
         file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.csv",
         mime="text/csv",
         use_container_width=True
-    )
-
-with col_b4:
-    json_buffer = io.StringIO()
-    if df is not None:
-        df.to_json(json_buffer, orient="records", indent=2)
-    st.download_button(
-        label="📄 EXPORT JSON",
-        data=json_buffer.getvalue(),
-        file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.json",
-        mime="application/json",
-        use_container_width=True
-    )
 
 if stop_dispatch_btn:
     st.session_state['stop_dispatch'] = True
