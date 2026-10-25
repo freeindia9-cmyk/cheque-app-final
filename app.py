@@ -744,7 +744,7 @@ with col_b3:
         file_name=f"Cheque_Dispatch_{datetime.now().strftime('%Y%m%d')}.csv",
         mime="text/csv",
         use_container_width=True
-
+    )
 if stop_dispatch_btn:
     st.session_state['stop_dispatch'] = True
     st.warning("🛑 Emergency Stop Triggered by User!")
