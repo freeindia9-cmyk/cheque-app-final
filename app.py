@@ -12,6 +12,48 @@ import re
 import io
 import json
 # ==============================================================================
+# SECTION: STRICT PASSWORD PROTECTION GATEKEEPER 
+# ==============================================================================
+
+def enforce_app_security():
+    """
+    Blocks unauthorized access by rendering a secure login screen
+    if the session is not authenticated.
+    """
+    if "password_correct" not in st.session_state:
+        st.session_state["password_correct"] = False
+
+    if not st.session_state["password_correct"]:
+        # Purane sare elements ko hide karne ke liye main container ko rokte hain
+        st.markdown("""
+        <style>
+            /* Hide main sidebar and standard elements until authenticated */
+            section[data-testid="stSidebar"] { display: none !important; }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("---")
+        st.markdown("### 🔐 Security Authentication Required")
+        st.warning("Please enter the master password to access the dispatcher engine.")
+        
+        entered_pwd = st.text_input("Enter App Password", type="password", key="end_pwd_input")
+        
+        # Apna password yahan set karein (jaise 'Dharmendra@123')
+        MASTER_PASSWORD = "ramadharm@123"
+        
+        if st.button("🔓 Login to System", type="primary"):
+            if entered_pwd == MASTER_PASSWORD:
+                st.session_state["password_correct"] = True
+                st.rerun()
+            else:
+                st.error("❌ Incorrect Password! Access Denied.")
+        
+        st.stop()  # Yahin par execution rok dega jab tak password sahi na ho
+
+# Execute security check call
+enforce_app_security()
+
+# ==============================================================================
 # SECTION 1: GLOBAL SYSTEM PAGE CONFIGURATION & STATE INITIALIZATION
 # ==============================================================================
 
