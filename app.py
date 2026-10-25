@@ -1128,38 +1128,5 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ==============================================================================
-# SECTION 18: PASSWORD PROTECTION SYSTEM
-# ==============================================================================
-
-def check_password():
-    """
-    Returns True if the user entered the correct password.
-    """
-    if "password_correct" not in st.session_state:
-        st.session_state["password_correct"] = False
-
-    if st.session_state["password_correct"]:
-        return True
-
-    st.markdown("---")
-    st.markdown("### 🔐 Security Authentication Required")
-    entered_password = st.text_input("ramadharm@123", type="password")
-    
-    if st.button("🔓 Login", type="primary"):
-        # Yahan apna password change kar sakte hain
-        if entered_password == "your_password_here":
-            st.session_state["password_correct"] = True
-            st.rerun()
-        else:
-            st.error("❌ Incorrect Password. Please try again.")
-    return False
-
-# Agar password sahi hoga tabhi aage ka app run hoga
-if check_password():
-    # Aapka poora main app code yahan se execute hoga (agar zaroorat ho toh 
-    # aap isko apne main logic ke sath wrap kar sakte hain, ya simply sabse 
-    # last mein ye function check laga sakte hain).
-    pass
-# ==============================================================================
 # END OF FILE
 # ==============================================================================
