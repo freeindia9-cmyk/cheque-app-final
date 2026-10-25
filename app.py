@@ -39,7 +39,7 @@ def enforce_app_security():
         entered_pwd = st.text_input("Enter App Password", type="password", key="end_pwd_input")
         
         # Apna password yahan set karein (jaise 'Dharmendra@123')
-        MASTER_PASSWORD = "ramadharm@123"
+        MASTER_PASSWORD = "ramadharm@2026"
         
         if st.button("🔓 Login to System", type="primary"):
             if entered_pwd == MASTER_PASSWORD:
